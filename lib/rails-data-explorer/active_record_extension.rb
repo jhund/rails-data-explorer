@@ -1,12 +1,14 @@
 #
 # Adds rails-data-explorer methods to ActiveRecord::Base and sub classes.
 #
-module RailsDataExplorer::ActiveRecordExtension
+class RailsDataExplorer
+  module ActiveRecordExtension
 
-  module ClassMethods
+    module ClassMethods
 
-  protected
+    protected
+
+    end
 
   end
-
 end

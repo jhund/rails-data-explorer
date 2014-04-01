@@ -25,7 +25,7 @@ class RailsDataExplorer
       end
 
       def self.descriptive_statistics(values)
-        stats = DescriptiveStatistics::Stats.new(values)
+        stats = ::DescriptiveStatistics::Stats.new(values)
         [
           { :label => 'Count', :value => values.length },
           { :label => 'Sum', :value => values.inject(0) { |m,e| m += e } },

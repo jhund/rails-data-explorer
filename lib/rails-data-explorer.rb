@@ -1,3 +1,5 @@
+require 'descriptive-statistics'
+
 require 'rails-data-explorer/engine'
 
 require 'rails-data-explorer/chart'

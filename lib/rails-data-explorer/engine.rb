@@ -1,6 +1,6 @@
 require 'rails'
 
-module RailsDataExplorer
+class RailsDataExplorer
   class Engine < ::Rails::Engine
 
     # It's an engine so that we can add javascript and image assets
