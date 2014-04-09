@@ -13,9 +13,9 @@ class RailsDataExplorer
         h = x_ds.values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
         {
           values: h.map { |k,v| { x: k, y: v } },
-          x_axis_label: "#{ x_ds.name } Value",
+          x_axis_label: x_ds.name,
           x_axis_tick_format: x_ds.axis_tick_format,
-          y_axis_label: 'Count',
+          y_axis_label: 'Frequency',
           y_axis_tick_format: "d3.format('r')",
         }
       end
@@ -23,7 +23,7 @@ class RailsDataExplorer
       def render
         ca = compute_chart_attrs
         %(
-          <h3>Histogram</h3>
+          <h3 class="rde-chart-title">Histogram</h3>
           <div id="#{ dom_id }", style="height: 200px;">
             <svg></svg>
           </div>
@@ -32,7 +32,7 @@ class RailsDataExplorer
               var data = [
                 {
                   values: #{ ca[:values].to_json },
-                  key: 'Count'
+                  key: '#{ ca[:x_axis_label] }'
                 }
               ];
 

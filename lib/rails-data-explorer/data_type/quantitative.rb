@@ -11,6 +11,12 @@ class RailsDataExplorer
             cardinality_max: 1
           },
           {
+            chart_class: Chart::BoxPlotGroup,
+            chart_roles: [:y],
+            cardinality_min: 2,
+            cardinality_max: 2,
+          },
+          {
             chart_class: Chart::Scatterplot,
             chart_roles: [:x, :y, :size],
             cardinality_min: 2
@@ -20,6 +26,11 @@ class RailsDataExplorer
             chart_roles: [:any],
             cardinality_min: 1,
             cardinality_max: 1
+          },
+          {
+            chart_class: Chart::ParallelCoordinates,
+            chart_roles: [:dimension],
+            cardinality_min: 3,
           },
         ].freeze
       end

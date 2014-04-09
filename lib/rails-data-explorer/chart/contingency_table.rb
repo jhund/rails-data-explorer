@@ -40,25 +40,32 @@ class RailsDataExplorer
           data_matrix[:_sum][:_sum] += 1
         }
 
+        x_sorted_keys = x_ds.values.uniq.sort { |a,b|
+          data_matrix[b][:_sum] <=> data_matrix[a][:_sum]
+        }
+        y_sorted_keys = y_ds.values.uniq.sort { |a,b|
+          data_matrix[:_sum][b] <=> data_matrix[:_sum][a]
+        }
+
         cd = case @data_container.cardinality
         when 2
           {
             :table => [
               [{ :tag => :th, :content => '' }] + \
-              x_ds.values.uniq.sort.map { |x_val|
+              x_sorted_keys.map { |x_val|
                 { :tag => :th, :content => x_val }
               } + \
               [{ :tag => :th, :content => 'Totals' }]
             ] + \
-            y_ds.values.uniq.sort.map { |y_val|
+            y_sorted_keys.map { |y_val|
               [{ :tag => :th, :content => y_val }] + \
-              x_ds.values.uniq.sort.map { |x_val|
-                { :tag => :td, :content => data_matrix[x_val][y_val] }
+              x_sorted_keys.map { |x_val|
+                { :tag => :td, :content => data_matrix[x_val][y_val], :attrs => { :class => 'rde-numerical' } }
               } + [{ :tag => :th, :content => data_matrix[:_sum][y_val] }]
             } + \
             [
               [{ :tag => :th, :content => 'Totals' }] + \
-              x_ds.values.uniq.sort.map { |x_val|
+              x_sorted_keys.map { |x_val|
                 { :tag => :th, :content => data_matrix[x_val][:_sum] }
               } + \
               [{ :tag => :th, :content => data_matrix[:_sum][:_sum] }]
@@ -72,16 +79,18 @@ class RailsDataExplorer
 
       def render
         ca = compute_chart_attrs
-        "<h3>Contingency Table</h3>" + \
-        content_tag(:table) do
-          ca[:table].map do |row|
-            content_tag(:tr) do
-              row.map do |cell|
-                content_tag(cell[:tag], cell[:content])
-              end.join.html_safe
-            end
-          end.join.html_safe
-        end.html_safe
+        content_tag(:div, :class => 'rde-chart', :id => dom_id) do
+          content_tag(:h3, "Contingency Table", :class => 'rde-chart-title') + \
+          content_tag(:table) do
+            ca[:table].map do |row|
+              content_tag(:tr) do
+                row.map do |cell|
+                  content_tag(cell[:tag], cell[:content], cell[:attrs] || {})
+                end.join.html_safe
+              end
+            end.join.html_safe
+          end.html_safe
+        end
       end
 
     end

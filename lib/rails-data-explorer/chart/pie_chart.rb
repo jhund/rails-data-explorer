@@ -1,6 +1,6 @@
 class RailsDataExplorer
   class Chart
-    class HistogramTemporal < Chart
+    class PieChart < Chart
 
       def initialize(_data_container, options = {})
         @data_container = _data_container
@@ -9,17 +9,17 @@ class RailsDataExplorer
 
       def compute_chart_attrs
         x_ds = @data_container.data_series.first
+        total_count = x_ds.values.length
         # compute histogram
-        h = x_ds.values.inject(Hash.new(0)) { |m,e|
-          # Round to day
-          key = (e.beginning_of_day).to_i * 1000
-          m[key] += 1
-          m
-        }
+        h = x_ds.values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
         {
-          values: h.map { |k,v| { x: k, y: v } },
+          values: h.map { |k,v|
+                    { x: k, y: (v / total_count.to_f) }
+                  }.sort { |a,b|
+                    b[:y] <=> a[:y]
+                  },
           x_axis_label: x_ds.name,
-          x_axis_tick_format: x_ds.axis_tick_format,
+          x_axis_tick_format: "",
           y_axis_label: 'Frequency',
           y_axis_tick_format: "d3.format('r')",
         }
@@ -28,31 +28,19 @@ class RailsDataExplorer
       def render
         ca = compute_chart_attrs
         %(
-          <h3 class="rde-chart-title">Histogram</h3>
-          <div id="#{ dom_id }", style="height: 200px;">
+          <h3 class="rde-chart-title">Pie Chart</h3>
+          <div id="#{ dom_id }", style="height: 400px; width: 400px;">
             <svg></svg>
           </div>
           <script type="text/javascript">
             (function() {
-              var data = [
-                {
-                  values: #{ ca[:values].to_json },
-                  key: '#{ ca[:x_axis_label] }'
-                }
-              ];
+              var data = #{ ca[:values].to_json };
 
               nv.addGraph(function() {
-                var chart = nv.models.historicalBarChart()
+                var chart = nv.models.pieChart()
                   ;
 
-                chart.xAxis
-                  .axisLabel('#{ ca[:x_axis_label] }')
-                  .tickFormat(#{ ca[:x_axis_tick_format] })
-                  ;
-
-                chart.yAxis
-                  .axisLabel('#{ ca[:y_axis_label] }')
-                  .tickFormat(#{ ca[:y_axis_tick_format] })
+                chart.valueFormat(d3.format('.1%'))
                   ;
 
                 d3.select('##{ dom_id } svg')

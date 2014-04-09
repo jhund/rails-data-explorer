@@ -1,0 +1,46 @@
+.rails-data-explorer {
+  font-family: "Helvetica Neue",Helvetica,sans-serif;
+}
+
+.rails-data-explorer h1 {
+  font-size: 48px;
+  font-weight: 300;
+  letter-spacing: -2px;
+  margin: 0.3em 0 0.1em;
+  text-rendering: optimizelegibility;
+}
+
+.rde-exploration {
+  border: 1px solid #dedede;
+  padding: 1em;
+  margin: 0 0 1em 0;
+}
+
+h2.rde-exploration-title {
+  font-weight: 300;
+  font-size: 24px;
+  margin: 0 0 0.6em;
+}
+
+.rde-chart {
+
+}
+
+h3.rde-chart-title {
+  display: none;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0 0 0.6em;
+}
+
+
+.rails-data-explorer h2 {
+  text-rendering: optimizelegibility;
+}
+
+
+td.rde-numerical {
+  font-family: "Menlo",monospace;
+  line-height: normal;
+  text-align: right;
+}

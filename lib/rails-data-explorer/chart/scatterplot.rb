@@ -26,7 +26,7 @@ class RailsDataExplorer
         color_ds = (color_candidates - [x_ds, y_ds]).first
         size_ds = (size_candidates - [x_ds, y_ds, color_ds]).first
 
-        cd = case @data_container.cardinality
+        ca = case @data_container.cardinality
         when 0,1
           raise(ArgumentError.new("At least two data series required for scatterplot, only #{ @data_container.cardinality } given"))
         when 2
@@ -62,13 +62,13 @@ class RailsDataExplorer
           }
         else
         end
-        cd
+        ca
       end
 
       def render
         chart_attrs = compute_chart_attrs
         %(
-          <h3>Scatterplot</h3>
+          <h3 class="rde-chart-title">Scatterplot</h3>
           <div id="#{ dom_id }", style="height: 400px;">
             <svg></svg>
           </div>
@@ -80,7 +80,7 @@ class RailsDataExplorer
                 var chart = nv.models.scatterChart()
                               .showDistX(true)
                               .showDistY(true)
-                              .useVoronoi(false)
+                              .useVoronoi(true)
                               .color(d3.scale.category10().range())
                               .transitionDuration(300)
                               ;

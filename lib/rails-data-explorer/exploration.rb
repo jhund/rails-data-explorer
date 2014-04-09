@@ -1,6 +1,9 @@
 class RailsDataExplorer
   class Exploration
 
+    attr_accessor :output_buffer # required for content_tag
+    include ActionView::Helpers::TagHelper
+
     attr_accessor :charts, :data_container, :title
 
     # Initializes a new visualization.
@@ -21,9 +24,14 @@ class RailsDataExplorer
     end
 
     def render
-      r = "<h2>#{ @title }</h2>"
-      r << @charts.map { |e| e.render }.join
-      r.html_safe
+      content_tag(:div, :class => 'rde-exploration', :id => dom_id) do
+        content_tag(:h2, @title, :class => 'rde-exploration-title') +
+        @charts.map { |e| e.render }.join.html_safe
+      end.html_safe
+    end
+
+    def dom_id
+      "rde-exploration-#{ object_id }"
     end
 
     def inspect(indent=1, recursive=1000)
@@ -59,7 +67,7 @@ class RailsDataExplorer
     def initialize_data_container(data_container_or_array)
       case data_container_or_array
       when Array
-        DataContainer.new(data_container_or_array)
+        DataContainer.new(data_container_or_array, @title)
       when DataContainer
         # use as is
         _data_container

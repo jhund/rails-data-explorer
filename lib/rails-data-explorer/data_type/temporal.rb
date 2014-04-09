@@ -16,6 +16,11 @@ class RailsDataExplorer
             cardinality_min: 1,
             cardinality_max: 1
           },
+          {
+            chart_class: Chart::ParallelCoordinates,
+            chart_roles: [:dimension],
+            cardinality_min: 3,
+          },
         ].freeze
       end
 

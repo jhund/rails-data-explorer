@@ -13,4 +13,4 @@
 
 //= require d3.v3
 //= require nv.d3
-
+//= require nvd3/models/parallelCoordinates

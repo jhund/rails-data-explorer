@@ -5,7 +5,7 @@ class RailsDataExplorer
     include ActionView::Helpers::TagHelper
 
     def dom_id
-      "chart-#{ object_id }"
+      "rde-chart-#{ object_id }"
     end
 
   end
