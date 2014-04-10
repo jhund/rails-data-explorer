@@ -12,5 +12,7 @@
 //
 
 //= require d3.v3
+
 //= require nv.d3
-//= require nvd3/models/parallelCoordinates
+//= require d3.parcoords
+//= require d3.parsets
