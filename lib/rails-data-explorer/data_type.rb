@@ -2,17 +2,17 @@ class RailsDataExplorer
   class DataType
 
     # @param[Hash, optional] constraints
-    #  * :cardinality - how many data_series are there?
+    #  * :dimensions_count - how many data_series are there?
     def self.available_chart_types(constraints={})
       r = all_available_chart_types
-      if(c = constraints.delete(:cardinality))
+      if(c = constraints.delete(:dimensions_count))
         r = r.find_all { |chart_type|
           (
-            chart_type[:cardinality_min].nil? ||
-            (chart_type[:cardinality_min] <= c)
+            chart_type[:dimensions_count_min].nil? ||
+            (chart_type[:dimensions_count_min] <= c)
           ) && (
-            chart_type[:cardinality_max].nil? ||
-            (chart_type[:cardinality_max] >= c)
+            chart_type[:dimensions_count_max].nil? ||
+            (chart_type[:dimensions_count_max] >= c)
           )
         }
       end

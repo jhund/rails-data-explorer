@@ -45,7 +45,7 @@ class RailsDataExplorer
           data_matrix[:_sum][b] <=> data_matrix[:_sum][a]
         }
 
-        values = case @data_container.cardinality
+        values = case @data_container.dimensions_count
         when 2
           y_sorted_keys.map { |y_val|
             {
@@ -70,45 +70,48 @@ class RailsDataExplorer
       end
 
       def render
+        return ''  unless render?
         ca = compute_chart_attrs
         %(
-          <h3 class="rde-chart-title">Stacked Bar Chart</h3>
-          <div id="#{ dom_id }", style="height: 200px;">
-            <svg></svg>
+          <div class="rde-chart rde-bar-chart">
+            <h3 class="rde-chart-title">Stacked Bar Chart</h3>
+            <div id="#{ dom_id }", style="height: 200px;">
+              <svg></svg>
+            </div>
+            <script type="text/javascript">
+              (function() {
+                var data = #{ ca[:values].to_json };
+
+                nv.addGraph(function() {
+                  var chart = nv.models.multiBarChart()
+                    ;
+
+                  chart.xAxis
+                    .axisLabel('#{ ca[:x_axis_label] }')
+                    .tickFormat(#{ ca[:x_axis_tick_format] })
+                    ;
+
+                  chart.yAxis
+                    .axisLabel('#{ ca[:y_axis_label] }')
+                    .tickFormat(#{ ca[:y_axis_tick_format] })
+                    ;
+
+                  chart.multibar.stacked(true);
+                  chart.showControls(false);
+
+                  d3.select('##{ dom_id } svg')
+                    .datum(data)
+                    .transition().duration(100)
+                    .call(chart)
+                    ;
+
+                  nv.utils.windowResize(chart.update);
+
+                  return chart;
+                });
+              })();
+            </script>
           </div>
-          <script type="text/javascript">
-            (function() {
-              var data = #{ ca[:values].to_json };
-
-              nv.addGraph(function() {
-                var chart = nv.models.multiBarChart()
-                  ;
-
-                chart.xAxis
-                  .axisLabel('#{ ca[:x_axis_label] }')
-                  .tickFormat(#{ ca[:x_axis_tick_format] })
-                  ;
-
-                chart.yAxis
-                  .axisLabel('#{ ca[:y_axis_label] }')
-                  .tickFormat(#{ ca[:y_axis_tick_format] })
-                  ;
-
-                chart.multibar.stacked(true);
-                chart.showControls(false);
-
-                d3.select('##{ dom_id } svg')
-                  .datum(data)
-                  .transition().duration(100)
-                  .call(chart)
-                  ;
-
-                nv.utils.windowResize(chart.update);
-
-                return chart;
-              });
-            })();
-          </script>
         )
       end
 

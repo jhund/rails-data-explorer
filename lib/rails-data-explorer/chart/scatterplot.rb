@@ -26,9 +26,9 @@ class RailsDataExplorer
         color_ds = (color_candidates - [x_ds, y_ds]).first
         size_ds = (size_candidates - [x_ds, y_ds, color_ds]).first
 
-        ca = case @data_container.cardinality
+        ca = case @data_container.dimensions_count
         when 0,1
-          raise(ArgumentError.new("At least two data series required for scatterplot, only #{ @data_container.cardinality } given"))
+          raise(ArgumentError.new("At least two data series required for scatterplot, only #{ @data_container.dimensions_count } given"))
         when 2
           key = ''
           values_hash = x_ds.values.length.times.map { |idx|
@@ -66,49 +66,52 @@ class RailsDataExplorer
       end
 
       def render
+        return ''  unless render?
         chart_attrs = compute_chart_attrs
         %(
-          <h3 class="rde-chart-title">Scatterplot</h3>
-          <div id="#{ dom_id }", style="height: 400px;">
-            <svg></svg>
-          </div>
-          <script type="text/javascript">
-            (function() {
-              var data = #{ chart_attrs[:values].to_json };
+          <div class="rde-chart rde-scatterplot">
+            <h3 class="rde-chart-title">Scatterplot</h3>
+            <div id="#{ dom_id }", style="height: 400px;">
+              <svg></svg>
+            </div>
+            <script type="text/javascript">
+              (function() {
+                var data = #{ chart_attrs[:values].to_json };
 
-              nv.addGraph(function() {
-                var chart = nv.models.scatterChart()
-                              .showDistX(true)
-                              .showDistY(true)
-                              .useVoronoi(true)
-                              .color(d3.scale.category10().range())
-                              .transitionDuration(300)
-                              ;
+                nv.addGraph(function() {
+                  var chart = nv.models.scatterChart()
+                                .showDistX(true)
+                                .showDistY(true)
+                                .useVoronoi(true)
+                                .color(d3.scale.category10().range())
+                                .transitionDuration(300)
+                                ;
 
-                chart.xAxis.tickFormat(#{ chart_attrs[:x_axis_tick_format] })
-                           .axisLabel('#{ chart_attrs[:x_axis_label] }')
-                           ;
+                  chart.xAxis.tickFormat(#{ chart_attrs[:x_axis_tick_format] })
+                             .axisLabel('#{ chart_attrs[:x_axis_label] }')
+                             ;
 
-                chart.yAxis.tickFormat(#{ chart_attrs[:y_axis_tick_format] })
-                           .axisLabel('#{ chart_attrs[:y_axis_label] }')
-                           ;
+                  chart.yAxis.tickFormat(#{ chart_attrs[:y_axis_tick_format] })
+                             .axisLabel('#{ chart_attrs[:y_axis_label] }')
+                             ;
 
-                chart.tooltipContent(function(key) {
-                    return key;
+                  chart.tooltipContent(function(key) {
+                      return key;
+                  });
+
+                  d3.select('##{ dom_id } svg')
+                      .datum(data)
+                      .call(chart);
+
+                  nv.utils.windowResize(chart.update);
+
+                  chart.dispatch.on('stateChange', function(e) { ('New State:', JSON.stringify(e)); });
+
+                  return chart;
                 });
-
-                d3.select('##{ dom_id } svg')
-                    .datum(data)
-                    .call(chart);
-
-                nv.utils.windowResize(chart.update);
-
-                chart.dispatch.on('stateChange', function(e) { ('New State:', JSON.stringify(e)); });
-
-                return chart;
-              });
-            })();
-          </script>
+              })();
+            </script>
+          </div>
         )
       end
 

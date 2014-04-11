@@ -16,6 +16,7 @@ class RailsDataExplorer
       end
 
       def render
+        return ''  unless render?
         "Box plot group"
       end
 

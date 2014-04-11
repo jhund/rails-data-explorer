@@ -7,55 +7,77 @@ class RailsDataExplorer
         @options = {}.merge(options)
       end
 
+      def render
+        return ''  unless render?
+        ca = compute_chart_attrs
+        %(
+          <div class="rde-chart rde-parallel-coordinates">
+            <h3 class="rde-chart-title">Parallel coordinates</h3>
+            <div id="#{ dom_id }" class="rde-chart-parallel-coordinates parcoords" style="height: 400px; width: 100%"></div>
+            <script type="text/javascript">
+              (function() {
+                var parcoords = d3.parcoords()("##{ dom_id }")
+                                  .dimensions(#{ ca[:dimensions ].to_json })
+                                  .types(#{ ca[:types].to_json })
+                                  .alpha(#{ ca[:alpha] })
+                                  ;
+
+                parcoords.data(#{ ca[:values].to_json })
+                         .render()
+                         .createAxes() // has to come before other methods that rely on axes (e.g., brushable)
+                         // .shadows() // they don't redraw after reordering, so I'm turning them off for now.
+                         .reorderable()
+                         .brushable()
+                         ;
+
+              })();
+            </script>
+          </div>
+        )
+      end
+
+      # Don't render ParallelCoordinates when all data series are categorical.
+      # ParallelSet is much better suited for that use case.
+      def render?
+        !@data_container.data_series.all? { |ds|
+          RailsDataExplorer::DataType::Categorical == ds.data_type
+        }
+      end
+
       def compute_chart_attrs
         dimension_data_series = @data_container.data_series.find_all { |ds|
           (ds.chart_roles[Chart::ParallelCoordinates] & [:dimension, :any]).any?
         }
-        dimension_names = dimension_data_series.map { |e| e.name }
-        dimension_values = dimension_data_series.first.values.length.times.map do |idx|
+        dimension_names = dimension_data_series.map(&:name)
+        number_of_values = dimension_data_series.first.values.length
+        dimension_values = number_of_values.times.map do |idx|
           dimension_data_series.inject({}) { |m,ds|
-            m[ds.name] = ds.values[idx]
+            m[ds.name] = if RailsDataExplorer::DataType::Quantitative::Temporal == ds.data_type
+              ds.values[idx].to_i * 1000
+            else
+              ds.values[idx]
+            end
             m
           }
         end
-
-        {
-          :values => dimension_values,
-          :dimensions => dimension_names
+        dimension_types = dimension_data_series.inject({}) { |m,ds|
+          m[ds.name] = if RailsDataExplorer::DataType::Categorical == ds.data_type
+            'string'
+          elsif RailsDataExplorer::DataType::Quantitative::Temporal == ds.data_type
+            'date'
+          elsif [RailsDataExplorer::DataType::Quantitative::Integer, RailsDataExplorer::DataType::Quantitative::Decimal].include?(ds.data_type)
+            'number'
+          else
+            raise "Unhandled data_type: #{ ds.data_type.inspect }"
+          end
+          m
         }
-      end
-
-      def render
-        ca = compute_chart_attrs
-        %(
-          <h3 class="rde-chart-title">Parallel coordinates</h3>
-          <div id="#{ dom_id }", style="height: 600px;">
-            <svg></svg>
-          </div>
-          <script type="text/javascript">
-            (function() {
-              var data = #{ ca[:values].to_json };
-
-              nv.addGraph(function() {
-                var chart = nv.models.parallelCoordinates()
-                  ;
-
-                chart.dimensions(#{ ca[:dimensions].to_json })
-                  ;
-
-                d3.select('##{ dom_id } svg')
-                  .datum(data)
-                  .transition().duration(100)
-                  .call(chart)
-                  ;
-
-                nv.utils.windowResize(chart.update);
-
-                return chart;
-              });
-            })();
-          </script>
-        )
+        {
+          :dimensions => dimension_names,
+          :values => dimension_values,
+          :types => dimension_types,
+          :alpha => 1 / ([Math.log([number_of_values, 2].max), 10].min) # from 1.0 to 0.1
+        }
       end
 
     end

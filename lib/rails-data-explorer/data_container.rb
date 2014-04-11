@@ -52,30 +52,30 @@ class RailsDataExplorer
         raise(ArgumentError.new("All data series must have same length."))
       end
       # presence of at least one data_series
-      if 0 == cardinality
+      if 0 == dimensions_count
         raise(ArgumentError.new("Please provide at least 1 data series."))
       end
       # TODO: all elements in a series are of same type
     end
 
-    def cardinality
+    def dimensions_count
       @data_series.length
     end
 
     def available_chart_types
-      case cardinality
+      case dimensions_count
       when 0
         # invalid, handled in validate_data_series
       when 1
         # charts for a single data series, use that series' available_chart_types
-        @data_series.first.available_chart_types(cardinality: 1).map { |e| e[:chart_class] }
-      when 2..3
+        @data_series.first.available_chart_types(dimensions_count: 1).map { |e| e[:chart_class] }
+      else
         # TODO: define on each chart type which chart_roles are required.
         # Then use only charts for which all roles are filled.
         # charts for two data series
         # find intersection of all available chart types
         r = @data_series.inject(nil) { |m,ds|
-          constraints = { cardinality: cardinality, chart_roles: ds.chart_roles }
+          constraints = { dimensions_count: dimensions_count, chart_roles: ds.chart_roles }
           # initialize m with first data series
           m = ds.available_chart_types(constraints).map { |e| e[:chart_class] }  if m.nil?
           # find intersection of all available_chart_types
@@ -83,14 +83,11 @@ class RailsDataExplorer
           m
         }
         r
-      else
-        # charts for multiple data series
-        raise 'handle this'
       end
     end
 
     def descriptive_statistics
-      case cardinality
+      case dimensions_count
       when 0
         # invalid, handled in validate_data_series
       when 1
@@ -106,7 +103,7 @@ class RailsDataExplorer
     def inspect(indent=1, recursive=1000)
       r = %(#<#{ self.class.to_s }\n)
       r << [
-        "@cardinality=#{ cardinality }",
+        "@dimensions_count=#{ dimensions_count }",
       ].map { |e| "#{ '  ' * indent }#{ e }\n"}.join
       if recursive > 0
         # data_series

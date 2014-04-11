@@ -26,35 +26,39 @@ class RailsDataExplorer
       end
 
       def render
+        return ''  unless render?
         ca = compute_chart_attrs
         %(
-          <h3 class="rde-chart-title">Pie Chart</h3>
-          <div id="#{ dom_id }", style="height: 400px; width: 400px;">
-            <svg></svg>
+          <div class="rde-chart rde-pie-chart">
+            <h3 class="rde-chart-title">Pie Chart</h3>
+            <div id="#{ dom_id }", style="height: 400px; width: 400px;">
+              <svg></svg>
+            </div>
+            <script type="text/javascript">
+              (function() {
+                var data = #{ ca[:values].to_json };
+
+                nv.addGraph(function() {
+                  var chart = nv.models.pieChart()
+                    ;
+
+                  chart.valueFormat(d3.format('.1%'))
+                       .donut(true)
+                    ;
+
+                  d3.select('##{ dom_id } svg')
+                    .datum(data)
+                    .transition().duration(100)
+                    .call(chart)
+                    ;
+
+                  nv.utils.windowResize(chart.update);
+
+                  return chart;
+                });
+              })();
+            </script>
           </div>
-          <script type="text/javascript">
-            (function() {
-              var data = #{ ca[:values].to_json };
-
-              nv.addGraph(function() {
-                var chart = nv.models.pieChart()
-                  ;
-
-                chart.valueFormat(d3.format('.1%'))
-                  ;
-
-                d3.select('##{ dom_id } svg')
-                  .datum(data)
-                  .transition().duration(100)
-                  .call(chart)
-                  ;
-
-                nv.utils.windowResize(chart.update);
-
-                return chart;
-              });
-            })();
-          </script>
         )
       end
 

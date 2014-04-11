@@ -70,12 +70,14 @@ class RailsDataExplorer
     def init_data_type(data_type_override)
       if data_type_override.nil?
         case values.first
-        when Numeric
-          DataType::Quantitative
+        when Integer, Bignum, Fixnum
+          DataType::Quantitative::Integer
+        when Float
+          DataType::Quantitative::Decimal
         when String
           DataType::Categorical
         when DateTime, ActiveSupport::TimeWithZone
-          DataType::Temporal
+          DataType::Quantitative::Temporal
         else
           raise(ArgumentError.new("Can't infer data type for value: #{ values.first.class.inspect }"))
         end

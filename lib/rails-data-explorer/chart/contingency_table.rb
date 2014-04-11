@@ -47,7 +47,7 @@ class RailsDataExplorer
           data_matrix[:_sum][b] <=> data_matrix[:_sum][a]
         }
 
-        cd = case @data_container.cardinality
+        cd = case @data_container.dimensions_count
         when 2
           {
             :table => [
@@ -78,8 +78,9 @@ class RailsDataExplorer
       end
 
       def render
+        return ''  unless render?
         ca = compute_chart_attrs
-        content_tag(:div, :class => 'rde-chart', :id => dom_id) do
+        content_tag(:div, :class => 'rde-chart rde-contingency-table', :id => dom_id) do
           content_tag(:h3, "Contingency Table", :class => 'rde-chart-title') + \
           content_tag(:table) do
             ca[:table].map do |row|
