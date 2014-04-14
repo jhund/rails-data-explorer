@@ -7,6 +7,10 @@ data in your app using charts and statistics.
 Make sure to go to the thorough [documentation](http://rails-data-explorer.clearcove.ca)
 to find out more!
 
+## IMPORTANT NOTE
+
+This gem is under active development and will see significant changes until it's
+officially released.
 
 ### Installation
 
@@ -40,8 +44,6 @@ or with bundler in your Gemfile:
 * [Source code (github)](https://github.com/jhund/rails-data-explorer)
 * [Issues](https://github.com/jhund/rails-data-explorer/issues)
 * [Rubygems.org](http://rubygems.org/gems/rails-data-explorer)
-
-[![Code Climate](https://codeclimate.com/github/jhund/rails-data-explorer.png)](https://codeclimate.com/github/jhund/rails-data-explorer)
 
 ### License
 
