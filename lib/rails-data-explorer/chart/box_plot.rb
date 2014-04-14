@@ -16,7 +16,8 @@ class RailsDataExplorer
           min: x_ds.min_val,
           max: x_ds.max_val,
           base_width: 120,
-          base_height: 500,
+          base_height: 1334,
+          axis_tick_format: x_ds.axis_tick_format,
         }
       end
 
@@ -25,13 +26,13 @@ class RailsDataExplorer
         ca = compute_chart_attrs
         %(
           <div id="#{ dom_id }" class="rde-chart rde-box-plot">
-            <svg class="box" style="width: #{ ca[:base_width] }px; height: #{ ca[:base_height] }px;"></svg>
+            <svg class="box" style="height: #{ ca[:base_width] }px;"></svg>
 
             <script type="text/javascript">
               (function() {
                 var base_width = #{ ca[:base_width] },
                     base_height = #{ ca[:base_height] },
-                    margin = { top: 10, right: 50, bottom: 20, left: 50 },
+                    margin = { top: 10, right: 50, bottom: 95, left: 50 },
                     width = base_width - margin.left - margin.right,
                     height = base_height - margin.top - margin.bottom;
 
@@ -41,7 +42,8 @@ class RailsDataExplorer
                 var chart = d3.box()
                               .whiskers(iqr(1.5))
                               .width(width)
-                              .height(height);
+                              .height(height)
+                              .tickFormat(#{ ca[:axis_tick_format] });
 
                 var data = #{ ca[:values].to_json };
 
@@ -50,7 +52,7 @@ class RailsDataExplorer
                 var svg = d3.select("##{ dom_id }").selectAll("svg")
                             .data(data)
                           .append("g")
-                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                            .attr("transform", "rotate(90) translate(" + (width + margin.left) + " -" + (height + margin.bottom) + ")")
                             .call(chart);
 
                 // Function to compute the interquartile range.

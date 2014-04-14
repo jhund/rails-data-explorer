@@ -14,7 +14,6 @@ d3.box = function() {
 
   // For each small multiple…
   function box(g) {
-console.log(g);
     g.each(function(d, i) {
       d = d.map(value).sort(d3.ascending);
       var g = d3.select(this),

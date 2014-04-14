@@ -37,7 +37,7 @@ class RailsDataExplorer
         %(
           <div class="rde-chart rde-parallel-set">
             <h3 class="rde-chart-title">Parallel Set</h3>
-            <div id="#{ dom_id }" class="rde-chart-parallel-set" style="height: 800px; width: 100%"></div>
+            <div id="#{ dom_id }" class="rde-chart-parallel-set" style="height: 600px; width: 100%"></div>
             <script type="text/javascript">
               (function() {
                 var parset = d3.parsets()

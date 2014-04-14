@@ -18,7 +18,7 @@ class RailsDataExplorer
           },
           {
             chart_class: Chart::BoxPlotGroup,
-            chart_roles: [:x],
+            chart_roles: [:y],
             dimensions_count_min: 2,
             dimensions_count_max: 2,
           },
