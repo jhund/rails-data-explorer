@@ -58,6 +58,14 @@ class RailsDataExplorer
       @uniq_vals_count = uniq_vals.length
     end
 
+    def min_val
+      @min_val = values.compact.min
+    end
+
+    def max_val
+      @max_val = values.compact.max
+    end
+
   private
 
     # @param[Array<Symbol>] chart_role_overrides, :x, :y, :color

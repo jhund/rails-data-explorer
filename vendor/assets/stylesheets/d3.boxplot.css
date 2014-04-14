@@ -1,0 +1,21 @@
+svg.box {
+  font: 10px sans-serif;
+  display: inline;
+}
+
+svg.box line,
+svg.box rect,
+svg.box circle {
+  fill: #fff;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+svg.box .center {
+  stroke-dasharray: 3,3;
+}
+
+svg.box .outlier {
+  fill: none;
+  stroke: #ccc;
+}

@@ -16,6 +16,7 @@ require 'rails-data-explorer/statistics/rng_power_law'
 require 'rails-data-explorer/utils/color_scale'
 require 'rails-data-explorer/utils/value_formatter'
 
+require 'rails-data-explorer/chart/box_plot'
 require 'rails-data-explorer/chart/box_plot_group'
 require 'rails-data-explorer/chart/contingency_table'
 require 'rails-data-explorer/chart/descriptive_statistics_table'

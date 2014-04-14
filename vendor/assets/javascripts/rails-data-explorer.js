@@ -14,5 +14,6 @@
 //= require d3.v3
 
 //= require nv.d3
+//= require d3.boxplot
 //= require d3.parcoords
 //= require d3.parsets
