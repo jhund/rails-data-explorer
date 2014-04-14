@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
   gem.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
 
   # really it's only ActiveSupport and ActionView
-  gem.add_dependency 'rails', '>= 3.0.0'
+  gem.add_dependency 'actionview', '>= 3.0.0'
   gem.add_dependency 'color'
   gem.add_dependency 'descriptive-statistics'
   gem.add_dependency 'distribution'
