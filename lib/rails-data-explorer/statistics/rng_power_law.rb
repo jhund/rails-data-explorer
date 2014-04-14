@@ -1,5 +1,5 @@
 class RailsDataExplorer
-  module Utils
+  module Statistics
     class RngPowerLaw
 
       def initialize(min = 1, max = 1000, pow = 2, rng = lambda { Kernel.rand })

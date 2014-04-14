@@ -16,5 +16,37 @@ class RailsDataExplorer
       true
     end
 
+  protected
+
+    # Renders an HTML table
+    # @param[OpenStruct, Struct] table_struct
+    def render_html_table(table_struct)
+      content_tag(:table, :class => 'table rde-table') do
+        table_struct.rows.map { |row|
+          content_tag(row.tag, :class => row.css_class) do
+            row.cells.map { |cell|
+              if cell.ruby_formatter
+                content_tag(
+                  cell.tag,
+                  instance_exec(cell.value, &cell.ruby_formatter),
+                  :class => cell.css_class,
+                  :title => cell.title,
+                  :style => cell.style,
+                )
+              else
+                content_tag(
+                  cell.tag,
+                  cell.value,
+                  :class => cell.css_class,
+                  :title => cell.title,
+                  :style => cell.style,
+                )
+              end
+            }.join.html_safe
+          end
+        }.join.html_safe
+      end
+    end
+
   end
 end

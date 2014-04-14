@@ -3,7 +3,7 @@ class RailsDataExplorer
 
     # @param[Hash, optional] constraints
     #  * :dimensions_count - how many data_series are there?
-    def self.available_chart_types(constraints={})
+    def available_chart_types(constraints={})
       r = all_available_chart_types
       if(c = constraints.delete(:dimensions_count))
         r = r.find_all { |chart_type|

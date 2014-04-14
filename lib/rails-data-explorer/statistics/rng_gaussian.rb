@@ -1,6 +1,6 @@
 # From http://stackoverflow.com/a/9266488
 class RailsDataExplorer
-  module Utils
+  module Statistics
     class RngGaussian
       def initialize(mean = 0.0, sd = 1.0, rng = lambda { Kernel.rand })
         @mean, @sd, @rng = mean, sd, rng

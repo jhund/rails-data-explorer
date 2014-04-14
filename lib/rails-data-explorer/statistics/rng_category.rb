@@ -1,5 +1,5 @@
 class RailsDataExplorer
-  module Utils
+  module Statistics
     class RngCategory
 
       def initialize(categories, category_probabilities = nil, rng = lambda { Kernel.rand })

@@ -33,8 +33,7 @@ var pc = function(selection) {
   // svg tick and brush layers
   pc.svg = selection
     .append("svg")
-      .attr("width", __.width)
-      .attr("height", __.height)
+      .attr("style", "width: " + __.width + "px; height: " + __.height + "px")
     .append("svg:g")
       .attr("transform", "translate(" + __.margin.left + "," + __.margin.top + ")");
 
@@ -115,8 +114,9 @@ pc.autoscale = function() {
     "date": function(k) {
       return d3.time.scale()
         .domain(d3.extent(__.data, function(d) {
-          return d[k] ? d[k].getTime() : null;
+          return d[k] ? d[k] : null;
         }))
+        .nice()
         .range([h()+1, 1])
     },
     "number": function(k) {

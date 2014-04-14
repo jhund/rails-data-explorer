@@ -1,7 +1,7 @@
 rails-data-explorer
 ===================
 
-rails-data-explorer is a Rails Engine plugin that makes it easy to explore the 
+rails-data-explorer is a Rails Engine plugin that makes it easy to explore the
 data in your app using charts and statistics.
 
 Make sure to go to the thorough [documentation](http://rails-data-explorer.clearcove.ca)
@@ -16,6 +16,20 @@ or with bundler in your Gemfile:
 
 `gem 'rails-data-explorer'`
 
+
+### Concepts
+
+* Exploration - top level container
+* DataSet - like a spreadsheet with one or more columns of data
+* DataSeries - like a column in a spreadsheet, with multiple rows of data
+* DataType - Each DataSeries contains data of a certain type.
+    * Categorical
+    * Quantitative
+        * Integer
+        * Decimal
+        * Temporal
+    * Geo
+* Chart -
 
 
 ### Resources

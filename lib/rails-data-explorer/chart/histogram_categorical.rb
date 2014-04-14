@@ -2,13 +2,13 @@ class RailsDataExplorer
   class Chart
     class HistogramCategorical < Chart
 
-      def initialize(_data_container, options = {})
-        @data_container = _data_container
+      def initialize(_data_set, options = {})
+        @data_set = _data_set
         @options = {}.merge(options)
       end
 
       def compute_chart_attrs
-        x_ds = @data_container.data_series.first
+        x_ds = @data_set.data_series.first
         # compute histogram
         h = x_ds.values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
         {

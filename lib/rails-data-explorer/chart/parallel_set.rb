@@ -4,20 +4,20 @@ class RailsDataExplorer
   class Chart
     class ParallelSet < Chart
 
-      def initialize(_data_container, options = {})
-        @data_container = _data_container
+      def initialize(_data_set, options = {})
+        @data_set = _data_set
         @options = {}.merge(options)
       end
 
       def compute_chart_attrs
-        dimension_data_series = @data_container.data_series.find_all { |ds|
+        dimension_data_series = @data_set.data_series.find_all { |ds|
           (ds.chart_roles[Chart::ParallelCoordinates] & [:dimension, :any]).any?
         }
         number_of_values = dimension_data_series.first.values.length
         dimension_names = dimension_data_series.map(&:name)
         dimension_values = number_of_values.times.map do |idx|
           dimension_data_series.inject({}) { |m,ds|
-            m[ds.name] = if RailsDataExplorer::DataType::Quantitative::Temporal == ds.data_type
+            m[ds.name] = if ds.data_type.is_a?(RailsDataExplorer::DataType::Quantitative::Temporal)
               ds.values[idx].to_i * 1000
             else
               ds.values[idx]

@@ -2,22 +2,22 @@ class RailsDataExplorer
   class Chart
     class Scatterplot < Chart
 
-      def initialize(_data_container, options = {})
-        @data_container = _data_container
+      def initialize(_data_set, options = {})
+        @data_set = _data_set
         @options = {}.merge(options)
       end
 
       def compute_chart_attrs
-        x_candidates = @data_container.data_series.find_all { |ds|
+        x_candidates = @data_set.data_series.find_all { |ds|
           (ds.chart_roles[Chart::Scatterplot] & [:x, :any]).any?
         }
-        y_candidates = @data_container.data_series.find_all { |ds|
+        y_candidates = @data_set.data_series.find_all { |ds|
           (ds.chart_roles[Chart::Scatterplot] & [:y, :any]).any?
         }
-        color_candidates = @data_container.data_series.find_all { |ds|
+        color_candidates = @data_set.data_series.find_all { |ds|
           (ds.chart_roles[Chart::Scatterplot] & [:color, :any]).any?
         }
-        size_candidates = @data_container.data_series.find_all { |ds|
+        size_candidates = @data_set.data_series.find_all { |ds|
           (ds.chart_roles[Chart::Scatterplot] & [:size, :any]).any?
         }
 
@@ -26,9 +26,9 @@ class RailsDataExplorer
         color_ds = (color_candidates - [x_ds, y_ds]).first
         size_ds = (size_candidates - [x_ds, y_ds, color_ds]).first
 
-        ca = case @data_container.dimensions_count
+        ca = case @data_set.dimensions_count
         when 0,1
-          raise(ArgumentError.new("At least two data series required for scatterplot, only #{ @data_container.dimensions_count } given"))
+          raise(ArgumentError.new("At least two data series required for scatterplot, only #{ @data_set.dimensions_count } given"))
         when 2
           key = ''
           values_hash = x_ds.values.length.times.map { |idx|

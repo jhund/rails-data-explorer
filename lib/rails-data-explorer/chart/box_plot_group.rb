@@ -7,8 +7,8 @@ class RailsDataExplorer
   class Chart
     class BoxPlotGroup < Chart
 
-      def initialize(_data_container, options = {})
-        @data_container = _data_container
+      def initialize(_data_set, options = {})
+        @data_set = _data_set
         @options = {}.merge(options)
       end
 

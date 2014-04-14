@@ -2,16 +2,16 @@ class RailsDataExplorer
   class Chart
     class StackedBarChartCategoricalPercent < Chart
 
-      def initialize(_data_container, options = {})
-        @data_container = _data_container
+      def initialize(_data_set, options = {})
+        @data_set = _data_set
         @options = {}.merge(options)
       end
 
       def compute_chart_attrs
-        x_candidates = @data_container.data_series.find_all { |ds|
+        x_candidates = @data_set.data_series.find_all { |ds|
           (ds.chart_roles[Chart::ContingencyTable] & [:x, :any]).any?
-        }.sort { |a,b| b.values.uniq.length <=> a.values.uniq.length }
-        y_candidates = @data_container.data_series.find_all { |ds|
+        }.sort { |a,b| b.uniq_vals.length <=> a.uniq_vals.length }
+        y_candidates = @data_set.data_series.find_all { |ds|
           (ds.chart_roles[Chart::ContingencyTable] & [:y, :any]).any?
         }
 
@@ -20,10 +20,10 @@ class RailsDataExplorer
 
         # initialize data_matrix
         data_matrix = { :_sum => { :_sum => 0 } }
-        x_ds.values.uniq.each { |x_val|
+        x_ds.uniq_vals.each { |x_val|
           data_matrix[x_val] = {}
           data_matrix[x_val][:_sum] = 0
-          y_ds.values.uniq.each { |y_val|
+          y_ds.uniq_vals.each { |y_val|
             data_matrix[x_val][y_val] = 0
             data_matrix[:_sum][y_val] = 0
           }
@@ -38,14 +38,14 @@ class RailsDataExplorer
           data_matrix[:_sum][:_sum] += 1
         }
 
-        x_sorted_keys = x_ds.values.uniq.sort { |a,b|
+        x_sorted_keys = x_ds.uniq_vals.sort { |a,b|
           data_matrix[b][:_sum] <=> data_matrix[a][:_sum]
         }
-        y_sorted_keys = y_ds.values.uniq.sort { |a,b|
+        y_sorted_keys = y_ds.uniq_vals.sort { |a,b|
           data_matrix[:_sum][b] <=> data_matrix[:_sum][a]
         }
 
-        values = case @data_container.dimensions_count
+        values = case @data_set.dimensions_count
         when 2
           y_sorted_keys.map { |y_val|
             {

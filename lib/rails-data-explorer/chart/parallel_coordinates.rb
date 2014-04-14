@@ -2,8 +2,8 @@ class RailsDataExplorer
   class Chart
     class ParallelCoordinates < Chart
 
-      def initialize(_data_container, options = {})
-        @data_container = _data_container
+      def initialize(_data_set, options = {})
+        @data_set = _data_set
         @options = {}.merge(options)
       end
 
@@ -36,23 +36,24 @@ class RailsDataExplorer
         )
       end
 
-      # Don't render ParallelCoordinates when all data series are categorical.
-      # ParallelSet is much better suited for that use case.
+      # Render ParallelCoordinates only when there is at least one data series
+      # with DataType Quantitative. If it's all Categorical, then ParallelSet
+      # is much better suited.
       def render?
-        !@data_container.data_series.all? { |ds|
-          RailsDataExplorer::DataType::Categorical == ds.data_type
+        @data_set.data_series.any? { |ds|
+          ds.data_type.is_a?(RailsDataExplorer::DataType::Quantitative)
         }
       end
 
       def compute_chart_attrs
-        dimension_data_series = @data_container.data_series.find_all { |ds|
+        dimension_data_series = @data_set.data_series.find_all { |ds|
           (ds.chart_roles[Chart::ParallelCoordinates] & [:dimension, :any]).any?
         }
         dimension_names = dimension_data_series.map(&:name)
         number_of_values = dimension_data_series.first.values.length
         dimension_values = number_of_values.times.map do |idx|
           dimension_data_series.inject({}) { |m,ds|
-            m[ds.name] = if RailsDataExplorer::DataType::Quantitative::Temporal == ds.data_type
+            m[ds.name] = if ds.data_type.is_a?(RailsDataExplorer::DataType::Quantitative::Temporal)
               ds.values[idx].to_i * 1000
             else
               ds.values[idx]
@@ -61,11 +62,13 @@ class RailsDataExplorer
           }
         end
         dimension_types = dimension_data_series.inject({}) { |m,ds|
-          m[ds.name] = if RailsDataExplorer::DataType::Categorical == ds.data_type
+          m[ds.name] = case ds.data_type
+          when RailsDataExplorer::DataType::Categorical
             'string'
-          elsif RailsDataExplorer::DataType::Quantitative::Temporal == ds.data_type
+          when RailsDataExplorer::DataType::Quantitative::Temporal
             'date'
-          elsif [RailsDataExplorer::DataType::Quantitative::Integer, RailsDataExplorer::DataType::Quantitative::Decimal].include?(ds.data_type)
+          when RailsDataExplorer::DataType::Quantitative::Integer,
+               RailsDataExplorer::DataType::Quantitative::Decimal
             'number'
           else
             raise "Unhandled data_type: #{ ds.data_type.inspect }"

@@ -14,8 +14,14 @@ class RailsDataExplorer
       @chart_roles = init_chart_roles(options[:chart_roles]) # after data_type!
     end
 
+    # Returns descriptive_statistics as a flat Array
     def descriptive_statistics
       @data_type.descriptive_statistics(values)
+    end
+
+    # Returns descriptive_statistics as a renderable table structure
+    def descriptive_statistics_table
+      @data_type.descriptive_statistics_table(values)
     end
 
     def values_summary
@@ -42,6 +48,14 @@ class RailsDataExplorer
 
     def axis_tick_format
       data_type.axis_tick_format(values)
+    end
+
+    def uniq_vals
+      @uniq_vals = values.uniq
+    end
+
+    def uniq_vals_count
+      @uniq_vals_count = uniq_vals.length
     end
 
   private
@@ -71,13 +85,13 @@ class RailsDataExplorer
       if data_type_override.nil?
         case values.first
         when Integer, Bignum, Fixnum
-          DataType::Quantitative::Integer
+          DataType::Quantitative::Integer.new
         when Float
-          DataType::Quantitative::Decimal
+          DataType::Quantitative::Decimal.new
         when String
-          DataType::Categorical
+          DataType::Categorical.new
         when DateTime, ActiveSupport::TimeWithZone
-          DataType::Quantitative::Temporal
+          DataType::Quantitative::Temporal.new
         else
           raise(ArgumentError.new("Can't infer data type for value: #{ values.first.class.inspect }"))
         end

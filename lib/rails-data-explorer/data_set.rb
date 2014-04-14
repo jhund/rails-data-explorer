@@ -1,6 +1,6 @@
 # Container for data series
 class RailsDataExplorer
-  class DataContainer
+  class DataSet
 
     attr_reader :data_series
 
