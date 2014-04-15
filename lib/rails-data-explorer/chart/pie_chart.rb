@@ -45,6 +45,11 @@ class RailsDataExplorer
                   chart.valueFormat(d3.format('.1%'))
                        .donut(true)
                     ;
+                  chart.tooltipContent(
+                    function(key, y, e, graph) {
+                      return '<p>' + key + '</p>' + '<p>' +  y + '</p>'
+                    }
+                  );
 
                   d3.select('##{ dom_id } svg')
                     .datum(data)

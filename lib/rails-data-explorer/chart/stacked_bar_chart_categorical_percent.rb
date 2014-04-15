@@ -98,6 +98,12 @@ class RailsDataExplorer
 
                   chart.multibar.stacked(true);
                   chart.showControls(false);
+                  chart.tooltipContent(
+                    function(key, x, y, e, graph) {
+                      return '<p>' + key + '</p>' + '<p>' +  y + ' of ' + x + '</p>'
+                    }
+                  );
+
 
                   d3.select('##{ dom_id } svg')
                     .datum(data)
