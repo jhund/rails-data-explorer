@@ -39,6 +39,7 @@ class RailsDataExplorer
 
         {
           values: values_hash.values,
+          category_labels: values_hash.keys,
           min: min,
           max: max,
           base_width: 120,
@@ -52,10 +53,19 @@ class RailsDataExplorer
         return ''  unless render?
         ca = compute_chart_attrs
         return ''  unless ca
-        svgs = %(<svg class="box" style="height: #{ ca[:base_width] }px;"></svg>) * ca[:num_box_plots]
+        svg_trs = ca[:category_labels].map { |cat_label|
+          %(
+            <tr>
+              <td style="vertical-align: middle;">#{ cat_label }</td>
+              <td style="vertical-align: middle; width: 100%">
+                <svg class="box" style="height: #{ ca[:base_width] }px;"></svg>
+              </td>
+            </tr>
+          )
+        }.join.html_safe
         %(
           <div id="#{ dom_id }" class="rde-chart rde-box-plot">
-            #{ svgs }
+            <table>#{ svg_trs }</table>
 
             <script type="text/javascript">
               (function() {
