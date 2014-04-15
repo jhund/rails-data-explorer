@@ -42,8 +42,9 @@ class RailsDataExplorer
           min: min,
           max: max,
           base_width: 120,
-          base_height: 1334,
+          base_height: 800,
           axis_tick_format: x_ds.axis_tick_format,
+          num_box_plots: y_ds.uniq_vals_count,
         }
       end
 
@@ -51,10 +52,10 @@ class RailsDataExplorer
         return ''  unless render?
         ca = compute_chart_attrs
         return ''  unless ca
+        svgs = %(<svg class="box" style="height: #{ ca[:base_width] }px;"></svg>) * ca[:num_box_plots]
         %(
           <div id="#{ dom_id }" class="rde-chart rde-box-plot">
-            <svg class="box" style="height: #{ ca[:base_width] }px;"></svg>
-            <svg class="box" style="height: #{ ca[:base_width] }px;"></svg>
+            #{ svgs }
 
             <script type="text/javascript">
               (function() {
