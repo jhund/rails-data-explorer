@@ -6,12 +6,12 @@ class RailsDataExplorer
 
       def all_available_chart_types
         [
-          {
-            chart_class: Chart::BoxPlot,
-            chart_roles: [:y],
-            dimensions_count_min: 1,
-            dimensions_count_max: 1
-          },
+          # {
+          #   chart_class: Chart::BoxPlot,
+          #   chart_roles: [:y],
+          #   dimensions_count_min: 1,
+          #   dimensions_count_max: 1
+          # },
           {
             chart_class: Chart::HistogramQuantitative,
             chart_roles: [:x],
