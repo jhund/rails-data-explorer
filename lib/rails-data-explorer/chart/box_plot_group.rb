@@ -3,6 +3,8 @@
 # http://mbostock.github.io/protovis/ex/box-and-whisker.html
 # http://bl.ocks.org/mbostock/4061502
 # http://johan.github.io/d3/ex/box.html
+# http://johan.github.io/d3/ex/box.html
+# http://bl.ocks.org/mbostock/4061502
 class RailsDataExplorer
   class Chart
     class BoxPlotGroup < Chart
