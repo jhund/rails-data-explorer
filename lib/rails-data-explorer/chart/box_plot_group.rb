@@ -66,7 +66,7 @@ class RailsDataExplorer
           )
         }.join.html_safe
         %(
-          <div id="#{ dom_id }" class="rde-chart rde-box-plot">
+          <div id="#{ dom_id }" class="rde-chart rde-box-plot-group">
             <table>#{ svg_trs }</table>
 
             <script type="text/javascript">

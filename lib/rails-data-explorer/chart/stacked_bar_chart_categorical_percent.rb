@@ -73,7 +73,7 @@ class RailsDataExplorer
         return ''  unless render?
         ca = compute_chart_attrs
         %(
-          <div class="rde-chart rde-bar-chart">
+          <div class="rde-chart rde-stacked-bar-chart-categorical-percent">
             <h3 class="rde-chart-title">Stacked Bar Chart</h3>
             <div id="#{ dom_id }", style="height: 200px;">
               <svg></svg>

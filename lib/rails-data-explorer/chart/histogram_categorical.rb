@@ -24,7 +24,7 @@ class RailsDataExplorer
         return ''  unless render?
         ca = compute_chart_attrs
         %(
-          <div class="rde-chart rde-histogram">
+          <div class="rde-chart rde-histogram-categorical">
             <h3 class="rde-chart-title">Histogram</h3>
             <div id="#{ dom_id }", style="height: 200px;">
               <svg></svg>
