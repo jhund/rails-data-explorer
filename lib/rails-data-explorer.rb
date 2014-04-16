@@ -1,3 +1,5 @@
+require 'action_view'
+require 'active_support/all' # TODO: once the dust settles, only require the modules we need
 require 'color'
 require 'descriptive-statistics'
 require 'distribution'
