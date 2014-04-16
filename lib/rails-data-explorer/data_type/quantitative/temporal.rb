@@ -26,10 +26,11 @@ class RailsDataExplorer
         end
 
         def descriptive_statistics(values)
+          non_nil_values = values.find_all { |e| !e.nil? }
           ruby_formatter = Proc.new { |v| v.nil? ? '' : v.strftime('%a, %b %e, %Y, %l:%M:%S %p %Z') }
           [
-            { :label => 'Min', :value => values.min, :ruby_formatter => ruby_formatter },
-            { :label => 'Max', :value => values.max, :ruby_formatter => ruby_formatter },
+            { :label => 'Min', :value => non_nil_values.min, :ruby_formatter => ruby_formatter },
+            { :label => 'Max', :value => non_nil_values.max, :ruby_formatter => ruby_formatter },
             { :label => 'Count', :value => values.length, :ruby_formatter => Proc.new { |e| number_with_delimiter(e) } },
           ]
         end

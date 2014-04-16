@@ -12,7 +12,7 @@ class RailsDataExplorer
         # compute histogram
         h = x_ds.values.inject(Hash.new(0)) { |m,e|
           # Round to day
-          key = (e.beginning_of_day).to_i * 1000
+          key = e.nil? ? nil : (e.beginning_of_day).to_i * 1000
           m[key] += 1
           m
         }

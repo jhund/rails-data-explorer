@@ -44,7 +44,8 @@ class RailsDataExplorer
       end
 
       def descriptive_statistics(values)
-        stats = ::DescriptiveStatistics::Stats.new(values)
+        non_nil_values = values.find_all { |e| !e.nil? }
+        stats = ::DescriptiveStatistics::Stats.new(non_nil_values)
         ruby_formatters = {
           :integer => Proc.new { |v| number_with_delimiter(v.round) },
           :decimal => Proc.new { |v| number_with_precision(v, :precision => 3, :significant => true, :strip_insignificant_zeros => true, :delimiter => ',') },
@@ -66,7 +67,7 @@ class RailsDataExplorer
           { :label => 'Mean', :value => stats.mean, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
           { :label => 'Mode', :value => stats.mode, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
           { :label => 'Count', :value => values.length, :ruby_formatter => ruby_formatters[:integer], :table_row => 2 },
-          { :label => 'Sum', :value => values.inject(0) { |m,e| m += e }, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
+          { :label => 'Sum', :value => non_nil_values.inject(0) { |m,e| m += e }, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
           { :label => 'Variance', :value => stats.variance, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
           { :label => 'Std. dev.', :value => stats.standard_deviation, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
           { :label => 'Rel. std. dev.', :value => stats.relative_standard_deviation, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
