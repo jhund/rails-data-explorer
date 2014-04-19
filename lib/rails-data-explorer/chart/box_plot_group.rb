@@ -35,6 +35,7 @@ class RailsDataExplorer
         }
 
         y_ds.values.each_with_index { |y_val, idx|
+          next  if (y_val.nil? || Float::NAN == y_val)
           values_hash[y_val] << x_ds.values[idx]
         }
 
