@@ -29,7 +29,11 @@ class RailsDataExplorer
           content_tag(:h2, @title, :class => 'rde-exploration-title panel-title')
         end +
         content_tag(:div, :class => 'panel-body') do
-          @charts.map { |e| e.render }.join.html_safe
+          if @charts.any?
+            @charts.map { |e| e.render }.join.html_safe
+          else
+            "No charts are available for this combination of data series."
+          end
         end
       end.html_safe
     end
