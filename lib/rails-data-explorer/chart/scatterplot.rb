@@ -68,7 +68,7 @@ class RailsDataExplorer
 
       def render
         return ''  unless render?
-        chart_attrs = compute_chart_attrs
+        ca = compute_chart_attrs
         return ''  unless ca
 
         %(
@@ -79,7 +79,7 @@ class RailsDataExplorer
             </div>
             <script type="text/javascript">
               (function() {
-                var data = #{ chart_attrs[:values].to_json };
+                var data = #{ ca[:values].to_json };
 
                 nv.addGraph(function() {
                   var chart = nv.models.scatterChart()
@@ -90,12 +90,12 @@ class RailsDataExplorer
                                 .transitionDuration(300)
                                 ;
 
-                  chart.xAxis.tickFormat(#{ chart_attrs[:x_axis_tick_format] })
-                             .axisLabel('#{ chart_attrs[:x_axis_label] }')
+                  chart.xAxis.tickFormat(#{ ca[:x_axis_tick_format] })
+                             .axisLabel('#{ ca[:x_axis_label] }')
                              ;
 
-                  chart.yAxis.tickFormat(#{ chart_attrs[:y_axis_tick_format] })
-                             .axisLabel('#{ chart_attrs[:y_axis_label] }')
+                  chart.yAxis.tickFormat(#{ ca[:y_axis_tick_format] })
+                             .axisLabel('#{ ca[:y_axis_label] }')
                              ;
 
                   chart.tooltipContent(function(key) {
