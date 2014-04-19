@@ -78,7 +78,7 @@ class RailsDataExplorer
       # Returns an OpenStruct that describes a statistics table.
       def descriptive_statistics_table(values)
         desc_stats = descriptive_statistics(values)
-        if desc_stats.length < DataSeries.few_uniq_vals_cutoff
+        if desc_stats.length < DataSeries.many_uniq_vals_cutoff
           descriptive_statistics_table_horizontal(desc_stats)
         else
           descriptive_statistics_table_vertical(desc_stats)

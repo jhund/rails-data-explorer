@@ -5,7 +5,16 @@ class RailsDataExplorer
     delegate :available_chart_types, :to => :data_type, :prefix => false
     delegate :available_chart_roles, :to => :data_type, :prefix => false
 
-    def self.few_uniq_vals_cutoff
+    # Any data series with a dynamic range greater than this is considered
+    # having a large dynamic range
+    # We consider dynamic range the ratio between the largest and the smallest value.
+    def self.large_dynamic_range_cutoff
+      1000.0
+    end
+
+    # Any data series with more than this uniq vals is considered having many
+    # uniq values.
+    def self.many_uniq_vals_cutoff
       20
     end
 
@@ -54,6 +63,10 @@ class RailsDataExplorer
       data_type.axis_tick_format(values)
     end
 
+    def axis_scale
+      data_type.axis_scale(self)
+    end
+
     def uniq_vals
       @uniq_vals = values.uniq
     end
@@ -71,8 +84,16 @@ class RailsDataExplorer
     end
 
     # Used to decide whether we can render certain chart types
-    def has_few_uniq_vals?
-      uniq_vals_count < self.class.few_uniq_vals_cutoff
+    def has_many_uniq_vals?
+      uniq_vals_count > self.class.many_uniq_vals_cutoff
+    end
+
+    def dynamic_range
+      max_val / [min_val, max_val].min.to_f
+    end
+
+    def has_large_dynamic_range?
+      dynamic_range > self.class.large_dynamic_range_cutoff
     end
 
   private
