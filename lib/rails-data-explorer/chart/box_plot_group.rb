@@ -48,6 +48,7 @@ class RailsDataExplorer
           base_height: 800,
           axis_tick_format: x_ds.axis_tick_format,
           num_box_plots: y_ds.uniq_vals_count,
+          axis_scale: DataSeries.new('_', [min, max]).axis_scale
         }
       end
 
@@ -89,6 +90,7 @@ class RailsDataExplorer
                 var data = #{ ca[:values].to_json };
 
                 chart.domain([min, max]);
+                chart.scale(#{ ca[:axis_scale] });
 
                 var svg = d3.select("##{ dom_id }").selectAll("svg")
                             .data(data)

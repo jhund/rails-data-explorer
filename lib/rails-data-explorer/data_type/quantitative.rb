@@ -126,9 +126,9 @@ class RailsDataExplorer
 
       def axis_scale(data_series)
         if data_series.has_large_dynamic_range?
-          'd3.scale.log()'
+          'd3.scale.log'
         else
-          'd3.scale.linear()'
+          'd3.scale.linear'
         end
       end
 

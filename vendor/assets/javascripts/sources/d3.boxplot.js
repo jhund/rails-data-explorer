@@ -10,7 +10,8 @@ d3.box = function() {
       value = Number,
       whiskers = boxWhiskers,
       quartiles = boxQuartiles,
-      tickFormat = null;
+      tickFormat = null,
+      scale = d3.scale.log;
 
   // For each small multiple…
   function box(g) {
@@ -35,12 +36,12 @@ d3.box = function() {
           : d3.range(n);
 
       // Compute the new x-scale.
-      var x1 = d3.scale.linear()
+      var x1 = scale()
           .domain(domain && domain.call(this, d, i) || [min, max])
           .range([height, 0]);
 
       // Retrieve the old x-scale, if this is an update.
-      var x0 = this.__chart__ || d3.scale.linear()
+      var x0 = this.__chart__ || scale()
           .domain([0, Infinity])
           .range(x1.range());
 
@@ -281,6 +282,12 @@ d3.box = function() {
   box.quartiles = function(x) {
     if (!arguments.length) return quartiles;
     quartiles = x;
+    return box;
+  };
+
+  box.scale = function(x) {
+    if (!arguments.length) return scale;
+    scale = x;
     return box;
   };
 
