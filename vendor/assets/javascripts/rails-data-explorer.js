@@ -11,9 +11,9 @@
 // about supported directives.
 //
 
-//= require d3.v3
+//= require sources/d3.v3
 
-//= require nv.d3
-//= require d3.boxplot
-//= require d3.parcoords
-//= require d3.parsets
+//= require sources/nv.d3
+//= require sources/d3.boxplot
+//= require sources/d3.parcoords
+//= require sources/d3.parsets

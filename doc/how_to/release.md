@@ -9,14 +9,15 @@ Steps for an update
 -------------------
 
 1. Update code and commit it.
-2. Add entry to CHANGELOG and commit it:
+2. Run `rake rde:minify` to generate packaged assets
+3. Add entry to CHANGELOG and commit it:
    * h1 for major release
    * h2 for minor release
    * h3 for patch release
-3. Update version in .gemspec and commit
-4. Release it.
+4. Update version in .gemspec and commit
+5. Release it.
    * `gem release`
-5. Create a git tag and push to origin.
+6. Create a git tag and push to origin.
    `gem tag`
 
 

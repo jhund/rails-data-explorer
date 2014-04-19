@@ -9,13 +9,13 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
 
- *= require bootstrap
- *= require bootstrap-theme
- *= require nv.d3
- *= require d3.boxplot
- *= require d3.parcoords
- *= require d3.parsets
+ *= require sources/bootstrap
+ *= require sources/bootstrap-theme
+ *= require sources/nv.d3
+ *= require sources/d3.boxplot
+ *= require sources/d3.parcoords
+ *= require sources/d3.parsets
 
- *= require rde-default-style
+ *= require sources/rde-default-style
 
  */

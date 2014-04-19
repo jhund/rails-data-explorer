@@ -23,7 +23,8 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency 'actionview', '>= 3.0.0'
   gem.add_development_dependency 'bundler', ['>= 1.0.0']
-  gem.add_development_dependency 'rake', ['>= 0']
   gem.add_development_dependency 'minitest'
   gem.add_development_dependency 'minitest-spec-expect'
+  gem.add_development_dependency 'rake', ['>= 0']
+  gem.add_development_dependency 'yui-compressor'
 end

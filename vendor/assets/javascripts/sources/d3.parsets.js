@@ -486,7 +486,7 @@
         d.categories.forEach(function(c) {
           c.x = x;
           c.dx = c.count / total * (width - spacing);
-          c.in = {dx: 0};
+          c["in"] = {dx: 0};
           c.out = {dx: 0};
           x += c.dx + p;
         });
@@ -509,9 +509,9 @@
           var child = node.children[k];
           child.path = d.path + "\0" + k;
           var target = child.target || {node: c, dimension: dimension};
-          target.x = c.in.dx;
+          target.x = c["in"].dx;
           target.dx = child.count / total * (width - spacing);
-          c.in.dx += target.dx;
+          c["in"].dx += target.dx;
           var source = child.source || {node: p, dimension: dimensions[depth - 1]};
           source.x = p.out.dx;
           source.dx = target.dx;
