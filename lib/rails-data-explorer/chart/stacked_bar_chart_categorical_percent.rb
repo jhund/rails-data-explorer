@@ -17,6 +17,7 @@ class RailsDataExplorer
 
         x_ds = x_candidates.first
         y_ds = (y_candidates - [x_ds]).first
+        return false  if x_ds.nil? || y_ds.nil?
 
         # initialize data_matrix
         data_matrix = { :_sum => { :_sum => 0 } }
@@ -72,6 +73,8 @@ class RailsDataExplorer
       def render
         return ''  unless render?
         ca = compute_chart_attrs
+        return ''  unless ca
+
         %(
           <div class="rde-chart rde-stacked-bar-chart-categorical-percent">
             <h3 class="rde-chart-title">Stacked Bar Chart</h3>

@@ -24,7 +24,6 @@ class RailsDataExplorer
 
         x_ds = x_candidates.first
         y_ds = (y_candidates - [x_ds]).first
-
         return false  if x_ds.nil? || y_ds.nil?
 
         min = x_ds.min_val # get global min
@@ -56,6 +55,7 @@ class RailsDataExplorer
         return ''  unless render?
         ca = compute_chart_attrs
         return ''  unless ca
+
         svg_trs = ca[:category_labels].map { |cat_label|
           %(
             <tr>

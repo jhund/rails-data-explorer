@@ -9,6 +9,8 @@ class RailsDataExplorer
 
       def compute_chart_attrs
         x_ds = @data_set.data_series.first
+        return false  if x_ds.nil?
+
         total_count = x_ds.values.length
         # compute histogram
         h = x_ds.values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
@@ -28,6 +30,8 @@ class RailsDataExplorer
       def render
         return ''  unless render?
         ca = compute_chart_attrs
+        return ''  unless ca
+
         %(
           <div class="rde-chart rde-pie-chart">
             <h3 class="rde-chart-title">Pie Chart</h3>

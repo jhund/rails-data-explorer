@@ -13,6 +13,8 @@ class RailsDataExplorer
         dimension_data_series = @data_set.data_series.find_all { |ds|
           (ds.chart_roles[Chart::ParallelCoordinates] & [:dimension, :any]).any?
         }
+        return false  if dimension_data_series.empty?
+
         number_of_values = dimension_data_series.first.values.length
         dimension_names = dimension_data_series.map(&:name)
         dimension_values = number_of_values.times.map do |idx|
@@ -34,6 +36,8 @@ class RailsDataExplorer
       def render
         return ''  unless render?
         ca = compute_chart_attrs
+        return ''  unless ca
+
         %(
           <div class="rde-chart rde-parallel-set">
             <h3 class="rde-chart-title">Parallel Set</h3>

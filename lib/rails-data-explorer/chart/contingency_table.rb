@@ -26,6 +26,7 @@ class RailsDataExplorer
 
         x_ds = x_candidates.first
         y_ds = (y_candidates - [x_ds]).first
+        return false  if x_ds.nil? || y_ds.nil?
 
         # Compute @observed_vals, @expected_vals, etc.
         compute_contingency_and_chi_squared!(x_ds, y_ds)
@@ -99,6 +100,8 @@ class RailsDataExplorer
       def render
         return ''  unless render?
         ca = compute_chart_attrs
+        return ''  unless ca
+
         content_tag(:div, :class => 'rde-chart rde-contingency-table', :id => dom_id) do
           content_tag(:h3, "Contingency Table", :class => 'rde-chart-title') +
           render_html_table(ca)

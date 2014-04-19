@@ -11,6 +11,8 @@ class RailsDataExplorer
 
       def compute_chart_attrs
         x_ds = @data_set.data_series.first
+        return false  if x_ds.nil?
+
         {
           values: [x_ds.values],
           min: x_ds.min_val,
@@ -24,6 +26,8 @@ class RailsDataExplorer
       def render
         return ''  unless render?
         ca = compute_chart_attrs
+        return ''  unless ca
+
         %(
           <div id="#{ dom_id }" class="rde-chart rde-box-plot">
             <svg class="box" style="height: #{ ca[:base_width] }px;"></svg>

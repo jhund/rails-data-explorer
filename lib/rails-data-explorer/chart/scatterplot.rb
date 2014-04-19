@@ -25,6 +25,7 @@ class RailsDataExplorer
         y_ds = (y_candidates - [x_ds]).first
         color_ds = (color_candidates - [x_ds, y_ds]).first
         size_ds = (size_candidates - [x_ds, y_ds, color_ds]).first
+        return false  if x_ds.nil? || y_ds.nil?
 
         ca = case @data_set.dimensions_count
         when 0,1
@@ -68,6 +69,8 @@ class RailsDataExplorer
       def render
         return ''  unless render?
         chart_attrs = compute_chart_attrs
+        return ''  unless ca
+
         %(
           <div class="rde-chart rde-scatterplot">
             <h3 class="rde-chart-title">Scatterplot</h3>
