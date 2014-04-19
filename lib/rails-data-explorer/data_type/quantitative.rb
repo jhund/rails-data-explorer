@@ -44,12 +44,29 @@ class RailsDataExplorer
       end
 
       def descriptive_statistics(values)
-        non_nil_values = values.find_all { |e| !e.nil? }
+        non_nil_values = values.find_all { |e| !(e.nil? || Float::NAN == e) }
         stats = ::DescriptiveStatistics::Stats.new(non_nil_values)
         ruby_formatters = {
-          :integer => Proc.new { |v| number_with_delimiter(v.round) },
-          :decimal => Proc.new { |v| number_with_precision(v, :precision => 3, :significant => true, :strip_insignificant_zeros => true, :delimiter => ',') },
-          :pass_through => Proc.new { |v| v },
+          :integer => Proc.new { |v|
+            v.nil? ? 'Null' : number_with_delimiter(v.round)
+          },
+          :decimal => Proc.new { |v|
+            case
+            when v.nil?
+              'Null'
+            when v.is_a?(Float) && v.nan?
+              'NaN'
+            else
+              number_with_precision(
+                v,
+                :precision => 3,
+                :significant => true,
+                :strip_insignificant_zeros => true,
+                :delimiter => ','
+              )
+            end
+          },
+          :pass_through => Proc.new { |v| (v.nil? || Float::NAN == v) ? 'NaN' : v },
         }
         [
           { :label => 'Min', :value => stats.min, :ruby_formatter => ruby_formatters[:decimal], :table_row => 1 },
