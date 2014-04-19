@@ -5,6 +5,10 @@ class RailsDataExplorer
     delegate :available_chart_types, :to => :data_type, :prefix => false
     delegate :available_chart_roles, :to => :data_type, :prefix => false
 
+    def self.few_uniq_vals_cutoff
+      20
+    end
+
     # options: :chart_roles, :data_type (all optional)
     def initialize(_name, _values, options={})
       options = { chart_roles: [], data_type: nil }.merge(options)
@@ -64,6 +68,11 @@ class RailsDataExplorer
 
     def max_val
       @max_val = values.compact.max
+    end
+
+    # Used to decide whether we can render certain chart types
+    def has_few_uniq_vals?
+      uniq_vals_count < self.class.few_uniq_vals_cutoff
     end
 
   private

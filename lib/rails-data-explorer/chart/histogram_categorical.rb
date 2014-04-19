@@ -74,6 +74,12 @@ class RailsDataExplorer
         )
       end
 
+      # Render HistogramCategorical only if there is a fairly small number of
+      # distinct values.
+      def render?
+        @data_set.data_series.first.has_few_uniq_vals?
+      end
+
     end
   end
 end
