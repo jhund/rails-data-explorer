@@ -7,6 +7,7 @@ require 'interpolate'
 
 require 'rails-data-explorer/engine'
 
+require 'rails_data_explorer'
 require 'rails-data-explorer/chart'
 require 'rails-data-explorer/data_series'
 require 'rails-data-explorer/data_set'
@@ -35,67 +36,3 @@ require 'rails-data-explorer/data_type/quantitative'
 require 'rails-data-explorer/data_type/quantitative/decimal'
 require 'rails-data-explorer/data_type/quantitative/integer'
 require 'rails-data-explorer/data_type/quantitative/temporal'
-
-class RailsDataExplorer
-
-  # Convenience method to instantiate new Exploration
-  def self.new(*args)
-    RailsDataExplorer::Exploration.new(*args)
-  end
-
-  def self.new_collection(data_collection, data_series_specs)
-    explorations = []
-    univariate = []
-    bivariate = []
-    multivariate = {}
-
-    data_series_specs.each do |data_series_spec|
-      data_series_spec = {
-        :univariate => true,
-        :bivariate => true,
-      }.merge(data_series_spec)
-      univariate << data_series_spec  if data_series_spec[:univariate]
-      bivariate << data_series_spec  if data_series_spec[:bivariate]
-      if data_series_spec[:multivariate]
-        [*data_series_spec[:multivariate]].each { |multivariate_group_key|
-          multivariate[multivariate_group_key] ||= []
-          multivariate[multivariate_group_key] << data_series_spec
-        }
-      end
-    end
-
-    univariate.uniq.compact.each { |data_series_spec|
-      explorations << new(
-        data_series_spec[:name],
-        data_collection.map(&data_series_spec[:data_method]),
-      )
-    }
-
-    bivariate.uniq.compact.combination(2).each { |data_series_spec_pair|
-      explorations << new(
-        data_series_spec_pair.map { |e| e[:name] }.join(' vs. '),
-        data_series_spec_pair.map { |data_series_spec|
-          {
-            :name => data_series_spec[:name],
-            :values => data_collection.map(&data_series_spec[:data_method])
-          }
-        }
-      )
-    }
-
-    multivariate.each { |mv_group_key, mv_data_series_specs|
-      explorations << new(
-        mv_group_key.to_s,
-        mv_data_series_specs.uniq.compact.map { |data_series_spec|
-          {
-            :name => data_series_spec[:name],
-            :values => data_collection.map(&data_series_spec[:data_method])
-          }
-        }
-      )
-    }
-
-    explorations
-  end
-
-end
