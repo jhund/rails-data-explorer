@@ -87,7 +87,7 @@ private
   def render_toc(expls)
     content_tag(:div, :class => 'rde panel panel-primary') do
       content_tag(:div, :class => 'panel-heading') do
-        content_tag(:h2, "Table of contents")
+        content_tag(:h2, "Table of contents", :class => 'rde-exploration-title panel-title')
       end +
       content_tag(:div, :class => 'panel-body') do
         content_tag(:ul, :class => 'rde-table_of_contents') do

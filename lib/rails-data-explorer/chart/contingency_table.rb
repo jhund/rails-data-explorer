@@ -181,11 +181,35 @@ class RailsDataExplorer
         # Set significance_level
         @significance_level = 0.05
         # Compute conclusion
-        @conclusion = %(<a href="http://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#Test_of_independence">Pearson chi squared test of independence</a> suggests that )
-        @conclusion << if @p_value <= @significance_level
-          %("#{ x_ds.name }" and "#{ y_ds.name }" are dependent variables (p_value: #{ number_with_precision(@p_value) }))
+        all_observed_vals = []
+        x_ds.uniq_vals.each { |x_val|
+          y_ds.uniq_vals.each { |y_val|
+            all_observed_vals << @observed_vals[x_val][y_val]
+          }
+        }
+        observed_vals_less_than_five = all_observed_vals.find_all { |e| e < 5 }
+        ratio_of_observed_vals_below_five = observed_vals_less_than_five.length / all_observed_vals.length.to_f
+
+        if ratio_of_observed_vals_below_five > 0.2
+          @conclusion = [
+            "We did not run the ",
+            %(<a href="http://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#Test_of_independence">Pearson chi squared test of independence</a> ),
+            "since #{ number_to_percentage(ratio_of_observed_vals_below_five * 100, :precision => 0) } ",
+            "of observed values in the contingency table are below 5 (cutoff is 20%)."
+          ].join
+        elsif([x_ds, y_ds].any? { |e| e.uniq_vals.length < 2 })
+          @conclusion = [
+            "We did not run the ",
+            %(<a href="http://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#Test_of_independence">Pearson chi squared test of independence</a> ),
+            "since there are not enough observed values in the contingency table."
+          ].join
         else
-          %("#{ x_ds.name }" and "#{ y_ds.name }" are independent variables (p_value: #{ number_with_precision(@p_value) }))
+          @conclusion = %(<a href="http://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#Test_of_independence">Pearson chi squared test of independence</a> suggests that )
+          @conclusion << if @p_value <= @significance_level
+            %("#{ x_ds.name }" and "#{ y_ds.name }" are dependent variables (p_value: #{ number_with_precision(@p_value) }))
+          else
+            %("#{ x_ds.name }" and "#{ y_ds.name }" are independent variables (p_value: #{ number_with_precision(@p_value) }))
+          end
         end
         @conclusion = @conclusion.html_safe
       end
