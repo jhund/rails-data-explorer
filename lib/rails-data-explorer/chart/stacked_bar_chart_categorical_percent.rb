@@ -49,15 +49,14 @@ class RailsDataExplorer
         values = case @data_set.dimensions_count
         when 2
           y_sorted_keys.map { |y_val|
-            {
-              key: y_val,
-              values: x_sorted_keys.map { |x_val|
-                {
-                  x: x_val,
-                  y: (data_matrix[x_val][y_val] / data_matrix[x_val][:_sum].to_f) }
+            x_sorted_keys.map { |x_val|
+              {
+                x: x_val,
+                y: (data_matrix[x_val][y_val] / data_matrix[x_val][:_sum].to_f),
+                c: y_val
               }
             }
-          }
+          }.flatten
         else
           raise(ArgumentError.new("Exactly two data series required for contingency table."))
         end
@@ -74,7 +73,112 @@ class RailsDataExplorer
         return ''  unless render?
         ca = compute_chart_attrs
         return ''  unless ca
+        render_vega(ca)
+      end
 
+      def render_vega(ca)
+        %(
+          <div class="rde-chart rde-stacked-bar-chart-categorical-percent">
+            <h3 class="rde-chart-title">Stacked Bar Chart</h3>
+            <div id="#{ dom_id }"></div>
+            <script type="text/javascript">
+              (function() {
+                var spec = {
+                  "width": 800,
+                  "height": 200,
+                  "padding": {"top": 10, "left": 50, "bottom": 50, "right": 100},
+                  "data": [
+                    {
+                      "name": "table",
+                      "values": #{ ca[:values].to_json }
+                    },
+                    {
+                      "name": "stats",
+                      "source": "table",
+                      "transform": [
+                        {"type": "facet", "keys": ["data.x"]},
+                        {"type": "stats", "value": "data.y"}
+                      ]
+                    }
+                  ],
+                  "scales": [
+                    {
+                      "name": "x",
+                      "type": "ordinal",
+                      "range": "width",
+                      "domain": {"data": "table", "field": "data.x"}
+                    },
+                    {
+                      "name": "y",
+                      "type": "linear",
+                      "range": "height",
+                      "nice": true,
+                      "domain": {"data": "stats", "field": "sum"}
+                    },
+                    {
+                      "name": "color",
+                      "type": "ordinal",
+                      "range": "category10"
+                    }
+                  ],
+                  "axes": [
+                    {
+                      "type": "x",
+                      "scale": "x",
+                      "title": "#{ ca[:x_axis_label] }",
+                      "format": #{ ca[:x_axis_tick_format] },
+                    },
+                    {
+                      "type": "y",
+                      "scale": "y",
+                      "title": "#{ ca[:y_axis_label] }",
+                      "format": #{ ca[:y_axis_tick_format] },
+                    }
+                  ],
+                  "marks": [
+                    {
+                      "type": "group",
+                      "from": {
+                        "data": "table",
+                        "transform": [
+                          {"type": "facet", "keys": ["data.c"]},
+                          {"type": "stack", "point": "data.x", "height": "data.y"}
+                        ]
+                      },
+                      "marks": [
+                        {
+                          "type": "rect",
+                          "properties": {
+                            "enter": {
+                              "x": {"scale": "x", "field": "data.x"},
+                              "width": {"scale": "x", "band": true, "offset": -1},
+                              "y": {"scale": "y", "field": "y"},
+                              "y2": {"scale": "y", "field": "y2"},
+                              "fill": {"scale": "color", "field": "data.c"}
+                            },
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "legends": [
+                    {
+                      "fill": "color",
+                    }
+                  ],
+                };
+
+                vg.parse.spec(spec, function(chart) {
+                  var view = chart({ el:"##{ dom_id }" }).update();
+                });
+
+              })();
+            </script>
+          </div>
+        )
+      end
+
+      def render_nvd3(ca)
         %(
           <div class="rde-chart rde-stacked-bar-chart-categorical-percent">
             <h3 class="rde-chart-title">Stacked Bar Chart</h3>

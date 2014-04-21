@@ -16,7 +16,7 @@ class RailsDataExplorer
         {
           values: h.map { |k,v| { x: k, y: v } }.sort { |a,b| b[:y] <=> a[:y] },
           x_axis_label: x_ds.name,
-          x_axis_tick_format: "",
+          x_axis_tick_format: "d3.format('r')",
           y_axis_label: 'Frequency',
           y_axis_tick_format: "d3.format('r')",
         }
@@ -26,7 +26,84 @@ class RailsDataExplorer
         return ''  unless render?
         ca = compute_chart_attrs
         return ''  unless ca
+        render_vega(ca)
+      end
 
+      def render_vega(ca)
+        %(
+          <div class="rde-chart rde-histogram-categorical">
+            <h3 class="rde-chart-title">Histogram</h3>
+            <div id="#{ dom_id }"></div>
+            <script type="text/javascript">
+              (function() {
+                var spec = {
+                  "width": 800,
+                  "height": 200,
+                  "padding": {"top": 10, "left": 50, "bottom": 50, "right": 10},
+                  "data": [
+                    {
+                      "name": "table",
+                      "values": #{ ca[:values].to_json }
+                    }
+                  ],
+                  "scales": [
+                    {
+                      "name": "x",
+                      "type": "ordinal",
+                      "range": "width",
+                      "domain": {"data": "table", "field": "data.x"}
+                    },
+                    {
+                      "name": "y",
+                      "range": "height",
+                      "nice": true,
+                      "domain": {"data": "table", "field": "data.y"}
+                    }
+                  ],
+                  "axes": [
+                    {
+                      "type": "x",
+                      "scale": "x",
+                      "title": "#{ ca[:x_axis_label] }",
+                      "format": #{ ca[:x_axis_tick_format] },
+                    },
+                    {
+                      "type": "y",
+                      "scale": "y",
+                      "title": "#{ ca[:y_axis_label] }",
+                      "format": #{ ca[:y_axis_tick_format] },
+                    }
+                  ],
+                  "marks": [
+                    {
+                      "type": "rect",
+                      "from": {"data": "table"},
+                      "properties": {
+                        "enter": {
+                          "x": {"scale": "x", "field": "data.x"},
+                          "width": {"scale": "x", "band": true, "offset": -1},
+                          "y": {"scale": "y", "field": "data.y"},
+                          "y2": {"scale": "y", "value": 0}
+                        },
+                        "update": {
+                          "fill": {"value": "#1F77B4"}
+                        },
+                      }
+                    }
+                  ]
+                };
+
+                vg.parse.spec(spec, function(chart) {
+                  var view = chart({ el:"##{ dom_id }" }).update();
+                });
+
+              })();
+            </script>
+          </div>
+        )
+      end
+
+      def render_nvd3(ca)
         %(
           <div class="rde-chart rde-histogram-categorical">
             <h3 class="rde-chart-title">Histogram</h3>

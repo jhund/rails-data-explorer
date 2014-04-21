@@ -12,11 +12,19 @@ class RailsDataExplorer
         return false  if x_ds.nil?
 
         # compute histogram
-        h = x_ds.values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
+        quantizer = Utils::DataQuantizer.new(x_ds, :max_number_of_bins => 100)
+        quantized_values = quantizer.values
+        number_of_bars = quantizer.number_of_bins
+        width = 800
+        h = quantized_values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
         {
           values: h.map { |k,v| { x: k, y: v } },
+          width: width,
           x_axis_label: x_ds.name,
           x_axis_tick_format: x_ds.axis_tick_format,
+          x_scale_type: 'linear',
+          x_scale_nice: true,
+          bar_width: (width / number_of_bars.to_f) - 3,
           y_axis_label: 'Frequency',
           y_axis_tick_format: "d3.format('r')",
         }
@@ -26,7 +34,85 @@ class RailsDataExplorer
         return ''  unless render?
         ca = compute_chart_attrs
         return ''  unless ca
+        render_vega(ca)
+      end
 
+      def render_vega(ca)
+        %(
+          <div class="rde-chart rde-histogram-quantitative">
+            <h3 class="rde-chart-title">Histogram</h3>
+            <div id="#{ dom_id }"></div>
+            <script type="text/javascript">
+              (function() {
+                var spec = {
+                  "width": #{ ca[:width] },
+                  "height": 200,
+                  "padding": {"top": 10, "left": 50, "bottom": 50, "right": 10},
+                  "data": [
+                    {
+                      "name": "table",
+                      "values": #{ ca[:values].to_json }
+                    }
+                  ],
+                  "scales": [
+                    {
+                      "name": "x",
+                      "type": "#{ ca[:x_scale_type] }",
+                      "range": "width",
+                      "zero": false,
+                      "nice": #{ ca[:x_scale_nice] },
+                      "domain": {"data": "table", "field": "data.x"}
+                    },
+                    {
+                      "name": "y",
+                      "range": "height",
+                      "domain": {"data": "table", "field": "data.y"}
+                    }
+                  ],
+                  "axes": [
+                    {
+                      "type": "x",
+                      "scale": "x",
+                      "title": "#{ ca[:x_axis_label] }",
+                      "format": #{ ca[:x_axis_tick_format] },
+                    },
+                    {
+                      "type": "y",
+                      "scale": "y",
+                      "title": "#{ ca[:y_axis_label] }",
+                      "format": #{ ca[:y_axis_tick_format] },
+                    }
+                  ],
+                  "marks": [
+                    {
+                      "type": "rect",
+                      "from": {"data": "table"},
+                      "properties": {
+                        "enter": {
+                          "x": {"scale": "x", "field": "data.x"},
+                          "width": { "value": #{ ca[:bar_width] } },
+                          "y": {"scale": "y", "field": "data.y"},
+                          "y2": {"scale": "y", "value": 0},
+                        },
+                        "update": {
+                          "fill": {"value": "#1F77B4"}
+                        },
+                      }
+                    }
+                  ]
+                };
+
+                vg.parse.spec(spec, function(chart) {
+                  var view = chart({ el:"##{ dom_id }" }).update();
+                });
+
+              })();
+            </script>
+          </div>
+        )
+      end
+
+      def render_nvd3(ca)
         %(
           <div class="rde-chart rde-histogram-quantitative">
             <h3 class="rde-chart-title">Histogram</h3>

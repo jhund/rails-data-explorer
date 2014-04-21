@@ -11,7 +11,7 @@
 
  *= require sources/bootstrap
  *= require sources/bootstrap-theme
- *= require sources/nv.d3
+ *  *= require sources/nv.d3
  *= require sources/d3.boxplot
  *= require sources/d3.parcoords
  *= require sources/d3.parsets

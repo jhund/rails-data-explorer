@@ -110,7 +110,7 @@ private
     return ''  if expls.empty?
     content_tag(:div, :class => 'rde panel panel-default') do
       content_tag(:div, :class => 'panel-heading') do
-        content_tag(:h2, "Explorations without charts")
+        content_tag(:h2, "Explorations without charts", :class => 'rde-exploration-title panel-title')
       end +
       content_tag(:div, :class => 'panel-body') do
         content_tag(:p, "There are no charts available for the following explorations:") +

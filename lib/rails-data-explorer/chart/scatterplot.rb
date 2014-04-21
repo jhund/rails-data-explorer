@@ -38,7 +38,7 @@ class RailsDataExplorer
             r
           }
           {
-            values: [ { key: key, values: values_hash } ],
+            values: values_hash,
             x_axis_label: x_ds.name,
             x_axis_tick_format: x_ds.axis_tick_format,
             y_axis_label: y_ds.name,
@@ -55,7 +55,7 @@ class RailsDataExplorer
             data_series_hash[visual_attr_ds.values[idx]] << { x: x_ds.values[idx], y: y_ds.values[idx] }
           }
           {
-            values: data_series_hash.map { |k,v| { key: k, values: v } },
+            values: data_series_hash,
             x_axis_label: x_ds.name,
             x_axis_tick_format: x_ds.axis_tick_format,
             y_axis_label: y_ds.name,
@@ -70,7 +70,106 @@ class RailsDataExplorer
         return ''  unless render?
         ca = compute_chart_attrs
         return ''  unless ca
+        render_vega(ca)
+      end
 
+      def render_vega(ca)
+        %(
+          <div class="rde-chart rde-scatterplot">
+            <h3 class="rde-chart-title">Scatterplot</h3>
+            <div id="#{ dom_id }"></div>
+            <script type="text/javascript">
+              (function() {
+                var spec = {
+                  "width": 800,
+                  "height": 200,
+                  "data": [
+                    {
+                      "name": "table",
+                      "values": #{ ca[:values].to_json }
+                    },
+                  ],
+                  "scales": [
+                    {
+                      "name": "x",
+                      "nice": true,
+                      "range": "width",
+                      "zero": false,
+                      "domain": {"data": "table", "field": "data.x"}
+                    },
+                    {
+                      "name": "y",
+                      "nice": true,
+                      "range": "height",
+                      "zero": false,
+                      "domain": {"data": "table", "field": "data.y"}
+                    },
+                    // {
+                    //   "name": "c",
+                    //   "type": "ordinal",
+                    //   "domain": {"data": "iris", "field": "data.species"},
+                    //   "range": ["#800", "#080", "#008"]
+                    // }
+                  ],
+                  "axes": [
+                    {
+                      "type": "x",
+                      "scale": "x",
+                      "offset": 5,
+                      "title": "#{ ca[:x_axis_label] }",
+                    },
+                    {
+                      "type": "y",
+                      "scale": "y",
+                      "offset": 5,
+                      "title": "#{ ca[:y_axis_label] }",
+                    }
+                  ],
+                  // "legends": [
+                  //   {
+                  //     "fill": "c",
+                  //     "title": "Species",
+                  //     "offset": 0,
+                  //     "properties": {
+                  //       "symbols": {
+                  //         "fillOpacity": {"value": 0.5},
+                  //         "stroke": {"value": "transparent"}
+                  //       }
+                  //     }
+                  //   }
+                  // ],
+                  "marks": [
+                    {
+                      "type": "symbol",
+                      "from": {"data": "table"},
+                      "properties": {
+                        "enter": {
+                          "x": {"scale": "x", "field": "data.x"},
+                          "y": {"scale": "y", "field": "data.y"},
+                          //"fill": {"scale": "c", "field": "data.species"},
+                          "fill": { "value": "#1F77B4" },
+                          "fillOpacity": {"value": 0.4},
+                        },
+                        "update": {
+                          "size": {"value": 30},
+                          "stroke": {"value": "transparent"}
+                        },
+                      }
+                    }
+                  ]
+                };
+
+                vg.parse.spec(spec, function(chart) {
+                  var view = chart({ el:"##{ dom_id }" }).update();
+                });
+
+              })();
+            </script>
+          </div>
+        )
+      end
+
+      def render_nvd3(ca)
         %(
           <div class="rde-chart rde-scatterplot">
             <h3 class="rde-chart-title">Scatterplot</h3>

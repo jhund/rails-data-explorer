@@ -13,7 +13,8 @@
 
 //= require sources/d3.v3
 
-//= require sources/nv.d3
+//  //= require sources/nv.d3
 //= require sources/d3.boxplot
 //= require sources/d3.parcoords
 //= require sources/d3.parsets
+//= require sources/vega.js
