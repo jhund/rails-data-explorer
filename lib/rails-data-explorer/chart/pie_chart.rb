@@ -16,14 +16,10 @@ class RailsDataExplorer
         h = x_ds.values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
         {
           values: h.map { |k,v|
-                    { x: k, y: (v / total_count.to_f) }
-                  }.sort { |a,b|
-                    b[:y] <=> a[:y]
-                  },
-          x_axis_label: x_ds.name,
-          x_axis_tick_format: "",
-          y_axis_label: 'Frequency',
-          y_axis_tick_format: "d3.format('r')",
+            { key: k, value: (v / total_count.to_f) }
+          }.sort { |a,b|
+            b[:value] <=> a[:value]
+          },
         }
       end
 
@@ -31,7 +27,74 @@ class RailsDataExplorer
         return ''  unless render?
         ca = compute_chart_attrs
         return ''  unless ca
+        render_vega(ca)
+      end
 
+      def render_vega(ca)
+        %(
+          <div class="rde-chart rde-pie-chart">
+            <h3 class="rde-chart-title">Pie Chart</h3>
+            <div id="#{ dom_id }"></div>
+            <script type="text/javascript">
+              (function() {
+                var spec = {
+                  "width": 300,
+                  "height": 300,
+                  "padding": {"top": 10, "left": 10, "bottom": 10, "right": 100},
+                  "data": [
+                    {
+                      "name": "table",
+                      "values": #{ ca[:values].to_json }
+                    }
+                  ],
+                  "scales": [
+                    {
+                      "name": "color",
+                      "domain": {"data": "table", "field": "data.key"},
+                      "range": "category10",
+                      "type": "ordinal"
+                    },
+                  ],
+                  "axes": [],
+                  "marks": [
+                    {
+                      "type": "arc",
+                      "from": {
+                        "data": "table",
+                        "transform": [{"type": "pie", "value": "data.value"}]
+                      },
+                      "properties": {
+                        "enter": {
+                          "x": {"group": "width", "mult": 0.5},
+                          "y": {"group": "height", "mult": 0.5},
+                          "endAngle": {"field": "endAngle"},
+                          "innerRadius": {"value": 100},
+                          "outerRadius": {"value": 150},
+                          "startAngle": {"field": "startAngle"},
+                          "stroke": {"value": "white"},
+                          "fill": {"field": "data.key", "scale": "color"}
+                        }
+                      }
+                    }
+                  ],
+                  "legends": [
+                    {
+                      "fill": "color",
+                    }
+                  ],
+                };
+
+                vg.parse.spec(spec, function(chart) {
+                  var view = chart({ el:"##{ dom_id }" }).update();
+                });
+
+              })();
+            </script>
+          </div>
+        )
+      end
+
+      def render_nvd3(ca)
         %(
           <div class="rde-chart rde-pie-chart">
             <h3 class="rde-chart-title">Pie Chart</h3>
