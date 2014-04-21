@@ -44,7 +44,7 @@ vg.tree = function(obj, children) {
 
 vg.number = function(s) { return +s; };
 
-vg.boolean = function(s) { return !!s; };
+vg["boolean"] = function(s) { return !!s; };
 
 // utility functions
 
@@ -2780,7 +2780,7 @@ function vg_load_http(url, callback) {
   var formats = {},
       parsers = {
         "number": vg.number,
-        "boolean": vg.boolean,
+        "boolean": vg["boolean"],
         "date": Date.parse
       };
 
