@@ -39,7 +39,7 @@ class RailsDataExplorer
                 var spec = {
                   "width": 800,
                   "height": 200,
-                  "padding": {"top": 10, "left": 50, "bottom": 50, "right": 10},
+                  "padding": {"top": 10, "left": 70, "bottom": 50, "right": 10},
                   "data": [
                     {
                       "name": "table",
@@ -71,6 +71,7 @@ class RailsDataExplorer
                       "type": "y",
                       "scale": "y",
                       "title": "#{ ca[:y_axis_label] }",
+                      "titleOffset": 60,
                       "format": #{ ca[:y_axis_tick_format] },
                     }
                   ],
