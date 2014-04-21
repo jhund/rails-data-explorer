@@ -96,6 +96,10 @@ class RailsDataExplorer
       dynamic_range > self.class.large_dynamic_range_cutoff
     end
 
+    def label_sorter(label_val_key, value_sorter)
+      data_type.label_sorter(label_val_key, self, value_sorter)
+    end
+
   private
 
     # @param[Array<Symbol>] chart_role_overrides, :x, :y, :color

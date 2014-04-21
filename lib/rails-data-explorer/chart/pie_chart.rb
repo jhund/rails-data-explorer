@@ -17,9 +17,12 @@ class RailsDataExplorer
         {
           values: h.map { |k,v|
             { key: k, value: (v / total_count.to_f) }
-          }.sort { |a,b|
-            b[:value] <=> a[:value]
-          },
+          }.sort(
+            &x_ds.label_sorter(
+              :key,
+              lambda { |a,b| b[:value] <=> a[:value] }
+            )
+          )
         }
       end
 

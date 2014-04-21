@@ -14,7 +14,14 @@ class RailsDataExplorer
         # compute histogram
         h = x_ds.values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
         {
-          values: h.map { |k,v| { x: k, y: v } }.sort { |a,b| b[:y] <=> a[:y] },
+          values: h.map { |k,v|
+            { x: k, y: v }
+          }.sort(
+            &x_ds.label_sorter(
+              :x,
+              lambda { |a,b| b[:y] <=> a[:y] }
+            )
+          ),
           x_axis_label: x_ds.name,
           x_axis_tick_format: "d3.format('r')",
           y_axis_label: 'Frequency',

@@ -158,6 +158,30 @@ class RailsDataExplorer
         %(function(d) { return d })
       end
 
+      # @param[Symbol, nil] label_val_key the hash key to use to get the label value during sort (sent to a,b)
+      # @param[DataSeries] data_series the ds that contains the uniq vals
+      # @param[Proc] value_sorter the sorting proc to use if not sorted numerically
+      # @return[Proc] a Proc that will be used by #sort
+      def label_sorter(label_val_key, data_series, value_sorter)
+        if data_series.uniq_vals.any? { |e| e.to_s =~ /^\d+/ }
+          # Sort numerical categories by key ASC
+          lambda { |a,b|
+            number_extractor = lambda { |val|
+              str = label_val_key ? val[label_val_key] : val
+              number = str.gsub(/^[^\d]*/, '').to_f
+              number += 1  if str =~ /^>/ # increase highest threshold by one for proper sorting
+              number
+            }
+            a_number = number_extractor.call(a)
+            b_number = number_extractor.call(b)
+            a_number <=> b_number
+          }
+        else
+          # Use provided value sorter
+          value_sorter
+        end
+      end
+
     end
   end
 end

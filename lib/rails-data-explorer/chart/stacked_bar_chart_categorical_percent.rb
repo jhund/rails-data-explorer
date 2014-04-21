@@ -39,12 +39,18 @@ class RailsDataExplorer
           data_matrix[:_sum][:_sum] += 1
         }
 
-        x_sorted_keys = x_ds.uniq_vals.sort { |a,b|
-          data_matrix[b][:_sum] <=> data_matrix[a][:_sum]
-        }
-        y_sorted_keys = y_ds.uniq_vals.sort { |a,b|
-          data_matrix[:_sum][b] <=> data_matrix[:_sum][a]
-        }
+        x_sorted_keys = x_ds.uniq_vals.sort(
+          &x_ds.label_sorter(
+            nil,
+            lambda { |a,b| data_matrix[b][:_sum] <=> data_matrix[a][:_sum] }
+          )
+        )
+        y_sorted_keys = y_ds.uniq_vals.sort(
+          &y_ds.label_sorter(
+            nil,
+            lambda { |a,b| data_matrix[:_sum][b] <=> data_matrix[:_sum][a] }
+          )
+        )
 
         values = case @data_set.dimensions_count
         when 2
@@ -52,7 +58,7 @@ class RailsDataExplorer
             x_sorted_keys.map { |x_val|
               {
                 x: x_val,
-                y: (data_matrix[x_val][y_val] / data_matrix[x_val][:_sum].to_f),
+                y: (data_matrix[x_val][y_val] / data_matrix[x_val][:_sum].to_f) * 100,
                 c: y_val
               }
             }

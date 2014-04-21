@@ -31,12 +31,18 @@ class RailsDataExplorer
         # Compute @observed_vals, @expected_vals, etc.
         compute_contingency_and_chi_squared!(x_ds, y_ds)
 
-        x_sorted_keys = x_ds.uniq_vals.sort { |a,b|
-          @observed_vals[b][:_sum] <=> @observed_vals[a][:_sum]
-        }
-        y_sorted_keys = y_ds.uniq_vals.sort { |a,b|
-          @observed_vals[:_sum][b] <=> @observed_vals[:_sum][a]
-        }
+        x_sorted_keys = x_ds.uniq_vals.sort(
+          &x_ds.label_sorter(
+            nil,
+            lambda { |a,b| @observed_vals[b][:_sum] <=> @observed_vals[a][:_sum] }
+          )
+        )
+        y_sorted_keys = y_ds.uniq_vals.sort(
+          &y_ds.label_sorter(
+            nil,
+            lambda { |a,b| @observed_vals[:_sum][b] <=> @observed_vals[:_sum][a] }
+          )
+        )
 
         ca = case @data_set.dimensions_count
         when 2
