@@ -10,16 +10,26 @@ class RailsDataExplorer
   module Utils
     class DataBinner
 
-      def initialize(*args)
+      # @param[Hash] threshold_specs a hash with a key value pair for each threshold
+      #   The key is the label to use, and the value is a Numeric threshold.
+      #   Adds one more bin for values greater than the highest threshold.
+      #   Example: { '0' => 0, '1' => 1, '2' => 2, '3..10' => 10, '11..100' => 100 }
+      #   Will generate the following output:
+      #     -1   => '0'
+      #      0   => '0'
+      #      0.1 => '1'
+      #      4   => '3..10'
+      #     10   => '3..10'
+      #     10.1 => '3..10'
+      #   1000   => '> 100'
+      def initialize(threshold_specs)
         @max = -Float::INFINITY
-        @bin_specs = [*args].compact.uniq.sort.map { |e|
-          case e
-          when Numeric
-            @max = [@max, e].max
-            { :label => "#{ e.to_s } or less", :lte => e }
-          else
-            raise "Handle this bin_spec: #{ e.inspect }"
-          end
+        @bin_specs = threshold_specs.to_a.sort { |(k_a, v_a), (k_b, v_b)|
+          v_a <=> v_b
+        }.map { |(label, threshold)|
+          raise "Invalid threshold: #{ threshold.inspect }"  unless threshold.is_a?(Numeric)
+          @max = [@max, threshold].max
+          { :label => label, :lte => threshold }
         }
         @bin_specs << { :label => "> #{ @max }", :gt => @max }
       end

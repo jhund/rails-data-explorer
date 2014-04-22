@@ -14,6 +14,9 @@ class RailsDataExplorer
           m[key] += 1
           m
         }
+        histogram_values_ds = DataSeries.new('_', h.values)
+        y_scale_type = histogram_values_ds.axis_scale(:vega)
+        bar_y2_val = 'log' == y_scale_type ? histogram_values_ds.min_val / 10.0 : 0
         width = 800
         {
           values: h.map { |k,v| { x: k, y: v } },
@@ -25,6 +28,9 @@ class RailsDataExplorer
           bar_width: 2,
           y_axis_label: 'Frequency',
           y_axis_tick_format: "d3.format('r')",
+          y_scale_type: y_scale_type,
+          y_scale_domain: [bar_y2_val, histogram_values_ds.max_val],
+          bar_y2_val: bar_y2_val,
         }
       end
 

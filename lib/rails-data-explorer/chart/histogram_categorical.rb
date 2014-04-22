@@ -13,6 +13,9 @@ class RailsDataExplorer
 
         # compute histogram
         h = x_ds.values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
+        histogram_values_ds = DataSeries.new('_', h.values)
+        y_scale_type = histogram_values_ds.axis_scale(:vega)
+        bar_y2_val = 'log' == y_scale_type ? histogram_values_ds.min_val / 10.0 : 0
         {
           values: h.map { |k,v|
             { x: k, y: v }
@@ -25,7 +28,10 @@ class RailsDataExplorer
           x_axis_label: x_ds.name,
           x_axis_tick_format: "d3.format('r')",
           y_axis_label: 'Frequency',
-          y_axis_tick_format: "d3.format('r')",
+          y_axis_tick_format: "d3.format(',g')", #histogram_values_ds.axis_tick_format,
+          y_scale_type: y_scale_type,
+          y_scale_domain: [bar_y2_val, histogram_values_ds.max_val],
+          bar_y2_val: bar_y2_val,
         }
       end
 
@@ -62,9 +68,9 @@ class RailsDataExplorer
                     },
                     {
                       "name": "y",
+                      "type": "#{ ca[:y_scale_type] }",
                       "range": "height",
-                      "nice": true,
-                      "domain": {"data": "table", "field": "data.y"}
+                      "domain": #{ ca[:y_scale_domain].to_json },
                     }
                   ],
                   "axes": [
@@ -91,7 +97,7 @@ class RailsDataExplorer
                           "x": {"scale": "x", "field": "data.x"},
                           "width": {"scale": "x", "band": true, "offset": -1},
                           "y": {"scale": "y", "field": "data.y"},
-                          "y2": {"scale": "y", "value": 0}
+                          "y2": {"scale": "y", "value": #{ ca[:bar_y2_val] }},
                         },
                         "update": {
                           "fill": {"value": "#1F77B4"}

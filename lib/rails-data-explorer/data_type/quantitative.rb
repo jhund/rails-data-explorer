@@ -124,12 +124,12 @@ class RailsDataExplorer
         raise "Implement me in sub_class"
       end
 
-      def axis_scale(data_series)
+      def axis_scale(data_series, d3_or_vega)
         # Log scales can't handle 0 values
         if data_series.min_val > 0.0 && data_series.has_large_dynamic_range?
-          'd3.scale.log'
+          { d3: 'd3.scale.log', vega: 'log' }[d3_or_vega]
         else
-          'd3.scale.linear'
+          { d3: 'd3.scale.linear', vega: 'linear' }[d3_or_vega]
         end
       end
 

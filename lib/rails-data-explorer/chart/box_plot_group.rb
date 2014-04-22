@@ -48,7 +48,7 @@ class RailsDataExplorer
           base_height: 800,
           axis_tick_format: x_ds.axis_tick_format,
           num_box_plots: y_ds.uniq_vals_count,
-          axis_scale: DataSeries.new('_', [min, max]).axis_scale
+          axis_scale: DataSeries.new('_', [min, max]).axis_scale(:d3)
         }
       end
 

@@ -9,14 +9,14 @@ class RailsDataExplorer
         [
           [
             '1',
-            [1,2,3],
+            { '1 or less' => 1, '2' => 2, '3' => 3 },
             [0,1,2,3,4],
-            ["1 or less", "1 or less", "2 or less", "3 or less", "> 3"]
+            ['1 or less', '1 or less', '2', '3', '> 3']
           ],
         ].each do |(name, bin_specs, vals, xpect)|
 
           it "bins #{ name }" do
-            db = DataBinner.new(*bin_specs)
+            db = DataBinner.new(bin_specs)
             vals.map{ |e| db.bin(e) }.must_equal xpect
           end
 

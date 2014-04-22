@@ -8,13 +8,13 @@ class RailsDataExplorer
     # Any data series with a dynamic range greater than this is considered
     # having a large dynamic range
     # We consider dynamic range the ratio between the largest and the smallest value.
-    def self.large_dynamic_range_cutoff
-      1000.0
+    def self.large_dynamic_range_threshold
+      10000.0
     end
 
     # Any data series with more than this uniq vals is considered having many
     # uniq values.
-    def self.many_uniq_vals_cutoff
+    def self.many_uniq_vals_threshold
       20
     end
 
@@ -63,8 +63,9 @@ class RailsDataExplorer
       data_type.axis_tick_format(values)
     end
 
-    def axis_scale
-      data_type.axis_scale(self)
+    # @param[Symbol] d3_or_vega :d3 or :vega
+    def axis_scale(d3_or_vega)
+      data_type.axis_scale(self, d3_or_vega)
     end
 
     def uniq_vals
@@ -85,7 +86,7 @@ class RailsDataExplorer
 
     # Used to decide whether we can render certain chart types
     def has_many_uniq_vals?
-      uniq_vals_count > self.class.many_uniq_vals_cutoff
+      uniq_vals_count > self.class.many_uniq_vals_threshold
     end
 
     def dynamic_range
@@ -93,7 +94,7 @@ class RailsDataExplorer
     end
 
     def has_large_dynamic_range?
-      dynamic_range > self.class.large_dynamic_range_cutoff
+      dynamic_range > self.class.large_dynamic_range_threshold
     end
 
     def label_sorter(label_val_key, value_sorter)
