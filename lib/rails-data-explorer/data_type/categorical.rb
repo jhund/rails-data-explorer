@@ -60,7 +60,7 @@ class RailsDataExplorer
 
       def descriptive_statistics(values)
         frequencies = values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
-        labels_ds = DataSeries.new('_', frequencies.keys)
+        labels_ds = DataSeries.new('_', values.uniq)
         total_count = values.length
         ruby_formatters = {
           :integer => Proc.new { |v| number_with_delimiter(v.round) },
@@ -72,7 +72,7 @@ class RailsDataExplorer
           m
         }.sort(
           &labels_ds.label_sorter(
-            nil,
+            :label,
             lambda { |a,b| b[:value] <=> a[:value] }
           )
         )
