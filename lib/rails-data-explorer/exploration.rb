@@ -54,6 +54,19 @@ class RailsDataExplorer
       r << %(#{ '  ' * (indent-1) }>\n)
     end
 
+    def type_of_analysis
+      case @data_set.dimensions_count
+      when 0
+        '[No data given]'
+      when 1
+        'Univariate'
+      when 2
+        'Bivariate'
+      else
+        'Multivariate'
+      end
+    end
+
   private
 
     def initialize_charts(chart_specs)

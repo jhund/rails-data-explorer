@@ -85,18 +85,28 @@ private
   end
 
   def render_toc(expls)
+    grouped_by_analysis = expls.group_by { |e| e.type_of_analysis }
     content_tag(:div, :class => 'rde panel panel-primary') do
       content_tag(:div, :class => 'panel-heading') do
-        content_tag(:h2, "Table of contents", :class => 'rde-exploration-title panel-title')
+        content_tag(:h2, "List of data explorations", :class => 'rde-exploration-title panel-title')
       end +
       content_tag(:div, :class => 'panel-body') do
-        content_tag(:ol, :class => 'rde-table_of_contents') do
-          expls.map { |expl|
-            content_tag(
-              :li,
-              %(<a href="##{ expl.dom_id }">#{ expl.title }</a>).html_safe
-            )
-          }.join.html_safe
+        content_tag(:table, :class => 'table') do
+          content_tag(:tr) do
+            grouped_by_analysis.map { |(label, exps)|
+              content_tag(:td, :style => "width: 30%;") do
+                content_tag(:h3, label) +
+                content_tag(:ol, :class => 'rde-table_of_contents') do
+                  exps.map { |expl|
+                    content_tag(
+                      :li,
+                      %(<a href="##{ expl.dom_id }">#{ expl.title }</a>).html_safe
+                    )
+                  }.join.html_safe
+                end
+              end
+            }.join.html_safe
+          end
         end
       end
     end
