@@ -169,12 +169,12 @@ class RailsDataExplorer
       # @param[Proc] value_sorter the sorting proc to use if not sorted numerically
       # @return[Proc] a Proc that will be used by #sort
       def label_sorter(label_val_key, data_series, value_sorter)
-        if data_series.uniq_vals.any? { |e| e.to_s =~ /^\d+/ }
+        if data_series.uniq_vals.any? { |e| e.to_s =~ /^[\+\-]?\d+/ }
           # Sort numerical categories by key ASC
           lambda { |a,b|
             number_extractor = lambda { |val|
               str = label_val_key ? val[label_val_key] : val
-              number = str.gsub(/^[^\d]*/, '') # remove non-digit leading chars
+              number = str.gsub(/^[^\d\+\-]*/, '') # remove non-digit leading chars
                           .gsub(',', '') # remove delimiter commas, they throw off to_f parsing
                           .to_f
               number += 1  if str =~ /^>/ # increase highest threshold by one for proper sorting
