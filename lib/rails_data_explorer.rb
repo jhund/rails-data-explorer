@@ -90,7 +90,7 @@ private
         content_tag(:h2, "Table of contents", :class => 'rde-exploration-title panel-title')
       end +
       content_tag(:div, :class => 'panel-body') do
-        content_tag(:ul, :class => 'rde-table_of_contents') do
+        content_tag(:ol, :class => 'rde-table_of_contents') do
           expls.map { |expl|
             content_tag(
               :li,
