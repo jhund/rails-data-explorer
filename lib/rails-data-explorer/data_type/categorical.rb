@@ -172,17 +172,17 @@ class RailsDataExplorer
         if data_series.uniq_vals.any? { |e| e.to_s =~ /^[\+\-]?\d+/ }
           # Sort numerical categories by key ASC
           lambda { |a,b|
-            number_extractor = lambda { |val|
+            number_and_full_string_extractor = lambda { |val|
               str = label_val_key ? val[label_val_key] : val
               number = str.gsub(/^[^\d\+\-]*/, '') # remove non-digit leading chars
                           .gsub(',', '') # remove delimiter commas, they throw off to_f parsing
                           .to_f
               number += 1  if str =~ /^>/ # increase highest threshold by one for proper sorting
-              number
+              [number, str]
             }
-            a_number = number_extractor.call(a)
-            b_number = number_extractor.call(b)
-            a_number <=> b_number
+            a_number_and_full_string = number_and_full_string_extractor.call(a)
+            b_number_and_full_string = number_and_full_string_extractor.call(b)
+            a_number_and_full_string <=> b_number_and_full_string
           }
         else
           # Use provided value sorter
