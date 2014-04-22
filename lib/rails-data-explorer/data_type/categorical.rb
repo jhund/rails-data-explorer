@@ -60,6 +60,7 @@ class RailsDataExplorer
 
       def descriptive_statistics(values)
         frequencies = values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
+        labels_ds = DataSeries.new('_', frequencies.keys)
         total_count = values.length
         ruby_formatters = {
           :integer => Proc.new { |v| number_with_delimiter(v.round) },
@@ -69,7 +70,12 @@ class RailsDataExplorer
           m << { :label => "#{ k.to_s }_count", :value => v, :ruby_formatter => ruby_formatters[:integer] }
           m << { :label => "#{ k.to_s }_percent", :value => (v / total_count.to_f) * 100, :ruby_formatter => ruby_formatters[:percent] }
           m
-        }.sort { |a,b| b[:value] <=> a[:value] }
+        }.sort(
+          &labels_ds.label_sorter(
+            nil,
+            lambda { |a,b| b[:value] <=> a[:value] }
+          )
+        )
         r.insert(0, { :label => '[Total]_count', :value => total_count, :ruby_formatter => ruby_formatters[:integer] })
         r.insert(0, { :label => '[Total]_percent', :value => 100, :ruby_formatter => ruby_formatters[:percent] })
         r
@@ -168,7 +174,9 @@ class RailsDataExplorer
           lambda { |a,b|
             number_extractor = lambda { |val|
               str = label_val_key ? val[label_val_key] : val
-              number = str.gsub(/^[^\d]*/, '').to_f
+              number = str.gsub(/^[^\d]*/, '') # remove non-digit leading chars
+                          .gsub(',', '') # remove delimiter commas, they throw off to_f parsing
+                          .to_f
               number += 1  if str =~ /^>/ # increase highest threshold by one for proper sorting
               number
             }
