@@ -1,6 +1,9 @@
 class RailsDataExplorer
   class DataSeries
 
+    # TODO: Add concept of significant figures for rounding values when displaying them
+    # http://en.wikipedia.org/wiki/Significant_figures
+
     attr_reader :data_type, :name, :values, :chart_roles
     delegate :available_chart_types, :to => :data_type, :prefix => false
     delegate :available_chart_roles, :to => :data_type, :prefix => false
@@ -15,7 +18,7 @@ class RailsDataExplorer
     # Any data series with more than this uniq vals is considered having many
     # uniq values.
     def self.many_uniq_vals_threshold
-      20
+      30
     end
 
     # options: :chart_roles, :data_type (all optional)
