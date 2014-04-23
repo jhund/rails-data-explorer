@@ -75,11 +75,21 @@ class RailsDataExplorer
                     :tag => :td,
                     :value => @observed_vals[x_val][y_val],
                     :css_class => 'rde-numerical',
-                    :title => "Expected value: #{ number_with_precision(@expected_vals[x_val][y_val]) }",
+                    :title => [
+                      "Expected value: #{ number_with_precision(@expected_vals[x_val][y_val], :precision => 3, :significant => true) }",
+                      "Percentage of row: #{ number_to_percentage(@delta_attrs[x_val][y_val][:percentage_of_row], :precision => 3, :significant => true) }",
+                      "Percentage of col: #{ number_to_percentage(@delta_attrs[x_val][y_val][:percentage_of_col], :precision => 3, :significant => true) }",
+                    ].join("\n"),
                     :style => "color: #{ @delta_attrs[x_val][y_val][:color] };",
                   )
                 } +
-                [OpenStruct.new(:tag => :th, :value => @observed_vals[:_sum][y_val])]
+                [
+                  OpenStruct.new(
+                    :tag => :th,
+                    :value => @observed_vals[:_sum][y_val],
+                    :title => "Percentage of col: #{ number_to_percentage(@delta_attrs[:_sum][y_val][:percentage_of_col], :precision => 3, :significant => true) }"
+                  )
+                ]
               )
             } +
             # Footer row
@@ -91,7 +101,11 @@ class RailsDataExplorer
                   OpenStruct.new(:tag => :th, :value => 'Totals', :css_class => 'rde-row_header')
                 ] +
                 x_sorted_keys.map { |x_val|
-                  OpenStruct.new(:tag => :th, :value => @observed_vals[x_val][:_sum])
+                  OpenStruct.new(
+                    :tag => :th,
+                    :value => @observed_vals[x_val][:_sum],
+                    :title => "Percentage of row: #{ number_to_percentage(@delta_attrs[x_val][:_sum][:percentage_of_row], :precision => 3, :significant => true) }"
+                  )
                 } +
                 [OpenStruct.new(:tag => :th, :value => @observed_vals[:_sum][:_sum])]
               )
@@ -166,10 +180,11 @@ class RailsDataExplorer
           }
         }
         # Compute deltas
-        @delta_attrs = {}
+        @delta_attrs = { :_sum => {} }
         color_scale = RailsDataExplorer::Utils::ColorScale.new
         x_ds.uniq_vals.each { |x_val|
-          @delta_attrs[x_val] = {}
+          @delta_attrs[x_val] = { :_sum => {} }
+          @delta_attrs[x_val][:_sum][:percentage_of_row] = (@observed_vals[x_val][:_sum] / @observed_vals[:_sum][:_sum].to_f) * 100
           y_ds.uniq_vals.each { |y_val|
             delta = @observed_vals[x_val][y_val] - @expected_vals[x_val][y_val]
             delta_factor = delta / @expected_vals[x_val][y_val].to_f
@@ -178,6 +193,11 @@ class RailsDataExplorer
               :color => color_scale.compute(delta_factor),
               :delta => delta,
               :delta_factor => delta_factor,
+              :percentage_of_row => (@observed_vals[x_val][y_val] / @observed_vals[:_sum][y_val].to_f) * 100,
+              :percentage_of_col => (@observed_vals[x_val][y_val] / @observed_vals[x_val][:_sum].to_f) * 100,
+            }
+            @delta_attrs[:_sum][y_val] ||= {
+              :percentage_of_col => (@observed_vals[:_sum][y_val] / @observed_vals[:_sum][:_sum].to_f) * 100
             }
           }
         }
