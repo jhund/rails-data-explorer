@@ -10,12 +10,12 @@ class RailsDataExplorer
             :dimensions_count_min => 1,
             :dimensions_count_max => 1,
           },
-          {
-            :chart_class => Chart::PieChart,
-            :chart_roles => [:any],
-            :dimensions_count_min => 1,
-            :dimensions_count_max => 1,
-          },
+          # {
+          #   :chart_class => Chart::PieChart,
+          #   :chart_roles => [:any],
+          #   :dimensions_count_min => 1,
+          #   :dimensions_count_max => 1,
+          # },
           {
             chart_class: Chart::BoxPlotGroup,
             chart_roles: [:y],
