@@ -51,7 +51,15 @@ or with bundler in your Gemfile:
     * multivariate: one or more charts for each multivariate group
   I have tested it with 70 charts on a single page. More are probably ok, I
   just haven't tested it.
+* Drowning in detail. rde makes it easy to generate a large number of charts.
+  Make sure you don't miss the important data in the noise.
 
+### Dependencies
+
+* ActionView >= 3.0
+* ActiveSupport >= 3.0
+* Asset pipeline (for batteries included, otherwise you'll have to pull in a number of assets manually)
+* jQuery??
 
 ### Resources
 
