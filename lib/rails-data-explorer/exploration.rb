@@ -26,6 +26,7 @@ class RailsDataExplorer
     def render
       content_tag(:div, :class => 'rde-exploration panel panel-default', :id => dom_id) do
         content_tag(:div, :class => 'panel-heading') do
+          %(<span style="float: right;"><a href="#rails_data_explorer-toc">Top</a></span>).html_safe +
           content_tag(:h2, @title, :class => 'rde-exploration-title panel-title')
         end +
         content_tag(:div, :class => 'panel-body') do

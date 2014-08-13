@@ -88,6 +88,7 @@ private
     grouped_by_analysis = expls.group_by { |e| e.type_of_analysis }
     content_tag(:div, :class => 'rde panel panel-primary') do
       content_tag(:div, :class => 'panel-heading') do
+        %(<a name="rails_data_explorer-toc"></a>).html_safe +
         content_tag(:h2, "List of data explorations", :class => 'rde-exploration-title panel-title')
       end +
       content_tag(:div, :class => 'panel-body') do
