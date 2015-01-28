@@ -38,10 +38,17 @@ class RailsDataExplorer
           next  if (y_val.nil? || Float::NAN == y_val)
           values_hash[y_val] << x_ds.values[idx]
         }
+        y_sorted_keys = y_ds.uniq_vals.sort(
+          &y_ds.label_sorter(
+            nil,
+            lambda { |a,b| a <=> b }
+          )
+        )
+        sorted_values = y_sorted_keys.map { |y_val| values_hash[y_val] }
 
         {
-          values: values_hash.values,
-          category_labels: values_hash.keys,
+          values: sorted_values,
+          category_labels: y_sorted_keys,
           min: min,
           max: max,
           base_width: 120,
