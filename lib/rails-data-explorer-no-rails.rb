@@ -11,6 +11,7 @@ require 'interpolate'
 
 require 'rails_data_explorer'
 require 'rails-data-explorer/chart'
+require 'rails-data-explorer/constants'
 require 'rails-data-explorer/data_series'
 require 'rails-data-explorer/data_set'
 require 'rails-data-explorer/data_type'

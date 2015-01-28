@@ -22,7 +22,7 @@ class RailsDataExplorer
         # Compute boundaries
         if @options[:nice]
           range = @data_series.max_val - @data_series.min_val
-          rounding_factor = 10.0 ** Math.log10(range).floor
+          rounding_factor = 10.0 ** Math.log10([range, GREATER_ZERO].max).floor
           @min_val = (@data_series.min_val / rounding_factor).floor * rounding_factor
           @max_val = (@data_series.max_val / rounding_factor).ceil * rounding_factor
         else
@@ -51,7 +51,7 @@ class RailsDataExplorer
             }
           when 'midtread'
             @data_series.values.map { |e|
-              index_of_quantized_value = ((e - @min_val) / @delta).round
+              index_of_quantized_value = ((e - @min_val) / [@delta, GREATER_ZERO].max).round
               (
                 (index_of_quantized_value * @delta) +
                 @min_val
