@@ -40,6 +40,10 @@ class RailsDataExplorer
       @data_type.descriptive_statistics_table(values)
     end
 
+    def number_of_values
+      values.length
+    end
+
     def values_summary
       if values.length < 3 || values.inspect.length < 80
         values.inspect

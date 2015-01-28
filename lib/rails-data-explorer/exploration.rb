@@ -6,6 +6,8 @@ class RailsDataExplorer
 
     attr_accessor :charts, :data_set, :title
 
+    delegate :number_of_values, to: :data_set, prefix: false
+
     # Initializes a new visualization.
     # @param[String] _title will be printed at top of visualization
     # @param[Array] data_set_or_array can be a number of things:

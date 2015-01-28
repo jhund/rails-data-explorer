@@ -58,6 +58,10 @@ class RailsDataExplorer
       # TODO: all elements in a series are of same type
     end
 
+    def number_of_values
+      @data_series.first.number_of_values
+    end
+
     def dimensions_count
       @data_series.length
     end

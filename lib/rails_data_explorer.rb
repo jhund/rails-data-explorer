@@ -70,6 +70,10 @@ class RailsDataExplorer
     r
   end
 
+  def number_of_values
+    explorations.first.number_of_values
+  end
+
 private
 
   def build_exploration_from_data_series_specs(data_collection, ds_specs)
