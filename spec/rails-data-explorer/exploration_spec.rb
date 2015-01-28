@@ -23,19 +23,19 @@ class RailsDataExplorer
       [
         [
           ['Univariate Integer data', [nil, 1, 2, 3]],
-          { :has_charts => ['histogram-quantitative', 'descriptive-statistics-table'] }
+          { has_charts: ['histogram-quantitative', 'descriptive-statistics-table'] }
         ],
         [
           ['Univariate Decimal data', [nil, 1.0, 2.0, 3.0]],
-          { :has_charts => ['histogram-quantitative', 'descriptive-statistics-table'] }
+          { has_charts: ['histogram-quantitative', 'descriptive-statistics-table'] }
         ],
         [
           ['Univariate Temporal data', [nil, Time.now]],
-          { :has_charts => ['histogram-temporal', 'descriptive-statistics-table'] }
+          { has_charts: ['histogram-temporal', 'descriptive-statistics-table'] }
         ],
         [
           ['Univariate Categorical data', [nil, 'a', 'b', 'c']],
-          { :has_charts => ['histogram-categorical', 'pie-chart', 'descriptive-statistics-table'] }
+          { has_charts: ['histogram-categorical', 'pie-chart', 'descriptive-statistics-table'] }
         ],
       ].each { |(args, xpect_options)|
         title, data_set_or_array, chart_specs = args

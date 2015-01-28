@@ -29,9 +29,9 @@ class RailsDataExplorer
         }.map { |(label, threshold)|
           raise "Invalid threshold: #{ threshold.inspect }"  unless threshold.is_a?(Numeric)
           @max = [@max, threshold].max
-          { :label => label, :lte => threshold }
+          { label: label, lte: threshold }
         }
-        @bin_specs << { :label => "> #{ @max }", :gt => @max }
+        @bin_specs << { label: "> #{ @max }", gt: @max }
       end
 
       def bin(value)

@@ -20,7 +20,7 @@ class RailsDataExplorer
         return false  if x_ds.nil? || y_ds.nil?
 
         # initialize data_matrix
-        data_matrix = { :_sum => { :_sum => 0 } }
+        data_matrix = { _sum: { _sum: 0 } }
         x_ds.uniq_vals.each { |x_val|
           data_matrix[x_val] = {}
           data_matrix[x_val][:_sum] = 0

@@ -21,25 +21,25 @@ class RailsDataExplorer
     # Renders an HTML table
     # @param rde_table [RdeTable]
     def render_html_table(rde_table)
-      content_tag(:table, :class => 'table rde-table') do
+      content_tag(:table, class: 'table rde-table') do
         rde_table.rows.map { |row|
-          content_tag(row.tag, :class => row.css_class) do
+          content_tag(row.tag, class: row.css_class) do
             row.cells.map { |cell|
               if cell.ruby_formatter
                 content_tag(
                   cell.tag,
                   instance_exec(cell.value, &cell.ruby_formatter),
-                  :class => cell.css_class,
-                  :title => cell.title,
-                  :style => cell.style,
+                  class: cell.css_class,
+                  title: cell.title,
+                  style: cell.style,
                 )
               else
                 content_tag(
                   cell.tag,
                   cell.value,
-                  :class => cell.css_class,
-                  :title => cell.title,
-                  :style => cell.style,
+                  class: cell.css_class,
+                  title: cell.title,
+                  style: cell.style,
                 )
               end
             }.join.html_safe

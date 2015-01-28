@@ -27,7 +27,7 @@ class RailsDataExplorer
         running_sum = 0
         @categories.each_with_index { |e, idx|
           running_sum += @category_probabilities[idx]
-          category_order << { :category => e, :threshold => running_sum }
+          category_order << { category: e, threshold: running_sum }
         }
         category_order
       end

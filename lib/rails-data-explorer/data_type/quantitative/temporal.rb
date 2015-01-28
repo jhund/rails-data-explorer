@@ -6,10 +6,10 @@ class RailsDataExplorer
         def all_available_chart_types
           [
             {
-              :chart_class => Chart::HistogramTemporal,
-              :chart_roles => [:x],
-              :dimensions_count_min => 1,
-              :dimensions_count_max => 1
+              chart_class: Chart::HistogramTemporal,
+              chart_roles: [:x],
+              dimensions_count_min: 1,
+              dimensions_count_max: 1
             },
             {
               chart_class: Chart::DescriptiveStatisticsTable,
@@ -29,9 +29,9 @@ class RailsDataExplorer
           non_nil_values = values.find_all { |e| !e.nil? }
           ruby_formatter = Proc.new { |v| v.nil? ? '' : v.strftime('%a, %b %e, %Y, %l:%M:%S %p %Z') }
           [
-            { :label => 'Min', :value => non_nil_values.min, :ruby_formatter => ruby_formatter },
-            { :label => 'Max', :value => non_nil_values.max, :ruby_formatter => ruby_formatter },
-            { :label => 'Count', :value => values.length, :ruby_formatter => Proc.new { |e| number_with_delimiter(e) } },
+            { label: 'Min', value: non_nil_values.min, ruby_formatter: ruby_formatter },
+            { label: 'Max', value: non_nil_values.max, ruby_formatter: ruby_formatter },
+            { label: 'Count', value: values.length, ruby_formatter: Proc.new { |e| number_with_delimiter(e) } },
           ]
         end
 

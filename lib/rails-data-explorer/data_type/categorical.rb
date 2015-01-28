@@ -5,16 +5,16 @@ class RailsDataExplorer
       def all_available_chart_types
         [
           {
-            :chart_class => Chart::HistogramCategorical,
-            :chart_roles => [:x],
-            :dimensions_count_min => 1,
-            :dimensions_count_max => 1,
+            chart_class: Chart::HistogramCategorical,
+            chart_roles: [:x],
+            dimensions_count_min: 1,
+            dimensions_count_max: 1,
           },
           # {
-          #   :chart_class => Chart::PieChart,
-          #   :chart_roles => [:any],
-          #   :dimensions_count_min => 1,
-          #   :dimensions_count_max => 1,
+          #   chart_class: Chart::PieChart,
+          #   chart_roles: [:any],
+          #   dimensions_count_min: 1,
+          #   dimensions_count_max: 1,
           # },
           {
             chart_class: Chart::BoxPlotGroup,
@@ -63,12 +63,12 @@ class RailsDataExplorer
         labels_ds = DataSeries.new('_', values.uniq)
         total_count = values.length
         ruby_formatters = {
-          :integer => Proc.new { |v| number_with_delimiter(v.round) },
-          :percent => Proc.new { |v| number_to_percentage(v, :precision => 3, :significant => true, :strip_insignificant_zeros => true, :delimiter => ',') },
+          integer: Proc.new { |v| number_with_delimiter(v.round) },
+          percent: Proc.new { |v| number_to_percentage(v, precision: 3, significant: true, strip_insignificant_zeros: true, delimiter: ',') },
         }
         r = frequencies.inject([]) { |m, (k,v)|
-          m << { :label => "#{ k.to_s }_count", :value => v, :ruby_formatter => ruby_formatters[:integer] }
-          m << { :label => "#{ k.to_s }_percent", :value => (v / total_count.to_f) * 100, :ruby_formatter => ruby_formatters[:percent] }
+          m << { label: "#{ k.to_s }_count", value: v, ruby_formatter: ruby_formatters[:integer] }
+          m << { label: "#{ k.to_s }_percent", value: (v / total_count.to_f) * 100, ruby_formatter: ruby_formatters[:percent] }
           m
         }.sort(
           &labels_ds.label_sorter(
@@ -76,8 +76,8 @@ class RailsDataExplorer
             lambda { |a,b| b[:value] <=> a[:value] }
           )
         )
-        r.insert(0, { :label => '[Total]_count', :value => total_count, :ruby_formatter => ruby_formatters[:integer] })
-        r.insert(0, { :label => '[Total]_percent', :value => 100, :ruby_formatter => ruby_formatters[:percent] })
+        r.insert(0, { label: '[Total]_count', value: total_count, ruby_formatter: ruby_formatters[:integer] })
+        r.insert(0, { label: '[Total]_percent', value: 100, ruby_formatter: ruby_formatters[:percent] })
         r
       end
 

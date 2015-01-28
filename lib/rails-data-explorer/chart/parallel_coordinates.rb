@@ -81,10 +81,10 @@ class RailsDataExplorer
           m
         }
         {
-          :dimensions => dimension_names,
-          :values => dimension_values,
-          :types => dimension_types,
-          :alpha => 1 / ([Math.log([number_of_values, 2].max), 10].min) # from 1.0 to 0.1
+          dimensions: dimension_names,
+          values: dimension_values,
+          types: dimension_types,
+          alpha: 1 / ([Math.log([number_of_values, 2].max), 10].min) # from 1.0 to 0.1
         }
       end
 

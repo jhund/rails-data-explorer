@@ -13,8 +13,8 @@ class RailsDataExplorer
 
     data_series_specs.each do |data_series_spec|
       ds_spec = {
-        :univariate => true,
-        :bivariate => true,
+        univariate: true,
+        bivariate: true,
       }.merge(data_series_spec)
       univariate << ds_spec.dup  if ds_spec[:univariate]
 
@@ -77,8 +77,8 @@ private
       ds_specs.map { |e| e[:name] }.sort.join(' vs. '),
       ds_specs.map { |ds_spec|
         {
-          :name => ds_spec[:name],
-          :values => data_collection.map(&ds_spec[:data_method])
+          name: ds_spec[:name],
+          values: data_collection.map(&ds_spec[:data_method])
         }
       }
     )
@@ -86,18 +86,18 @@ private
 
   def render_toc(expls)
     grouped_by_analysis = expls.group_by { |e| e.type_of_analysis }
-    content_tag(:div, :class => 'rde panel panel-primary') do
-      content_tag(:div, :class => 'panel-heading') do
+    content_tag(:div, class: 'rde panel panel-primary') do
+      content_tag(:div, class: 'panel-heading') do
         %(<a name="rails_data_explorer-toc"></a>).html_safe +
-        content_tag(:h2, "List of data explorations", :class => 'rde-exploration-title panel-title')
+        content_tag(:h2, "List of data explorations", class: 'rde-exploration-title panel-title')
       end +
-      content_tag(:div, :class => 'panel-body') do
-        content_tag(:table, :class => 'table') do
+      content_tag(:div, class: 'panel-body') do
+        content_tag(:table, class: 'table') do
           content_tag(:tr) do
             grouped_by_analysis.map { |(label, exps)|
-              content_tag(:td, :style => "width: 30%;") do
+              content_tag(:td, style: "width: 30%;") do
                 content_tag(:h3, label) +
-                content_tag(:ol, :class => 'rde-table_of_contents') do
+                content_tag(:ol, class: 'rde-table_of_contents') do
                   exps.map { |expl|
                     content_tag(
                       :li,
@@ -119,11 +119,11 @@ private
 
   def render_explorations_without_charts(expls)
     return ''  if expls.empty?
-    content_tag(:div, :class => 'rde panel panel-default') do
-      content_tag(:div, :class => 'panel-heading') do
-        content_tag(:h2, "Explorations without charts", :class => 'rde-exploration-title panel-title')
+    content_tag(:div, class: 'rde panel panel-default') do
+      content_tag(:div, class: 'panel-heading') do
+        content_tag(:h2, "Explorations without charts", class: 'rde-exploration-title panel-title')
       end +
-      content_tag(:div, :class => 'panel-body') do
+      content_tag(:div, class: 'panel-body') do
         content_tag(:p, "There are no charts available for the following explorations:") +
         content_tag(:ul) do
           expls.map { |expl|
@@ -135,7 +135,7 @@ private
   end
 
   def separate_explorations_with_and_without_charts
-    explorations.inject({ :with => [], :without => [] }) { |m, e|
+    explorations.inject({ with: [], without: [] }) { |m, e|
       m[e.charts.any? ? :with : :without] << e
       m
     }

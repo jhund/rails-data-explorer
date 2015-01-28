@@ -12,7 +12,7 @@ class RailsDataExplorer
         return false  if x_ds.nil?
 
         # compute histogram
-        quantizer = Utils::DataQuantizer.new(x_ds, :max_number_of_bins => 100)
+        quantizer = Utils::DataQuantizer.new(x_ds, max_number_of_bins: 100)
         quantized_values = quantizer.values
         number_of_bars = quantizer.number_of_bins
         width = 800

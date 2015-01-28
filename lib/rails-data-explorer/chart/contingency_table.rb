@@ -70,9 +70,9 @@ class RailsDataExplorer
                     @observed_vals[x_val][y_val],
                     css_class: 'rde-numerical',
                     title: [
-                      "Expected value: #{ number_with_precision(@expected_vals[x_val][y_val], :precision => 3, :significant => true) }",
-                      "Percentage of row: #{ number_to_percentage(@delta_attrs[x_val][y_val][:percentage_of_row], :precision => 3, :significant => true) }",
-                      "Percentage of col: #{ number_to_percentage(@delta_attrs[x_val][y_val][:percentage_of_col], :precision => 3, :significant => true) }",
+                      "Expected value: #{ number_with_precision(@expected_vals[x_val][y_val], precision: 3, significant: true) }",
+                      "Percentage of row: #{ number_to_percentage(@delta_attrs[x_val][y_val][:percentage_of_row], precision: 3, significant: true) }",
+                      "Percentage of col: #{ number_to_percentage(@delta_attrs[x_val][y_val][:percentage_of_col], precision: 3, significant: true) }",
                     ].join("\n"),
                     style: "color: #{ @delta_attrs[x_val][y_val][:color] };",
                   )
@@ -81,7 +81,7 @@ class RailsDataExplorer
                   Utils::RdeTableCell.new(
                     :th,
                     @observed_vals[:_sum][y_val],
-                    title: "Percentage of col: #{ number_to_percentage(@delta_attrs[:_sum][y_val][:percentage_of_col], :precision => 3, :significant => true) }"
+                    title: "Percentage of col: #{ number_to_percentage(@delta_attrs[:_sum][y_val][:percentage_of_col], precision: 3, significant: true) }"
                   )
                 ],
                 css_class: 'rde-data_row'
@@ -96,7 +96,7 @@ class RailsDataExplorer
                   Utils::RdeTableCell.new(
                     :th,
                     @observed_vals[x_val][:_sum],
-                    title: "Percentage of row: #{ number_to_percentage(@delta_attrs[x_val][:_sum][:percentage_of_row], :precision => 3, :significant => true) }"
+                    title: "Percentage of row: #{ number_to_percentage(@delta_attrs[x_val][:_sum][:percentage_of_row], precision: 3, significant: true) }"
                   )
                 } +
                 [Utils::RdeTableCell.new(:th, @observed_vals[:_sum][:_sum])],
@@ -115,8 +115,8 @@ class RailsDataExplorer
         ca = compute_chart_attrs
         return ''  unless ca
 
-        content_tag(:div, :class => 'rde-chart rde-contingency-table', :id => dom_id) do
-          content_tag(:h3, "Contingency Table", :class => 'rde-chart-title') +
+        content_tag(:div, class: 'rde-chart rde-contingency-table', id: dom_id) do
+          content_tag(:h3, "Contingency Table", class: 'rde-chart-title') +
           render_html_table(ca)
         end +
         content_tag(:p, @conclusion)
@@ -134,7 +134,7 @@ class RailsDataExplorer
       # @param[DataSeries] y_ds
       def compute_contingency_and_chi_squared!(x_ds, y_ds)
         # Compute the observed values table
-        @observed_vals = { :_sum => { :_sum => 0 } }
+        @observed_vals = { _sum: { _sum: 0 } }
         x_ds.uniq_vals.each { |x_val|
           @observed_vals[x_val] = {}
           @observed_vals[x_val][:_sum] = 0
@@ -173,24 +173,24 @@ class RailsDataExplorer
           }
         }
         # Compute deltas
-        @delta_attrs = { :_sum => {} }
+        @delta_attrs = { _sum: {} }
         color_scale = RailsDataExplorer::Utils::ColorScale.new
         x_ds.uniq_vals.each { |x_val|
-          @delta_attrs[x_val] = { :_sum => {} }
+          @delta_attrs[x_val] = { _sum: {} }
           @delta_attrs[x_val][:_sum][:percentage_of_row] = (@observed_vals[x_val][:_sum] / @observed_vals[:_sum][:_sum].to_f) * 100
           y_ds.uniq_vals.each { |y_val|
             delta = @observed_vals[x_val][y_val] - @expected_vals[x_val][y_val]
             delta_factor = delta / @expected_vals[x_val][y_val].to_f
             @delta_attrs[x_val][y_val] = {
-              :expected => @expected_vals[x_val][y_val],
-              :color => color_scale.compute(delta_factor),
-              :delta => delta,
-              :delta_factor => delta_factor,
-              :percentage_of_row => (@observed_vals[x_val][y_val] / @observed_vals[:_sum][y_val].to_f) * 100,
-              :percentage_of_col => (@observed_vals[x_val][y_val] / @observed_vals[x_val][:_sum].to_f) * 100,
+              :expected @expected_vals[x_val][y_val],
+              color: color_scale.compute(delta_factor),
+              delta: delta,
+              delta_factor: delta_factor,
+              percentage_of_row: (@observed_vals[x_val][y_val] / @observed_vals[:_sum][y_val].to_f) * 100,
+              percentage_of_col: (@observed_vals[x_val][y_val] / @observed_vals[x_val][:_sum].to_f) * 100,
             }
             @delta_attrs[:_sum][y_val] ||= {
-              :percentage_of_col => (@observed_vals[:_sum][y_val] / @observed_vals[:_sum][:_sum].to_f) * 100
+              percentage_of_col: (@observed_vals[:_sum][y_val] / @observed_vals[:_sum][:_sum].to_f) * 100
             }
           }
         }
@@ -213,7 +213,7 @@ class RailsDataExplorer
           @conclusion = [
             "We did not run the ",
             %(<a href="http://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#Test_of_independence">Pearson chi squared test of independence</a> ),
-            "since #{ number_to_percentage(ratio_of_observed_vals_below_five * 100, :precision => 0) } ",
+            "since #{ number_to_percentage(ratio_of_observed_vals_below_five * 100, precision: 0) } ",
             "of observed values in the contingency table are below 5 (cutoff is 20%)."
           ].join
         elsif([x_ds, y_ds].any? { |e| e.uniq_vals.length < 2 })

@@ -28,8 +28,8 @@ class RailsDataExplorer
           }
         end
         {
-          :dimensions => dimension_names,
-          :values => dimension_values
+          dimensions: dimension_names,
+          values: dimension_values
         }
       end
 

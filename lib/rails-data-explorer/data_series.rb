@@ -5,8 +5,8 @@ class RailsDataExplorer
     # http://en.wikipedia.org/wiki/Significant_figures
 
     attr_reader :data_type, :name, :values, :chart_roles
-    delegate :available_chart_types, :to => :data_type, :prefix => false
-    delegate :available_chart_roles, :to => :data_type, :prefix => false
+    delegate :available_chart_types, to: :data_type, prefix: false
+    delegate :available_chart_roles, to: :data_type, prefix: false
 
     # Any data series with a dynamic range greater than this is considered
     # having a large dynamic range

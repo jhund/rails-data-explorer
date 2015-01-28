@@ -8,10 +8,10 @@ class RailsDataExplorer
 
       def initialize(data_series, options = {})
         @options = {
-          :nice => true,
-          :type => 'midtread', # 'midtread' or 'midrise'
-          :number_of_bins => 100, # assuming 800px wide chart, 8px per bin
-          :delta => nil,
+          nice: true,
+          type: 'midtread', # 'midtread' or 'midrise'
+          number_of_bins: 100, # assuming 800px wide chart, 8px per bin
+          delta: nil,
         }.merge(options)
         @data_series = data_series
         @number_of_bins = @options[:number_of_bins]

@@ -47,10 +47,10 @@ class RailsDataExplorer
         non_nil_values = values.find_all { |e| !(e.nil? || Float::NAN == e) }
         stats = ::DescriptiveStatistics::Stats.new(non_nil_values)
         ruby_formatters = {
-          :integer => Proc.new { |v|
+          integer: Proc.new { |v|
             v.nil? ? 'Null' : number_with_delimiter(v.round)
           },
-          :decimal => Proc.new { |v|
+          decimal: Proc.new { |v|
             case
             when v.nil?
               'Null'
@@ -59,39 +59,39 @@ class RailsDataExplorer
             else
               number_with_precision(
                 v,
-                :precision => 3,
-                :significant => true,
-                :strip_insignificant_zeros => true,
-                :delimiter => ','
+                precision: 3,
+                significant: true,
+                strip_insignificant_zeros: true,
+                delimiter: ','
               )
             end
           },
-          :pass_through => Proc.new { |v| (v.nil? || Float::NAN == v) ? 'NaN' : v },
+          pass_through: Proc.new { |v| (v.nil? || Float::NAN == v) ? 'NaN' : v },
         }
         [
-          { :label => 'Min', :value => stats.min, :ruby_formatter => ruby_formatters[:decimal], :table_row => 1 },
-          { :label => '1%ile', :value => stats.value_from_percentile(1), :ruby_formatter => ruby_formatters[:decimal], :table_row => 1 },
-          { :label => '5%ile', :value => stats.value_from_percentile(5), :ruby_formatter => ruby_formatters[:decimal], :table_row => 1 },
-          { :label => '10%ile', :value => stats.value_from_percentile(10), :ruby_formatter => ruby_formatters[:decimal], :table_row => 1 },
-          { :label => '25%ile', :value => stats.value_from_percentile(25), :ruby_formatter => ruby_formatters[:decimal], :table_row => 1 },
-          { :label => 'Median', :value => stats.median, :ruby_formatter => ruby_formatters[:decimal], :table_row => 1 },
-          { :label => '75%ile', :value => stats.value_from_percentile(75), :ruby_formatter => ruby_formatters[:decimal], :table_row => 1 },
-          { :label => '90%ile', :value => stats.value_from_percentile(90), :ruby_formatter => ruby_formatters[:decimal], :table_row => 1 },
-          { :label => '95%ile', :value => stats.value_from_percentile(95), :ruby_formatter => ruby_formatters[:decimal], :table_row => 1 },
-          { :label => '99%ile', :value => stats.value_from_percentile(99), :ruby_formatter => ruby_formatters[:decimal], :table_row => 1 },
-          { :label => 'Max', :value => stats.max, :ruby_formatter => ruby_formatters[:decimal], :table_row => 1 },
+          { label: 'Min', value: stats.min, ruby_formatter: ruby_formatters[:decimal], table_row: 1 },
+          { label: '1%ile', value: stats.value_from_percentile(1), ruby_formatter: ruby_formatters[:decimal], table_row: 1 },
+          { label: '5%ile', value: stats.value_from_percentile(5), ruby_formatter: ruby_formatters[:decimal], table_row: 1 },
+          { label: '10%ile', value: stats.value_from_percentile(10), ruby_formatter: ruby_formatters[:decimal], table_row: 1 },
+          { label: '25%ile', value: stats.value_from_percentile(25), ruby_formatter: ruby_formatters[:decimal], table_row: 1 },
+          { label: 'Median', value: stats.median, ruby_formatter: ruby_formatters[:decimal], table_row: 1 },
+          { label: '75%ile', value: stats.value_from_percentile(75), ruby_formatter: ruby_formatters[:decimal], table_row: 1 },
+          { label: '90%ile', value: stats.value_from_percentile(90), ruby_formatter: ruby_formatters[:decimal], table_row: 1 },
+          { label: '95%ile', value: stats.value_from_percentile(95), ruby_formatter: ruby_formatters[:decimal], table_row: 1 },
+          { label: '99%ile', value: stats.value_from_percentile(99), ruby_formatter: ruby_formatters[:decimal], table_row: 1 },
+          { label: 'Max', value: stats.max, ruby_formatter: ruby_formatters[:decimal], table_row: 1 },
 
-          { :label => 'Range', :value => stats.range, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
-          { :label => 'Mean', :value => stats.mean, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
-          { :label => 'Mode', :value => stats.mode, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
-          { :label => 'Count', :value => values.length, :ruby_formatter => ruby_formatters[:integer], :table_row => 2 },
-          { :label => 'Sum', :value => non_nil_values.inject(0) { |m,e| m += e }, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
-          { :label => 'Variance', :value => stats.variance, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
-          { :label => 'Std. dev.', :value => stats.standard_deviation, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
-          { :label => 'Rel. std. dev.', :value => stats.relative_standard_deviation, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
-          { :label => 'Skewness', :value => stats.skewness, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
-          { :label => 'Kurtosis', :value => stats.kurtosis, :ruby_formatter => ruby_formatters[:decimal], :table_row => 2 },
-          { :label => '', :value => '', :ruby_formatter => ruby_formatters[:pass_through], :table_row => 2 },
+          { label: 'Range', value: stats.range, ruby_formatter: ruby_formatters[:decimal], table_row: 2 },
+          { label: 'Mean', value: stats.mean, ruby_formatter: ruby_formatters[:decimal], table_row: 2 },
+          { label: 'Mode', value: stats.mode, ruby_formatter: ruby_formatters[:decimal], table_row: 2 },
+          { label: 'Count', value: values.length, ruby_formatter: ruby_formatters[:integer], table_row: 2 },
+          { label: 'Sum', value: non_nil_values.inject(0) { |m,e| m += e }, ruby_formatter: ruby_formatters[:decimal], table_row: 2 },
+          { label: 'Variance', value: stats.variance, ruby_formatter: ruby_formatters[:decimal], table_row: 2 },
+          { label: 'Std. dev.', value: stats.standard_deviation, ruby_formatter: ruby_formatters[:decimal], table_row: 2 },
+          { label: 'Rel. std. dev.', value: stats.relative_standard_deviation, ruby_formatter: ruby_formatters[:decimal], table_row: 2 },
+          { label: 'Skewness', value: stats.skewness, ruby_formatter: ruby_formatters[:decimal], table_row: 2 },
+          { label: 'Kurtosis', value: stats.kurtosis, ruby_formatter: ruby_formatters[:decimal], table_row: 2 },
+          { label: '', value: '', ruby_formatter: ruby_formatters[:pass_through], table_row: 2 },
         ]
       end
 
