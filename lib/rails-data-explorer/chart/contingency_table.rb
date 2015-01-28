@@ -225,9 +225,9 @@ class RailsDataExplorer
         else
           @conclusion = %(<a href="http://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test#Test_of_independence">Pearson chi squared test of independence</a> suggests that )
           @conclusion << if @p_value <= @significance_level
-            %("#{ x_ds.name }" and "#{ y_ds.name }" are dependent variables (p_value: #{ number_with_precision(@p_value) }))
+            %("#{ x_ds.name }" and "#{ y_ds.name }" are dependent variables (p_value of #{ number_with_precision(@p_value) } <= #{ number_with_precision(@significance_level )}))
           else
-            %("#{ x_ds.name }" and "#{ y_ds.name }" are independent variables (p_value: #{ number_with_precision(@p_value) }))
+            %("#{ x_ds.name }" and "#{ y_ds.name }" are independent variables (p_value of #{ number_with_precision(@p_value) } > #{ number_with_precision(@significance_level )}))
           end
         end
         @conclusion = @conclusion.html_safe
