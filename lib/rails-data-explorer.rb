@@ -20,6 +20,7 @@ require 'rails-data-explorer/statistics/rng_power_law'
 require 'rails-data-explorer/utils/color_scale'
 require 'rails-data-explorer/utils/data_binner'
 require 'rails-data-explorer/utils/data_quantizer'
+require 'rails-data-explorer/utils/rde_table'
 require 'rails-data-explorer/utils/value_formatter'
 
 require 'rails-data-explorer/chart/box_plot'

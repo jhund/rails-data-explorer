@@ -19,10 +19,10 @@ class RailsDataExplorer
   protected
 
     # Renders an HTML table
-    # @param[OpenStruct, Struct] table_struct
-    def render_html_table(table_struct)
+    # @param rde_table [RdeTable]
+    def render_html_table(rde_table)
       content_tag(:table, :class => 'table rde-table') do
-        table_struct.rows.map { |row|
+        rde_table.rows.map { |row|
           content_tag(row.tag, :class => row.css_class) do
             row.cells.map { |cell|
               if cell.ruby_formatter

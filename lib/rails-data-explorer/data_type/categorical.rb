@@ -81,7 +81,7 @@ class RailsDataExplorer
         r
       end
 
-      # Returns an OpenStruct that describes a statistics table.
+      # Returns an object that describes a statistics table.
       def descriptive_statistics_table(values)
         desc_stats = descriptive_statistics(values)
         if desc_stats.length < DataSeries.many_uniq_vals_threshold
@@ -93,68 +93,64 @@ class RailsDataExplorer
 
       def descriptive_statistics_table_horizontal(desc_stats)
         labels = desc_stats.map { |e| e[:label].gsub(/_count|_percent/, '') }.uniq
-        table = OpenStruct.new(
-          :rows => []
+        table = Utils::RdeTable.new([])
+        table.rows << Utils::RdeTableRow.new(
+          :tr,
+          labels.map { |label|
+            Utils::RdeTableCell.new(:th, label, ruby_formatter: Proc.new { |e| e }, css_class: 'rde-cell-label')
+          },
+          css_class: 'rde-column_header'
         )
-        table.rows << OpenStruct.new(
-          :css_class => 'rde-column_header',
-          :tag => :tr,
-          :cells => labels.map { |label|
-            OpenStruct.new(:value => label, :ruby_formatter => Proc.new { |e| e }, :tag => :th, :css_class => 'rde-cell-label')
-          }
-        )
-        table.rows << OpenStruct.new(
-          :css_class => 'rde-data_row',
-          :tag => :tr,
-          :cells => labels.map { |label|
+        table.rows << Utils::RdeTableRow.new(
+          :tr,
+          labels.map { |label|
             stat = desc_stats.detect { |e| "#{ label }_count" == e[:label] }
-            OpenStruct.new(:value => stat[:value], :ruby_formatter => stat[:ruby_formatter], :tag => :td, :css_class => 'rde-cell-value')
-          }
+            Utils::RdeTableCell.new(:td, stat[:value], ruby_formatter: stat[:ruby_formatter], css_class: 'rde-cell-value')
+          },
+          css_class: 'rde-data_row'
         )
-        table.rows << OpenStruct.new(
-          :css_class => 'rde-data_row',
-          :tag => :tr,
-          :cells => labels.map { |label|
+        table.rows << Utils::RdeTableRow.new(
+          :tr,
+          labels.map { |label|
             stat = desc_stats.detect { |e| "#{ label }_percent" == e[:label] }
-            OpenStruct.new(:value => stat[:value], :ruby_formatter => stat[:ruby_formatter], :tag => :td, :css_class => 'rde-cell-value')
-          }
+            Utils::RdeTableCell.new(:td, stat[:value], ruby_formatter: stat[:ruby_formatter], css_class: 'rde-cell-value')
+          },
+          css_class: 'rde-data_row'
         )
         table
       end
 
       def descriptive_statistics_table_vertical(desc_stats)
         labels = desc_stats.map { |e| e[:label].gsub(/_count|_percent/, '') }.uniq
-        table = OpenStruct.new(
-          :rows => []
-        )
-        table.rows << OpenStruct.new(
-          :css_class => 'rde-column_header',
-          :tag => :tr,
-          :cells => %w[Value Count Percent].map { |label|
-            OpenStruct.new(:value => label, :tag => :th, :css_class => 'rde-cell-label')
-          }
+        table = Utils::RdeTable.new([])
+        table.rows << Utils::RdeTableRow.new(
+          :tr,
+          %w[Value Count Percent].map { |label|
+            Utils::RdeTableCell.new(:th, label, css_class: 'rde-cell-label')
+          },
+          css_class: 'rde-column_header',
         )
         labels.each { |label|
           count_stat = desc_stats.detect { |e| "#{ label }_count" == e[:label] }
           percent_stat = desc_stats.detect { |e| "#{ label }_percent" == e[:label] }
-          table.rows << OpenStruct.new(
-            :css_class => 'rde-data_row',
-            :tag => :tr,
-            :cells => [
-              OpenStruct.new(:value => label, :tag => :td, :css_class => 'rde-cell-value'),
-              OpenStruct.new(
-                :value => count_stat[:value],
-                :ruby_formatter => count_stat[:ruby_formatter],
-                :tag => :td,
-                :css_class => 'rde-cell-value'
+          table.rows << Utils::RdeTableRow.new(
+            :tr,
+            [
+              Utils::RdeTableCell.new(:td, label, css_class: 'rde-cell-value'),
+              Utils::RdeTableCell.new(
+                :td,
+                count_stat[:value],
+                ruby_formatter: count_stat[:ruby_formatter],
+                css_class: 'rde-cell-value'
               ),
-              OpenStruct.new(
-                :value => percent_stat[:value],
-                :ruby_formatter => percent_stat[:ruby_formatter],
-                :tag => :td,
-                :css_class => 'rde-cell-value'
+              Utils::RdeTableCell.new(
+                :td,
+                percent_stat[:value],
+                ruby_formatter: percent_stat[:ruby_formatter],
+                css_class: 'rde-cell-value'
               ),
-            ]
+            ],
+            css_class: 'rde-data_row',
           )
         }
         table

@@ -35,18 +35,18 @@ class RailsDataExplorer
           ]
         end
 
-        # Returns an OpenStruct that describes a statistics table.
+        # Returns an object that describes a statistics table.
         def descriptive_statistics_table(values)
           desc_stats = descriptive_statistics(values)
-          table = OpenStruct.new(
-            :rows => desc_stats.map { |stat|
-              OpenStruct.new(
-                :css_class => 'rde-row-values',
-                :tag => :tr,
-                :cells => [
-                  OpenStruct.new(:value => stat[:label], :tag => :th, :css_class => 'rde-row_header'),
-                  OpenStruct.new(:value => stat[:value], :ruby_formatter => stat[:ruby_formatter], :tag => :td, :css_class => 'rde-cell-value'),
-                ]
+          table = Utils::RdeTable.new(
+            desc_stats.map { |stat|
+              Utils::RdeTableRow.new(
+                :tr,
+                [
+                  Utils::RdeTableCell.new(:th, stat[:label], css_class: 'rde-row_header'),
+                  Utils::RdeTableCell.new(:td, stat[:value], ruby_formatter: stat[:ruby_formatter], css_class: 'rde-cell-value'),
+                ],
+                css_class: 'rde-row-values',
               )
             }
           )

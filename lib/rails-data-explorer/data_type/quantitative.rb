@@ -95,26 +95,24 @@ class RailsDataExplorer
         ]
       end
 
-      # Returns an OpenStruct that describes a statistics table.
+      # Returns an object that describes a statistics table.
       def descriptive_statistics_table(values)
         desc_stats = descriptive_statistics(values)
-        table = OpenStruct.new(
-          :rows => []
-        )
+        table = Utils::RdeTable.new([])
         [1,2].each do |table_row|
-          table.rows << OpenStruct.new(
-            :css_class => 'rde-column_header',
-            :tag => :tr,
-            :cells => desc_stats.find_all { |e| table_row == e[:table_row] }.map { |stat|
-              OpenStruct.new(:value => stat[:label], :ruby_formatter => Proc.new { |e| e }, :tag => :th, :css_class => 'rde-cell-label')
-            }
+          table.rows << Utils::RdeTableRow.new(
+            :tr,
+            desc_stats.find_all { |e| table_row == e[:table_row] }.map { |stat|
+              Utils::RdeTableCell.new(:th, stat[:label], ruby_formatter: Proc.new { |e| e }, css_class: 'rde-cell-label')
+            },
+            css_class: 'rde-column_header'
           )
-          table.rows << OpenStruct.new(
-            :css_class => 'rde-data_row',
-            :tag => :tr,
-            :cells => desc_stats.find_all { |e| table_row == e[:table_row] }.map { |stat|
-              OpenStruct.new(:value => stat[:value], :ruby_formatter => stat[:ruby_formatter], :tag => :td, :css_class => 'rde-cell-value')
-            }
+          table.rows << Utils::RdeTableRow.new(
+            :tr,
+            desc_stats.find_all { |e| table_row == e[:table_row] }.map { |stat|
+              Utils::RdeTableCell.new(:td, stat[:value], ruby_formatter: stat[:ruby_formatter], css_class: 'rde-cell-value')
+            },
+            css_class: 'rde-data_row'
           )
         end
         table

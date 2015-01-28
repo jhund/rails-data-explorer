@@ -46,68 +46,61 @@ class RailsDataExplorer
 
         ca = case @data_set.dimensions_count
         when 2
-          # Table
-          OpenStruct.new(
+          Utils::RdeTable.new(
             # Top header row
-            :rows => [
-              OpenStruct.new(
-                :css_class => 'rde-column_header',
-                :tag => :tr,
-                :cells => [
-                  OpenStruct.new(:tag => :th, :value => '')
-                ] +
-                x_sorted_keys.map { |x_val|
-                  OpenStruct.new(:tag => :th, :value => x_val)
-                } +
-                [OpenStruct.new(:tag => :th, :value => 'Totals')]
+            [
+              Utils::RdeTableRow.new(
+                :tr,
+                [Utils::RdeTableCell.new(:th, '')] +
+                x_sorted_keys.map { |x_val| Utils::RdeTableCell.new(:th, x_val) } +
+                [Utils::RdeTableCell.new(:th, 'Totals')],
+                css_class: 'rde-column_header'
               )
             ] +
             # Data rows
             y_sorted_keys.map { |y_val|
-              OpenStruct.new(
-                :css_class => 'rde-data_row',
-                :tag => :tr,
-                :cells => [
-                  OpenStruct.new(:tag => :th, :value => y_val, :css_class => 'rde-row_header')
+              Utils::RdeTableRow.new(
+                :tr,
+                [
+                  Utils::RdeTableCell.new(:th, y_val, css_class: 'rde-row_header')
                 ] +
                 x_sorted_keys.map { |x_val|
-                  OpenStruct.new(
-                    :tag => :td,
-                    :value => @observed_vals[x_val][y_val],
-                    :css_class => 'rde-numerical',
-                    :title => [
+                  Utils::RdeTableCell.new(
+                    :td,
+                    @observed_vals[x_val][y_val],
+                    css_class: 'rde-numerical',
+                    title: [
                       "Expected value: #{ number_with_precision(@expected_vals[x_val][y_val], :precision => 3, :significant => true) }",
                       "Percentage of row: #{ number_to_percentage(@delta_attrs[x_val][y_val][:percentage_of_row], :precision => 3, :significant => true) }",
                       "Percentage of col: #{ number_to_percentage(@delta_attrs[x_val][y_val][:percentage_of_col], :precision => 3, :significant => true) }",
                     ].join("\n"),
-                    :style => "color: #{ @delta_attrs[x_val][y_val][:color] };",
+                    style: "color: #{ @delta_attrs[x_val][y_val][:color] };",
                   )
                 } +
                 [
-                  OpenStruct.new(
-                    :tag => :th,
-                    :value => @observed_vals[:_sum][y_val],
-                    :title => "Percentage of col: #{ number_to_percentage(@delta_attrs[:_sum][y_val][:percentage_of_col], :precision => 3, :significant => true) }"
+                  Utils::RdeTableCell.new(
+                    :th,
+                    @observed_vals[:_sum][y_val],
+                    title: "Percentage of col: #{ number_to_percentage(@delta_attrs[:_sum][y_val][:percentage_of_col], :precision => 3, :significant => true) }"
                   )
-                ]
+                ],
+                css_class: 'rde-data_row'
               )
             } +
             # Footer row
             [
-              OpenStruct.new(
-                :css_class => 'rde-column_header',
-                :tag => :tr,
-                :cells => [
-                  OpenStruct.new(:tag => :th, :value => 'Totals', :css_class => 'rde-row_header')
-                ] +
+              Utils::RdeTableRow.new(
+                :tr,
+                [Utils::RdeTableCell.new(:th, 'Totals', css_class: 'rde-row_header')] +
                 x_sorted_keys.map { |x_val|
-                  OpenStruct.new(
-                    :tag => :th,
-                    :value => @observed_vals[x_val][:_sum],
-                    :title => "Percentage of row: #{ number_to_percentage(@delta_attrs[x_val][:_sum][:percentage_of_row], :precision => 3, :significant => true) }"
+                  Utils::RdeTableCell.new(
+                    :th,
+                    @observed_vals[x_val][:_sum],
+                    title: "Percentage of row: #{ number_to_percentage(@delta_attrs[x_val][:_sum][:percentage_of_row], :precision => 3, :significant => true) }"
                   )
                 } +
-                [OpenStruct.new(:tag => :th, :value => @observed_vals[:_sum][:_sum])]
+                [Utils::RdeTableCell.new(:th, @observed_vals[:_sum][:_sum])],
+                css_class: 'rde-column_header'
               )
             ]
           )
