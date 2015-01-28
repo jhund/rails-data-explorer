@@ -1,3 +1,8 @@
+### 0.2.1
+
+* Fixed a bug
+* Updated documentation
+
 ## 0.2.0
 
 * Improvements to charts.
