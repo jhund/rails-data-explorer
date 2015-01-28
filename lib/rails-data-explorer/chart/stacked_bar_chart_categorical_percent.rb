@@ -9,10 +9,10 @@ class RailsDataExplorer
 
       def compute_chart_attrs
         x_candidates = @data_set.data_series.find_all { |ds|
-          (ds.chart_roles[Chart::ContingencyTable] & [:x, :any]).any?
+          (ds.chart_roles[Chart::StackedBarChartCategoricalPercent] & [:x, :any]).any?
         }.sort { |a,b| b.uniq_vals.length <=> a.uniq_vals.length }
         y_candidates = @data_set.data_series.find_all { |ds|
-          (ds.chart_roles[Chart::ContingencyTable] & [:y, :any]).any?
+          (ds.chart_roles[Chart::StackedBarChartCategoricalPercent] & [:y, :any]).any?
         }
 
         x_ds = x_candidates.first

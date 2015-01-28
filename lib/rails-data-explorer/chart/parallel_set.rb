@@ -11,7 +11,7 @@ class RailsDataExplorer
 
       def compute_chart_attrs
         dimension_data_series = @data_set.data_series.find_all { |ds|
-          (ds.chart_roles[Chart::ParallelCoordinates] & [:dimension, :any]).any?
+          (ds.chart_roles[Chart::ParallelSet] & [:dimension, :any]).any?
         }
         return false  if dimension_data_series.empty?
 
