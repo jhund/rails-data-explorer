@@ -34,37 +34,37 @@ def signups
     user_data,
     [
       {
-        :name => "Session duration [Minutes]",
-        :data_method => Proc.new { |row|
+        name: "Session duration [Minutes]",
+        data_method: Proc.new { |row|
           ((row.session_duration_minutes * 100).round)/100.0
         },
       },
       {
-        :name => "Country",
-        :data_method => Proc.new { |row| row.country },
-        :multivariate => ['All'],
+        name: "Country",
+        data_method: Proc.new { |row| row.country },
+        multivariate: ['All'],
       },
       {
-        :name => "Sign in count",
-        :data_method => Proc.new { |row| c_binner.bin(row.sign_in_count) },
+        name: "Sign in count",
+        data_method: Proc.new { |row| c_binner.bin(row.sign_in_count) },
       },
       {
-        :name => "Language",
-        :data_method => Proc.new { |row| row.language },
-        :multivariate => ['All'],
+        name: "Language",
+        data_method: Proc.new { |row| row.language },
+        multivariate: ['All'],
       },
       {
-        :name => "Plan",
-        :data_method => Proc.new { |row| row.plan },
-        :multivariate => ['All'],
+        name: "Plan",
+        data_method: Proc.new { |row| row.plan },
+        multivariate: ['All'],
       },
       {
-        :name => "Sign up date",
-        :data_method => Proc.new { |row| row.created_at },
+        name: "Sign up date",
+        data_method: Proc.new { |row| row.created_at },
       },
       {
-        :name => "Sign up quarter",
-        :data_method => Proc.new { |row|
+        name: "Sign up quarter",
+        data_method: Proc.new { |row|
           year = row.created_at.year
           quarter = (row.created_at.month / 3.0).ceil
           "#{ year } / Q#{ quarter }"
