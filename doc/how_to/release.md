@@ -1,12 +1,10 @@
-Workflow to Maintain This Gem
-=============================
+# Workflow to Maintain This Gem
 
 I use the gem-release gem
 
 For more info see: https://github.com/svenfuchs/gem-release#usage
 
-Steps for an update
--------------------
+## Steps for an update
 
 1. Update code and commit it.
 2. Add entry to CHANGELOG and commit it:
@@ -18,6 +16,5 @@ Steps for an update
    * `gem release`
 5. Create a git tag and push to origin.
    `gem tag`
-
 
 http://prioritized.net/blog/gemify-assets-for-rails/
