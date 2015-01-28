@@ -72,19 +72,19 @@ class RailsDataExplorer
     end
 
     def uniq_vals
-      @uniq_vals = values.uniq
+      @uniq_vals ||= values.uniq
     end
 
     def uniq_vals_count
-      @uniq_vals_count = uniq_vals.length
+      @uniq_vals_count ||= uniq_vals.length
     end
 
     def min_val
-      @min_val = values.compact.min
+      @min_val ||= values.compact.min
     end
 
     def max_val
-      @max_val = values.compact.max
+      @max_val ||= values.compact.max
     end
 
     # Used to decide whether we can render certain chart types
