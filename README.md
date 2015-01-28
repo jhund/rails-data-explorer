@@ -3,10 +3,11 @@
 Rails-data-explorer is a Rails Engine plugin that makes it easy to explore the
 data in your app using charts and statistics.
 
-You throw your data in table form at rails-data-explorer. Rails-data-explorer then
-analyzes your data and automatically renders suitable charts and descriptive
-statistics for each column. I does uni-, bi- and multi-variate analysis. It
-can even find correlations in your data using Pearson's Chi Squared test.
+All you have to do is to throw your data in table form at rails-data-explorer.
+Rails-data-explorer then analyzes your data and automatically renders suitable
+charts and descriptive statistics for each column. It offers tools for uni-, bi-
+and multi-variate analysis. It can even find correlations in your categorical data
+using Pearson's Chi Squared test.
 
 See below for a screenshot of what you get.
 
