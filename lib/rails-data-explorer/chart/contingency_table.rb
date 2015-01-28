@@ -182,7 +182,7 @@ class RailsDataExplorer
             delta = @observed_vals[x_val][y_val] - @expected_vals[x_val][y_val]
             delta_factor = delta / @expected_vals[x_val][y_val].to_f
             @delta_attrs[x_val][y_val] = {
-              :expected @expected_vals[x_val][y_val],
+              expected: @expected_vals[x_val][y_val],
               color: color_scale.compute(delta_factor),
               delta: delta,
               delta_factor: delta_factor,
