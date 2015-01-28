@@ -8,7 +8,7 @@ Gem::Specification.new do |gem|
 
   gem.authors = ['Jo Hund']
   gem.email = 'jhund@clearcove.ca'
-  gem.homepage = 'http://rails-data-explorer.clearcove.ca'
+  gem.homepage = 'https://github.com/jhund/rails-data-explorer'
   gem.licenses = ['MIT']
   gem.summary = 'A Rails engine plugin for exploring data in your app with charts and statistics.'
   gem.description = %(rails-data-explorer is a Rails Engine plugin that makes it easy to explore the data in your app using charts and statistics.)
