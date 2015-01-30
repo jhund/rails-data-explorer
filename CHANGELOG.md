@@ -1,3 +1,7 @@
+### 0.2.2
+
+* Fixed file inclusion bug that prevented loading of Gem
+
 ### 0.2.1
 
 * Fixed a bug
