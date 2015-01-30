@@ -38,6 +38,12 @@ class RailsDataExplorer
             dimensions_count_min: 2,
             dimensions_count_max: 2,
           },
+          # {
+          #   chart_class: Chart::StackedHistogramTemporal,
+          #   chart_roles: [:y],
+          #   dimensions_count_min: 2,
+          #   dimensions_count_max: 2,
+          # },
           {
             chart_class: Chart::ContingencyTable,
             chart_roles: [:any],

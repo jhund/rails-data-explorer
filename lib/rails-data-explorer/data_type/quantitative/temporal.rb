@@ -22,6 +22,12 @@ class RailsDataExplorer
               chart_roles: [:dimension],
               dimensions_count_min: 3,
             },
+            # {
+            #   chart_class: Chart::StackedHistogramTemporal,
+            #   chart_roles: [:x],
+            #   dimensions_count_min: 2,
+            #   dimensions_count_max: 2,
+            # },
           ].freeze
         end
 
