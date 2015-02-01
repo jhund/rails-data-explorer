@@ -9,12 +9,13 @@ class RailsDataExplorer
     delegate :number_of_values, to: :data_set, prefix: false
 
     # Initializes a new visualization.
-    # @param[String] _title will be printed at top of visualization
-    # @param[Array] data_set_or_array can be a number of things:
+    # @param _title [String] will be printed at top of visualization
+    # @param data_set_or_array [Array] can be a number of things:
     #  * Array<Scalar> - for single data series, uni-variate options are applied.
     #  * Array<Hash> - for multiple data series, bi/multi-variate options are applied.
     #  * DataSet - For finer grained control.
-    # @param[Array<Chart, String, Symbol>, optional] chart_specs
+    # @param render_charts [Boolean] set to true to render charts for this exploration
+    # @param chart_specs [Array<Chart, String, Symbol>, optional]
     #  The list of charts to include. Defaults to all applicable charts for the
     #  given data_set_or_array.
     #  Charts can be provided as Array of Strings, Symbols, or Chart classes
