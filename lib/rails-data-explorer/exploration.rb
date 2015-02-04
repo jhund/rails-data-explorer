@@ -6,7 +6,15 @@ class RailsDataExplorer
 
     attr_accessor :charts, :data_set, :title
 
+    delegate :data_series_names, to: :data_set, prefix: false
     delegate :number_of_values, to: :data_set, prefix: false
+
+    # Computes a dom_id for data_series_names
+    # @param data_series_names [Array<String>]
+    # @return [String]
+    def self.compute_dom_id(data_series_names)
+      "rde-exploration-#{ data_series_names.sort.map { |e| e.parameterize('') }.join('-') }"
+    end
 
     # Initializes a new visualization.
     # @param _title [String] will be printed at top of visualization
@@ -20,9 +28,10 @@ class RailsDataExplorer
     #  given data_set_or_array.
     #  Charts can be provided as Array of Strings, Symbols, or Chart classes
     #  (can be mixed).
-    def initialize(_title, data_set_or_array, chart_specs=nil)
+    def initialize(_title, data_set_or_array, render_charts, chart_specs=nil)
       @title = _title
       @data_set = initialize_data_set(data_set_or_array)
+      @render_charts = render_charts
       @charts = initialize_charts(chart_specs)
     end
 
@@ -42,8 +51,13 @@ class RailsDataExplorer
       end.html_safe
     end
 
+    # Returns true if charts for this exploration are to be rendered.
+    def render_charts?
+      @render_charts
+    end
+
     def dom_id
-      "rde-exploration-#{ object_id }"
+      self.class.compute_dom_id(data_series_names)
     end
 
     def inspect(indent=1, recursive=1000)
@@ -75,6 +89,7 @@ class RailsDataExplorer
 
     def initialize_charts(chart_specs)
       if chart_specs.present?
+        raise "Handle chart_specs: #{ chart_specs.inspect }"
         chart_specs.map { |chart_spec|
           case chart_spec
           when Chart
@@ -95,7 +110,7 @@ class RailsDataExplorer
         DataSet.new(data_set_or_array, @title)
       when DataSet
         # use as is
-        _data_set
+        data_set_or_array
       else
         raise(
           ArgumentError.new(

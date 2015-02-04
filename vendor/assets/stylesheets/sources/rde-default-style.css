@@ -40,3 +40,35 @@ td.rde-numerical {
   line-height: normal;
   text-align: right;
 }
+
+table.rde_toc-matrix.table td {
+  text-align: center;
+  vertical-align:  middle;
+}
+
+table.rde_toc-matrix.table th {
+  font-weight: normal;
+}
+
+th.rde_toc-row_header {
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+th.rde_toc-col_header {
+  text-align: center;
+}
+
+td.rde_toc-available_not_rendered {
+}
+
+td.rde_toc-currently_rendered {
+  background-color: #cfc;
+}
+
+td.rde_toc-not_available {
+  color: #999;
+}
+
+td.rde_toc-oso_diagonal {
+}

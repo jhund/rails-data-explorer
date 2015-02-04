@@ -127,5 +127,9 @@ class RailsDataExplorer
       r << %(#{ '  ' * (indent-1) }>\n)
     end
 
+    def data_series_names
+      data_series.map { |e| e.name }
+    end
+
   end
 end

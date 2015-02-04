@@ -5,6 +5,8 @@ require 'descriptive-statistics'
 require 'distribution'
 require 'interpolate'
 
+require 'rails-data-explorer/action_view_extension'
+
 require 'rails-data-explorer/engine'
 
 require 'rails_data_explorer'
