@@ -37,11 +37,6 @@ class RailsDataExplorer
         end +
         content_tag(:div, class: 'panel-body') do
           content_tag(:table, class: 'table rde_toc-matrix') do
-            # render header row for analysis types
-            content_tag(:tr) do
-              content_tag(:th, 'Univariate', colspan: '2') +
-              content_tag(:th, 'Bivariate', colspan: ds_names.length)
-            end +
             # render uni-/bi-variate analysis column headers (with reversed data_series names)
             content_tag(:tr) do
               content_tag(
@@ -57,7 +52,8 @@ class RailsDataExplorer
                     },
                     anchor: 'rails_data_explorer-toc',
                   ),
-                  class: 'btn btn-default btn-xs'
+                  class: 'btn btn-default btn-xs',
+                  title: 'Load univariate explorations for all data series.'
                 ),
                 colspan: 2
               ) +
@@ -74,7 +70,7 @@ class RailsDataExplorer
                   )
                 }
                 encountered_bv_with_self = false
-                # cell with name
+                # row header with data_series name
                 content_tag(
                   :th,
                   ds_name.truncate(12),
@@ -83,6 +79,7 @@ class RailsDataExplorer
                 ) +
                 # cell with link to univariate analysis
                 if uv_expl
+                  tooltip_suffix = "univariate exploration for #{ ds_name.inspect }."
                   if uv_expl.render_charts?
                     # Link to anchor on current page (chart is currently rendered)
                     content_tag(
@@ -93,6 +90,7 @@ class RailsDataExplorer
                         class: 'btn btn-default btn-xs'
                       ),
                       class: 'rde_toc-currently_rendered',
+                      title: 'Jump to ' + tooltip_suffix,
                     )
                   else
                     # Load new page
@@ -106,12 +104,18 @@ class RailsDataExplorer
                         ),
                         class: 'btn btn-default btn-xs'
                       ),
-                      class: 'rde_toc-available_not_rendered'
+                      class: 'rde_toc-available_not_rendered',
+                      title: 'Load ' + tooltip_suffix,
                     )
                   end
                 else
                   # show that no exploration exists
-                  content_tag(:td, 'N/A', class: 'rde_toc-not_available')
+                  content_tag(
+                    :td,
+                    'N/A',
+                    class: 'rde_toc-not_available',
+                    title: 'There is no ' + tooltip_suffix,
+                  )
                 end +
                 # iterate over reversed data_series names
                 reversed_ds_names.map { |r_ds_name|
@@ -120,6 +124,8 @@ class RailsDataExplorer
                       [ds_name, r_ds_name]
                     )
                   }
+                  bv_ds_names = [ds_name.inspect, r_ds_name.inspect].sort.join(' vs. ')
+                  tooltip_suffix = "bivariate exploration for #{ bv_ds_names }."
                   if encountered_bv_with_self
                     # blank cell
                     '<td class="rde_toc-oso_diagonal"></td>'.html_safe
@@ -144,7 +150,8 @@ class RailsDataExplorer
                         ),
                         class: 'btn btn-default btn-xs'
                       ),
-                      class: 'rde_toc-available_not_rendered'
+                      class: 'rde_toc-available_not_rendered',
+                      title: "Load all bivariate explorations for #{ ds_name.inspect }.",
                     )
                   elsif bv_expl
                     # bivariate analysis exists
@@ -158,6 +165,7 @@ class RailsDataExplorer
                           class: 'btn btn-default btn-xs'
                         ),
                         class: 'rde_toc-currently_rendered',
+                        title: 'Jump to ' + tooltip_suffix,
                       )
                     else
                       # Link to anchor on new page (chart is currently not rendered)
@@ -171,12 +179,18 @@ class RailsDataExplorer
                           ),
                           class: 'btn btn-default btn-xs'
                         ),
-                        class: 'rde_toc-available_not_rendered'
+                        class: 'rde_toc-available_not_rendered',
+                        title: 'Load ' + tooltip_suffix,
                       )
                     end
                   else
                     # show that no exploration exists
-                    content_tag(:td, 'N/A', class: 'rde_toc-not_available')
+                    content_tag(
+                      :td,
+                      'N/A',
+                      class: 'rde_toc-not_available',
+                      title: 'There is no ' + tooltip_suffix,
+                    )
                   end
                 }.join.html_safe
               end
