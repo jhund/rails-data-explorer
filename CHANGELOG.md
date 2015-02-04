@@ -1,3 +1,9 @@
+### 0.2.3
+
+* Don't show all explorations by default. Takes too long when having 100
+  explorations to render. Instead show univariate explorations by default
+  and bivariate explorations on demand.
+
 ### 0.2.2
 
 * Fixed file inclusion bug that prevented loading of Gem

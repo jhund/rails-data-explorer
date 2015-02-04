@@ -3,7 +3,7 @@ $:.push File.expand_path('../lib', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.name = 'rails-data-explorer'
-  gem.version = '0.2.2'
+  gem.version = '0.2.3'
   gem.platform = Gem::Platform::RUBY
 
   gem.authors = ['Jo Hund']
