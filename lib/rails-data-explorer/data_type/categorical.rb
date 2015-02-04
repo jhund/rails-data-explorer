@@ -33,6 +33,12 @@ class RailsDataExplorer
             dimensions_count_min: 3,
           },
           {
+            chart_class: Chart::StackedBarChartCategorical,
+            chart_roles: [:x, :y],
+            dimensions_count_min: 2,
+            dimensions_count_max: 2,
+          },
+          {
             chart_class: Chart::StackedBarChartCategoricalPercent,
             chart_roles: [:x, :y],
             dimensions_count_min: 2,

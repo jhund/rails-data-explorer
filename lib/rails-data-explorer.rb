@@ -1,3 +1,5 @@
+
+
 require 'action_view'
 require 'active_support/all' # TODO: once the dust settles, only require the modules we need
 require 'color'
@@ -36,10 +38,12 @@ require 'rails-data-explorer/chart/parallel_coordinates'
 require 'rails-data-explorer/chart/parallel_set'
 require 'rails-data-explorer/chart/pie_chart'
 require 'rails-data-explorer/chart/scatterplot'
-require 'rails-data-explorer/chart/stacked_bar_chart_categorical_percent'
+require 'rails-data-explorer/chart/stacked_bar_chart_categorical'
 # require 'rails-data-explorer/chart/stacked_histogram_temporal'
 require 'rails-data-explorer/data_type/categorical'
 require 'rails-data-explorer/data_type/quantitative'
 require 'rails-data-explorer/data_type/quantitative/decimal'
 require 'rails-data-explorer/data_type/quantitative/integer'
 require 'rails-data-explorer/data_type/quantitative/temporal'
+
+require 'rails-data-explorer/chart/stacked_bar_chart_categorical_percent'
