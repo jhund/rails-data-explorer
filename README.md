@@ -27,7 +27,9 @@ named 'signups' in `app/controllers/users_controller.rb`:
 
 ~~~ ruby
 def signups
+  # DANGER! Make sure not to load too much data into memory!
   user_data = User.all.to_a
+
   c_binner = RailsDataExplorer::Utils::DataBinner.new(
     '0' => 0,
     '1' => 1,

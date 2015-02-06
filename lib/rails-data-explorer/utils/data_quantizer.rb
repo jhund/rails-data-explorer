@@ -10,7 +10,7 @@ class RailsDataExplorer
         @options = {
           nice: true,
           type: 'midtread', # 'midtread' or 'midrise'
-          number_of_bins: 100, # assuming 800px wide chart, 8px per bin
+          number_of_bins: 100, # assuming 1000px wide chart, 10px per bin
           delta: nil,
         }.merge(options)
         @data_series = data_series
