@@ -18,7 +18,7 @@ class RailsDataExplorer
     # Any data series with more than this uniq vals is considered having many
     # uniq values.
     def self.many_uniq_vals_threshold
-      30
+      20
     end
 
     # options: :chart_roles, :data_type (all optional)
@@ -91,11 +91,6 @@ class RailsDataExplorer
       @max_val ||= values.compact.max
     end
 
-    # Used to decide whether we can render certain chart types
-    def has_many_uniq_vals?
-      uniq_vals_count > self.class.many_uniq_vals_threshold
-    end
-
     def dynamic_range
       max_val / [min_val, max_val].min.to_f
     end
@@ -106,6 +101,14 @@ class RailsDataExplorer
 
     def label_sorter(label_val_key, value_sorter)
       data_type.label_sorter(label_val_key, self, value_sorter)
+    end
+
+    # Returns variant of self's values with number of distinct values reduced
+    # to max_num_distinct_values.
+    # @param max_num_distinct_values [Integer, optional]
+    def reduce_distinct_values(max_num_distinct_values = nil)
+      max_num_distinct_values ||= self.class.many_uniq_vals_threshold
+      data_type.reduce_distinct_values(values, max_num_distinct_values)
     end
 
   private

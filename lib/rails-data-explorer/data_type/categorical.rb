@@ -71,7 +71,7 @@ class RailsDataExplorer
       end
 
       def descriptive_statistics(values)
-        frequencies = values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
+        frequencies = compute_histogram(values)
         labels_ds = DataSeries.new('_', values.uniq)
         total_count = values.length
         ruby_formatters = {
@@ -196,6 +196,34 @@ class RailsDataExplorer
           # Use provided value sorter
           value_sorter
         end
+      end
+
+      # Returns the top N max frequent distinct observations in values. Groups
+      # less frequent observations under val_for_others.
+      # @param values [Array]
+      # @param max_num_vals [Integer] the max number of distinct values to return (including val_for_others)
+      # @param val_for_others [String, optional] defaults to '[Other]'
+      def reduce_distinct_values(values, max_num_vals, val_for_others = '[Other]')
+        distinct_values = values.uniq
+        # Return values if they already have lte max_num_vals distinct observations
+        return values  if distinct_values.length <= max_num_vals
+
+        frequencies = compute_histogram(values)
+        top_vals = frequencies.to_a.sort { |a,b|
+          # a = [value, frequency]
+          # Sort by frequency DESC, value ASC
+          [b.last, a.first] <=> [a.last, b.first]
+        }.first(max_num_vals - 1).map { |e| e.first }
+        values.map { |e| top_vals.include?(e) ? e : val_for_others }
+      end
+
+    protected
+
+      # Computes a histogram for values
+      # @param values [Array]
+      # @return a Hash with distinct vals as keys and their frequency as value
+      def compute_histogram(values)
+        values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
       end
 
     end
