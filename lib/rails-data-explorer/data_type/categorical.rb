@@ -172,25 +172,43 @@ class RailsDataExplorer
         %(function(d) { return d })
       end
 
-      # @param[Symbol, nil] label_val_key the hash key to use to get the label value during sort (sent to a,b)
-      # @param[DataSeries] data_series the ds that contains the uniq vals
-      # @param[Proc] value_sorter the sorting proc to use if not sorted numerically
-      # @return[Proc] a Proc that will be used by #sort
+      # @param label_val_key [Symbol, nil] the hash key to use to get the label value during sort (sent to a,b)
+      # @param data_series [DataSeries] the ds that contains the uniq vals
+      # @param value_sorter [Proc] the sorting proc to use if not sorted numerically
+      # @return [Proc] a Proc that will be used by #sort
       def label_sorter(label_val_key, data_series, value_sorter)
         if data_series.uniq_vals.any? { |e| e.to_s =~ /^[\+\-]?\d+/ }
           # Sort numerical categories by key ASC
+          # This lambda can be used in conjunction with `#sort`.
+          # It returns -1, 0, or 1
           lambda { |a,b|
             number_and_full_string_extractor = lambda { |val|
               str = label_val_key ? val[label_val_key] : val
               number = str.gsub(/^[^\d\+\-]*/, '') # remove non-digit leading chars
                           .gsub(',', '') # remove delimiter commas, they throw off to_f parsing
-                          .to_f
-              number += 1  if str =~ /^>/ # increase highest threshold by one for proper sorting
+              if '' != number
+                # label contains digits
+                number = number.to_f
+                number += 1  if str =~ /^>/ # increase highest threshold by one for proper sorting
+                number -= 1  if str =~ /^</ # decrease lowest threshold by one for proper sorting
+              else
+                # label doesn't contain digits, set to nil to sort at end
+                number = nil
+              end
               [number, str]
             }
-            a_number_and_full_string = number_and_full_string_extractor.call(a)
-            b_number_and_full_string = number_and_full_string_extractor.call(b)
-            a_number_and_full_string <=> b_number_and_full_string
+            a_num, a_str = number_and_full_string_extractor.call(a)
+            b_num, b_str = number_and_full_string_extractor.call(b)
+            if a_num && b_num
+              # Both numbers are present, compare them
+              [a_num, a_str] <=> [b_num, b_str]
+            elsif a_num
+              # a_num is present, b_num isn't. Sort a before b
+              -1
+            else
+              # a_num is not present, b_num is, Sort a after b
+              1
+            end
           }
         else
           # Use provided value sorter

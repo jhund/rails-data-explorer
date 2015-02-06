@@ -29,6 +29,34 @@ class RailsDataExplorer
       describe "#available_chart_types" do
       end
 
+      describe '#label_sorter' do
+
+        it 'sorts numerical labels with greater and less than signs' do
+          labels = ['3', '< -1', '2', '1', '0', '> 3', '-1']
+          ds = DataSeries.new('_', labels)
+          labels.sort(
+            &Categorical.new.label_sorter(nil, ds, '_')
+          ).must_equal(['< -1', '-1', '0', '1', '2', '3', '> 3'])
+        end
+
+        it 'sorts mixed numerical and non-numerical labels with non-num at the end' do
+          labels = ['3', '2', '[Other]', '1']
+          ds = DataSeries.new('_', labels)
+          labels.sort(
+            &Categorical.new.label_sorter(nil, ds, '_')
+          ).must_equal(['1', '2', '3', '[Other]'])
+        end
+
+        it 'accesses label_val_key if given' do
+          labels = ['2', '1']
+          ds = DataSeries.new('_', labels)
+          labels.map { |e| { x: e } }.sort(
+            &Categorical.new.label_sorter(:x, ds, '_')
+          ).must_equal([{ x: '1' }, { x: '2' }])
+        end
+
+      end
+
       describe '#reduce_distinct_values' do
 
         let(:vals) {
