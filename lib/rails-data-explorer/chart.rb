@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+#
+# Responsibilities:
+#  * Visualize data in the form of charts and tables
+#
+# Collaborators:
+#  * RdeTable
+#
 class RailsDataExplorer
   class Chart
 

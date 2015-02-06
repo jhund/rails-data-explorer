@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+#
+# Responsibilities:
+#  * Represent and initialize a data exploration
+#  * Initialize and render self (including charts)
+#
+# Collaborators:
+#  * DataSet
+#  * Chart
+#
 class RailsDataExplorer
   class Exploration
 

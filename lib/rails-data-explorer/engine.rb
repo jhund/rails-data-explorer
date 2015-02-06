@@ -1,6 +1,20 @@
+# -*- coding: utf-8 -*-
+#
+
 require 'rails'
 
 class RailsDataExplorer
+
+
+  # Responsibilities:
+  #  * Tie RailsDataExplorer into a Rails app
+  #  * Initialize ActionViewExtension
+  #  * Tell rails which assets to precompile
+  #
+  # Collaborators:
+  #  * ActiveSupport
+  #  * RailsDataExplorer
+  #
   class Engine < ::Rails::Engine
 
     # It's an engine so that we can add javascript and image assets

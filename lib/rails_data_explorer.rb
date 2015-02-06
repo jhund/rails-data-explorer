@@ -1,7 +1,12 @@
+# -*- coding: utf-8 -*-
+#
+# Responsibilities:
+#  * Integrate all the pieces required for this gem
+#  * Initialize a collection of Explorations
+#
+# Collaborators:
+#  * Exploration
 class RailsDataExplorer
-
-  attr_accessor :output_buffer # required for content_tag
-  include ActionView::Helpers::TagHelper
 
   attr_reader :explorations
   attr_reader :data_series_names

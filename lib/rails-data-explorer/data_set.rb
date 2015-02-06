@@ -1,4 +1,12 @@
-# Container for data series
+# -*- coding: utf-8 -*-
+#
+# Responsibilities:
+#  * Container for DataSeries
+#
+# Collaborators:
+#  * DataSeries
+#  * Exploration
+#
 class RailsDataExplorer
   class DataSet
 

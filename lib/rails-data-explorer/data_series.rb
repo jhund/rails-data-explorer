@@ -1,3 +1,18 @@
+# -*- coding: utf-8 -*-
+#
+# NOTE: DataSeries values are immutable once instantiated.
+#
+# Responsibilities:
+#  * Represent a data series
+#  * Compute statistics
+#  * Compute chart attributes
+#  * Cache computed properties like values, statistics
+#  * Provide modified versions of values
+#    (e.g., :limit_distinct_values, :compress_quantitative_values)
+#
+# Collaborators:
+#  * DataType
+#
 class RailsDataExplorer
   class DataSeries
 

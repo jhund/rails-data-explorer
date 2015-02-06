@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*-
 #
-# Adds view helpers to ActionView
+# Responsibilities:
+#  * Add rails-data-explorer view helpers to ActionView
+#  * Render rails-data-explorer generated content
+#
+# Collaborators:
+#  * RailsDataExplorer
+#  * Exploration
 #
 class RailsDataExplorer
   module ActionViewExtension
 
     # Renders the entire RailsDataExplorer view
-    # @param rails_data_explorer [RailsDataExplorer]
+    # @param rde [RailsDataExplorer]
     def rails_data_explorer(rde)
       content_tag(:div, class: 'rails-data-explorer') do
         [

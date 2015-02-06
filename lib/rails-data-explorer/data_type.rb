@@ -1,3 +1,15 @@
+# -*- coding: utf-8 -*-
+#
+# Responsibilities:
+#  * Represent a type of data
+#  * Determine available chart types
+#  * Compute descriptive statistics
+#  * Compute modified values
+#
+# Collaborators:
+#  * DataSeries
+#  * Chart
+#
 class RailsDataExplorer
   class DataType
 
