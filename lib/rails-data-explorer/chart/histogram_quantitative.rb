@@ -15,7 +15,7 @@ class RailsDataExplorer
         quantizer = Utils::DataQuantizer.new(x_ds, max_number_of_bins: 100)
         quantized_values = quantizer.values
         number_of_bars = quantizer.number_of_bins
-        width = 800
+        width = 960
         h = quantized_values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
         histogram_values_ds = DataSeries.new('_', h.values)
         y_scale_type = histogram_values_ds.axis_scale(:vega)

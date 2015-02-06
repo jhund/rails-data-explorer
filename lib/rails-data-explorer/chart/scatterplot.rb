@@ -81,7 +81,7 @@ class RailsDataExplorer
             <script type="text/javascript">
               (function() {
                 var spec = {
-                  "width": 800,
+                  "width": 960,
                   "height": 200,
                   "data": [
                     {

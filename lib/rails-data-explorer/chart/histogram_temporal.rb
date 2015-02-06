@@ -17,7 +17,7 @@ class RailsDataExplorer
         histogram_values_ds = DataSeries.new('_', h.values)
         y_scale_type = histogram_values_ds.axis_scale(:vega)
         bar_y2_val = 'log' == y_scale_type ? histogram_values_ds.min_val / 10.0 : 0
-        width = 800
+        width = 960
         {
           values: h.map { |k,v| { x: k, y: v } },
           width: width,
