@@ -20,7 +20,7 @@ class RailsDataExplorer
     # TODO: Add concept of significant figures for rounding values when displaying them
     # http://en.wikipedia.org/wiki/Significant_figures
 
-    attr_reader :data_type, :name, :values, :chart_roles
+    attr_reader :data_type, :name, :chart_roles
     delegate :available_chart_types, to: :data_type, prefix: false
     delegate :available_chart_roles, to: :data_type, prefix: false
 
@@ -47,25 +47,78 @@ class RailsDataExplorer
     end
 
     # Returns descriptive_statistics as a flat Array
-    def descriptive_statistics
-      @data_type.descriptive_statistics(values)
+    # (see #values)
+    def descriptive_statistics(modification = {})
+      @cached_descriptive_statistics ||= {}
+      @cached_descriptive_statistics[modification] ||= (
+        data_type.descriptive_statistics(values(modification))
+      )
     end
 
     # Returns descriptive_statistics as a renderable table structure
-    def descriptive_statistics_table
-      @data_type.descriptive_statistics_table(values)
+    # (see #values)
+    def descriptive_statistics_table(modification = {})
+      @cached_descriptive_statistics_table ||= {}
+      @cached_descriptive_statistics_table[modification] ||= (
+        data_type.descriptive_statistics_table(values(modification))
+      )
     end
 
-    def number_of_values
-      values.length
+    # (see #values)
+    def number_of_values(modification = {})
+      @cached_number_of_values ||= {}
+      @cached_number_of_values[modification] ||= (
+        values(modification).length
+      )
     end
 
-    def values_summary
-      if values.length < 3 || values.inspect.length < 80
-        values.inspect
-      else
-        "[#{ values.first } ... #{ values.last }]"
-      end
+    # (see #values)
+    def values_summary(modification = {})
+      @cached_values_summary ||= {}
+      @cached_values_summary[modification] ||= (
+        v = values(modification)
+        if v.length < 3 || v.inspect.length < 80
+          v.inspect
+        else
+          "[#{ v.first } ... #{ v.last }]"
+        end
+      )
+    end
+
+    # Returns the values for this data series with an optional modification
+    # @param modification [Hash, optional] type of modification.
+    # {
+    #   name: :limit_distinct_values,
+    #   max_num_distinct_values: 20,
+    #   val_for_others: '[Other]',
+    # }
+    # {
+    #   name: :compress_quantitative_values,
+    # }
+    def values(modification = {})
+      @cached_values ||= {}
+      @cached_values[modification] ||= (
+        case modification[:name]
+        when NilClass
+          @values
+        when :limit_distinct_values
+          # Returns variant of self's values with number of distinct values limited
+          # to max_num_distinct_values. Less frequent values are mapped to catch
+          # all bin.
+          # @param max_num_distinct_values [Integer, optional]
+          data_type.limit_distinct_values(
+            @values,
+            modification[:max_num_distinct_values] || self.class.many_uniq_vals_threshold,
+            modification[:val_for_others]
+          )
+        when :compress_quantitative_values
+          data_type.compress_quantitative_values(
+            @values
+          )
+        else
+          raise "Handle this modification: #{ modification.inspect }"
+        end
+      )
     end
 
     def inspect(indent=1, recursive=1000)
@@ -82,49 +135,59 @@ class RailsDataExplorer
       r << %(#{ '  ' * (indent-1) }>\n)
     end
 
-    def axis_tick_format
-      data_type.axis_tick_format(values)
+    # (see #values)
+    def axis_tick_format(modification = {})
+      data_type.axis_tick_format(values(modification))
     end
 
     # @param[Symbol] d3_or_vega :d3 or :vega
-    def axis_scale(d3_or_vega)
-      data_type.axis_scale(self, d3_or_vega)
+    def axis_scale(d3_or_vega, modification = {})
+      data_type.axis_scale(self, modification, d3_or_vega)
     end
 
-    def uniq_vals
-      @uniq_vals ||= values.uniq
+    # (see #values)
+    def uniq_vals(modification = {})
+      @cached_uniq_vals ||= {}
+      @cached_uniq_vals[modification] ||= values(modification).uniq
     end
 
-    def uniq_vals_count
-      @uniq_vals_count ||= uniq_vals.length
+    # (see #values)
+    def uniq_vals_count(modification = {})
+      @cached_uniq_vals_count ||= {}
+      @cached_uniq_vals_count[modification] ||= uniq_vals(modification).length
     end
 
-    def min_val
-      @min_val ||= values.compact.min
+    # (see #values)
+    def min_val(modification = {})
+      @cached_min_val ||= {}
+      @cached_min_val[modification] ||= values(modification).compact.min
     end
 
-    def max_val
-      @max_val ||= values.compact.max
+    # (see #values)
+    def max_val(modification = {})
+      @cached_max_val ||= {}
+      @cached_max_val[modification] ||= values(modification).compact.max
     end
 
-    def dynamic_range
-      max_val / [min_val, max_val].min.to_f
+    # (see #values)
+    def dynamic_range(modification = {})
+      @cached_dynamic_range ||= {}
+      @cached_dynamic_range[modification] ||= (
+        divisor = [min_val(modification), max_val(modification)].min.to_f
+        0 == divisor ? 0.0 : max_val / divisor
+      )
     end
 
-    def has_large_dynamic_range?
-      dynamic_range > self.class.large_dynamic_range_threshold
+    # (see #values)
+    def has_large_dynamic_range?(modification = {})
+      @cached_has_large_dynamic_range ||= {}
+      @cached_has_large_dynamic_range ||= (
+        dynamic_range(modification) > self.class.large_dynamic_range_threshold
+      )
     end
 
     def label_sorter(label_val_key, value_sorter)
       data_type.label_sorter(label_val_key, self, value_sorter)
-    end
-
-    # Returns variant of self's values with number of distinct values reduced
-    # to max_num_distinct_values.
-    # @param max_num_distinct_values [Integer, optional]
-    def reduce_distinct_values(max_num_distinct_values = nil)
-      max_num_distinct_values ||= self.class.many_uniq_vals_threshold
-      data_type.reduce_distinct_values(values, max_num_distinct_values)
     end
 
   private

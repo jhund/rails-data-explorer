@@ -11,9 +11,10 @@ class RailsDataExplorer
         x_ds = @data_set.data_series.first
         return false  if x_ds.nil?
 
-        total_count = x_ds.values.length
+        val_mod = { name: :limit_distinct_values }
+        total_count = x_ds.values(val_mod).length
         # compute histogram
-        h = x_ds.values.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
+        h = x_ds.values(val_mod).inject(Hash.new(0)) { |m,e| m[e] += 1; m }
         {
           values: h.map { |k,v|
             { key: k, value: (v / total_count.to_f) }

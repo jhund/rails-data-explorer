@@ -12,8 +12,8 @@ class RailsDataExplorer
         return false  if x_ds.nil?
 
         # compute histogram
-        limited_distinct_vals = x_ds.reduce_distinct_values
-        h = limited_distinct_vals.inject(Hash.new(0)) { |m,e| m[e] += 1; m }
+        val_mod = { name: :limit_distinct_values }
+        h = x_ds.values(val_mod).inject(Hash.new(0)) { |m,e| m[e] += 1; m }
         histogram_values_ds = DataSeries.new('_', h.values)
         y_scale_type = histogram_values_ds.axis_scale(:vega)
         bar_y2_val = 'log' == y_scale_type ? histogram_values_ds.min_val / 10.0 : 0

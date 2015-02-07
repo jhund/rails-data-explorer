@@ -17,9 +17,11 @@ class RailsDataExplorer
       end
 
       def compute_chart_attrs
+        val_mod = { name: :limit_distinct_values }
+
         x_candidates = @data_set.data_series.find_all { |ds|
           (ds.chart_roles[Chart::StackedBarChartCategoricalPercent] & [:x, :any]).any?
-        }.sort { |a,b| b.uniq_vals.length <=> a.uniq_vals.length }
+        }.sort { |a,b| b.uniq_vals_count(val_mod) <=> a.uniq_vals_count(val_mod) }
         y_candidates = @data_set.data_series.find_all { |ds|
           (ds.chart_roles[Chart::StackedBarChartCategoricalPercent] & [:y, :any]).any?
         }
@@ -30,31 +32,30 @@ class RailsDataExplorer
 
         # initialize data_matrix
         data_matrix = { _sum: { _sum: 0 } }
-        x_ds.uniq_vals.each { |x_val|
+        x_ds.uniq_vals(val_mod).each { |x_val|
           data_matrix[x_val] = {}
           data_matrix[x_val][:_sum] = 0
-          y_ds.uniq_vals.each { |y_val|
+          y_ds.uniq_vals(val_mod).each { |y_val|
             data_matrix[x_val][y_val] = 0
             data_matrix[:_sum][y_val] = 0
           }
         }
         # populate data_matrix
-        x_ds.values.length.times { |idx|
-          x_val = x_ds.values[idx]
-          y_val = y_ds.values[idx]
+        x_ds.values(val_mod).length.times { |idx|
+          x_val = x_ds.values(val_mod)[idx]
+          y_val = y_ds.values(val_mod)[idx]
           data_matrix[x_val][y_val] += 1
           data_matrix[:_sum][y_val] += 1
           data_matrix[x_val][:_sum] += 1
           data_matrix[:_sum][:_sum] += 1
         }
-
-        x_sorted_keys = x_ds.uniq_vals.sort(
+        x_sorted_keys = x_ds.uniq_vals(val_mod).sort(
           &x_ds.label_sorter(
             nil,
             lambda { |a,b| data_matrix[b][:_sum] <=> data_matrix[a][:_sum] }
           )
         )
-        y_sorted_keys = y_ds.uniq_vals.sort(
+        y_sorted_keys = y_ds.uniq_vals(val_mod).sort(
           &y_ds.label_sorter(
             nil,
             lambda { |a,b| data_matrix[:_sum][b] <=> data_matrix[:_sum][a] }

@@ -10,12 +10,12 @@ class RailsDataExplorer
             dimensions_count_min: 1,
             dimensions_count_max: 1,
           },
-          # {
-          #   chart_class: Chart::PieChart,
-          #   chart_roles: [:any],
-          #   dimensions_count_min: 1,
-          #   dimensions_count_max: 1,
-          # },
+          {
+            chart_class: Chart::PieChart,
+            chart_roles: [:any],
+            dimensions_count_min: 1,
+            dimensions_count_max: 1,
+          },
           {
             chart_class: Chart::BoxPlotGroup,
             chart_roles: [:y],
@@ -221,11 +221,12 @@ class RailsDataExplorer
       # @param values [Array]
       # @param max_num_vals [Integer] the max number of distinct values to return (including val_for_others)
       # @param val_for_others [String, optional] defaults to '[Other]'
-      def reduce_distinct_values(values, max_num_vals, val_for_others = '[Other]')
+      def limit_distinct_values(values, max_num_vals, val_for_others = nil)
         distinct_values = values.uniq
         # Return values if they already have lte max_num_vals distinct observations
         return values  if distinct_values.length <= max_num_vals
 
+        val_for_others ||= '[Other]'
         frequencies = compute_histogram(values)
         top_vals = frequencies.to_a.sort { |a,b|
           # a = [value, frequency]
