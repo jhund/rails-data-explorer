@@ -35,6 +35,16 @@ class RailsDataExplorer
       multivariate: {}
     }
     @data_series_names = data_series_specs.map { |e| e[:name] }
+
+    @cached_data_series = data_series_specs.inject({}) { |m, ds_spec|
+      m[ds_spec[:name]] = DataSeries.new(
+        ds_spec[:name],
+        data_collection.map(&ds_spec[:data_method]),
+        ds_spec
+      )
+      m
+    }
+
     # Default to all univariate explorations
     explorations_to_render = (
       explorations_to_render || @data_series_names.inject({ univariate: {}}) { |m,e|
@@ -67,7 +77,10 @@ class RailsDataExplorer
     charts[:univariate].uniq.compact.each { |data_series_spec|
       @explorations << Exploration.new(
         data_series_spec[:name],
-        data_collection.map(&data_series_spec[:data_method]),
+        DataSet.new(
+          [@cached_data_series[data_series_spec[:name]]],
+          data_series_spec[:name]
+        ),
         render_exploration_for?(
           explorations_to_render,
           :univariate,
@@ -121,14 +134,13 @@ class RailsDataExplorer
 private
 
   def build_exploration_from_data_series_specs(data_collection, ds_specs, render_charts)
+    expl_title = ds_specs.map { |e| e[:name] }.sort.join(' vs. ')
     Exploration.new(
-      ds_specs.map { |e| e[:name] }.sort.join(' vs. '),
-      ds_specs.map { |ds_spec|
-        {
-          name: ds_spec[:name],
-          values: data_collection.map(&ds_spec[:data_method])
-        }
-      },
+      expl_title,
+      DataSet.new(
+        ds_specs.map { |ds_spec| @cached_data_series[ds_spec[:name]] },
+        expl_title
+      ),
       render_charts
     )
   end
