@@ -57,7 +57,7 @@ class RailsDataExplorer
 
       end
 
-      describe '#reduce_distinct_values' do
+      describe '#limit_distinct_values' do
 
         let(:vals) {
           %w[
@@ -73,7 +73,7 @@ class RailsDataExplorer
         }
 
         it 'reduces large number of observations to smaller number' do
-          Categorical.new.reduce_distinct_values(vals, 4).must_equal(
+          Categorical.new.limit_distinct_values(vals, 4).must_equal(
             %w[
               a a a a a a a a a a a a a
               [Other] [Other] [Other] [Other]
@@ -88,7 +88,7 @@ class RailsDataExplorer
         end
 
         it 'allows override for val_for_others' do
-          Categorical.new.reduce_distinct_values(
+          Categorical.new.limit_distinct_values(
             vals, 4, 'override'
           ).must_equal(
             %w[
@@ -105,7 +105,7 @@ class RailsDataExplorer
         end
 
         it 'uses label value as tie breaker on equal frequencies' do
-          Categorical.new.reduce_distinct_values(vals, 5).must_equal(
+          Categorical.new.limit_distinct_values(vals, 5).must_equal(
             %w[
               a a a a a a a a a a a a a
               b b b b

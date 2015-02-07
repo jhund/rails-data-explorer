@@ -5,6 +5,8 @@
 # http://johan.github.io/d3/ex/box.html
 # http://johan.github.io/d3/ex/box.html
 # http://bl.ocks.org/mbostock/4061502
+# TODO: imitate this:
+# http://www.stata.com/support/faqs/graphics/gph/graphdocs/horizontal-box-plot-of-variable-by-values-of-categorical-variable/
 class RailsDataExplorer
   class Chart
     class BoxPlotGroup < Chart
