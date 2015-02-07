@@ -42,6 +42,7 @@ class RailsDataExplorer
           y_scale_type: y_scale_type,
           y_scale_domain: [bar_y2_val, histogram_values_ds.max_val],
           bar_y2_val: bar_y2_val,
+          css_class: 'rde-histogram-quantitative',
         }
       end
 
@@ -54,7 +55,7 @@ class RailsDataExplorer
 
       def render_vega(ca)
         %(
-          <div class="rde-chart rde-histogram-quantitative">
+          <div class="rde-chart #{ ca[:css_class] }">
             <h3 class="rde-chart-title">Histogram</h3>
             <div id="#{ dom_id }"></div>
             <script type="text/javascript">

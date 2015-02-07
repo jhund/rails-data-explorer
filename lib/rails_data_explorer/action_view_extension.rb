@@ -23,7 +23,8 @@ class RailsDataExplorer
       end
     end
 
-    # Returns a url that can be used to reset the Filterrific params
+    # Returns a url that can be used to reset the Filterrific params when
+    # rails-data-explorer is used in combination with Filterrific.
     def reset_filterrific_url(opts = {})
       url_for(
         { filterrific: { reset_filterrific: true } }.merge(opts)

@@ -39,6 +39,7 @@ class RailsDataExplorer
           y_scale_type: y_scale_type,
           y_scale_domain: [bar_y2_val, histogram_values_ds.max_val],
           bar_y2_val: bar_y2_val,
+          css_class: 'rde-histogram-temporal',
         }
       end
 

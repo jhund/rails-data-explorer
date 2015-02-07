@@ -4,7 +4,7 @@ class RailsDataExplorer
   module Utils
 
     # Responsibilities:
-    #  * Map an input value to a color on a color scale.
+    #  * Map an input value between -1 and 1 to a color on a color scale.
     #
     class ColorScale
 

@@ -22,19 +22,19 @@ class RailsDataExplorer
 
       [
         [
-          ['Univariate Integer data', [nil, 1, 2, 3]],
+          ['Univariate Integer data', [1, 2, 3]],
           { has_charts: ['histogram-quantitative', 'descriptive-statistics-table'] }
         ],
         [
-          ['Univariate Decimal data', [nil, 1.0, 2.0, 3.0]],
+          ['Univariate Decimal data', [1.0, 2.0, 3.0]],
           { has_charts: ['histogram-quantitative', 'descriptive-statistics-table'] }
         ],
         [
-          ['Univariate Temporal data', [nil, Time.now]],
+          ['Univariate Temporal data', [DateTime.new(2015,2,7)]],
           { has_charts: ['histogram-temporal', 'descriptive-statistics-table'] }
         ],
         [
-          ['Univariate Categorical data', [nil, 'a', 'b', 'c']],
+          ['Univariate Categorical data', ['a', 'b', 'c']],
           { has_charts: ['histogram-categorical', 'pie-chart', 'descriptive-statistics-table'] }
         ],
       ].each { |(args, xpect_options)|
@@ -42,7 +42,7 @@ class RailsDataExplorer
 
         it "renders #{ title } correctly" do
           check_render_expectations(
-            Exploration.new(*args).render,
+            Exploration.new(*args, true).render,
             xpect_options
           )
         end

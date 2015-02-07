@@ -48,7 +48,7 @@ class RailsDataExplorer
       else
         raise(
           ArgumentError.new(
-            "Invalid datum. Only Hash, Numeric, String, Symbol, and Nil are allowed. " + \
+            "Invalid datum. Only DataSeries, Hash, ActiveSupport::TimeWithZone, DateTime, Numeric, NilClass, String, or Symbol are allowed. " + \
             "Found #{ values_or_data_series.first.class.to_s }."
           )
         )
