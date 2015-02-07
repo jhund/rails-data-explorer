@@ -1,5 +1,14 @@
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   class Chart
+
+    # Responsibilities:
+    #  * Render a histogram for univariate analysis of a categorical data series.
+    #
+    # Collaborators:
+    #  * DataSet
+    #
     class HistogramCategorical < Chart
 
       def initialize(_data_set, options = {})

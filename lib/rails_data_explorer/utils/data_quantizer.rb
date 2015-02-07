@@ -1,7 +1,12 @@
-# Map a large set of quantitative/temporal/geo input values to a (countable)
-# smaller set – such as rounding values to some unit of precision.
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   module Utils
+
+    # Responsibilities:
+    #  * Map a large set of quantitative/temporal/geo input values to a (countable)
+    #    smaller set – such as rounding values to some unit of precision.
+    #
     class DataQuantizer
 
       attr_accessor :number_of_bins, :delta

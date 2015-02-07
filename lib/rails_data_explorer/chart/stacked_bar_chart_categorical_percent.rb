@@ -1,5 +1,15 @@
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   class Chart
+
+    # Responsibilities:
+    #  * Render a stacked bar chart for bivariate analysis of two categorical
+    #    data series. Renders percentage distribution of y-data series.
+    #
+    # Collaborators:
+    #  * DataSet
+    #
     class StackedBarChartCategoricalPercent < StackedBarChartCategorical
 
       # Override this method to change how the y value is computed. E.g., to

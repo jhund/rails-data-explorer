@@ -1,6 +1,15 @@
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   class DataType
     class Quantitative
+
+      # Responsibilities:
+      #  * Provide methods for temporal quantitative data type.
+      #
+      # Collaborators:
+      #  * DataSet
+      #
       class Temporal < Quantitative
 
         def all_available_chart_types

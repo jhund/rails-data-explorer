@@ -1,5 +1,14 @@
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   class Chart
+
+    # Responsibilities:
+    #  * Render a pie chart for univariate analysis of a categorical data series.
+    #
+    # Collaborators:
+    #  * DataSet
+    #
     class PieChart < Chart
 
       def initialize(_data_set, options = {})

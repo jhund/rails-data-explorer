@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#
+
 # Responsibilities:
 #  * Integrate all the pieces required for this gem
 #  * Initialize a collection of Explorations

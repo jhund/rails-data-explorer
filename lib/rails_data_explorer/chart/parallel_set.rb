@@ -1,7 +1,16 @@
-# http://www.jasondavies.com/parallel-sets/
-# Suitable when all data series are categorical
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   class Chart
+
+    # Responsibilities:
+    #  * Render a parallel set chart for multivariate analysis of categorical
+    #    data series.
+    #
+    # Collaborators:
+    #  * DataSet
+    #
+    # http://www.jasondavies.com/parallel-sets/
     class ParallelSet < Chart
 
       def initialize(_data_set, options = {})

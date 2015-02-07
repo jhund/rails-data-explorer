@@ -1,14 +1,25 @@
-# See this project for code to compute chi_square and contingency_coefficient
-# https://github.com/bioruby/bioruby/blob/master/lib/bio/util/contingency_table.rb
-#
-# Resources for Chi Squared Test
-# * http://www.quora.com/What-is-the-most-intuitive-explanation-for-the-chi-square-test
-# * http://people.revoledu.com/kardi/tutorial/Questionnaire/Chi-Square%20IndependentTest.html
-# * http://stattrek.com/chi-square-test/independence.aspx?Tutorial=AP
+# -*- coding: utf-8 -*-
 
-# Contingency table and chi squared test is a good tool for interpreting A/B tests.
 class RailsDataExplorer
   class Chart
+
+    # Contingency table and chi squared test are great tools for interpreting
+    # A/B tests.
+    #
+    # Responsibilities:
+    #  * Render a contingency table for bivariate analysis of two categorical
+    #    data series.
+    #
+    # Collaborators:
+    #  * DataSet
+    #
+    # See this project for code to compute chi_square and contingency_coefficient
+    # https://github.com/bioruby/bioruby/blob/master/lib/bio/util/contingency_table.rb
+    #
+    # Resources for Chi Squared Test
+    # * http://www.quora.com/What-is-the-most-intuitive-explanation-for-the-chi-square-test
+    # * http://people.revoledu.com/kardi/tutorial/Questionnaire/Chi-Square%20IndependentTest.html
+    # * http://stattrek.com/chi-square-test/independence.aspx?Tutorial=AP
     class ContingencyTable < Chart
 
       def initialize(_data_set, options = {})

@@ -1,7 +1,16 @@
-# http://johan.github.io/d3/ex/box.html
-# http://bl.ocks.org/mbostock/4061502
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   class Chart
+
+    # Responsibilities:
+    #  * Render a box plot for univariate analysis of a quantitative data series.
+    #
+    # Collaborators:
+    #  * DataSet
+    #
+    # http://johan.github.io/d3/ex/box.html
+    # http://bl.ocks.org/mbostock/4061502
     class BoxPlot < Chart
 
       def initialize(_data_set, options = {})

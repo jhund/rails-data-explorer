@@ -1,18 +1,21 @@
-# Defines classes to describe tables:
-#     rde_table.rows
-#       rde_row.css_class
-#       rde_row.tag
-#       rde_row.cells
-#         rde_cell.css_class
-#         rde_cell.ruby_formatter
-#         rde_cell.style
-#         rde_cell.tag
-#         rde_cell.title
-#         rde_cell.value
+# -*- coding: utf-8 -*-
 
 class RailsDataExplorer
   module Utils
 
+    # Responsibilities:
+    #  * Provide classes to describe tables:
+    #     rde_table.rows
+    #       rde_row.css_class
+    #       rde_row.tag
+    #       rde_row.cells
+    #         rde_cell.css_class
+    #         rde_cell.ruby_formatter
+    #         rde_cell.style
+    #         rde_cell.tag
+    #         rde_cell.title
+    #         rde_cell.value
+    #
     class RdeTable
 
       attr_accessor :rows

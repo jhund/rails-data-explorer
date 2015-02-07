@@ -1,6 +1,16 @@
-# TODO: add :color chart_role (test first if it makes sense, e.g., for 'pay')
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   class Chart
+
+    # Responsibilities:
+    #  * Render a parallel coordinates chart for multivariate analysis of
+    #    a mix of quantitative, temporal, and categorical data series.
+    #
+    # Collaborators:
+    #  * DataSet
+    #
+    # TODO: add :color chart_role (test first if it makes sense, e.g., for 'pay')
     class ParallelCoordinates < Chart
 
       def initialize(_data_set, options = {})

@@ -1,7 +1,17 @@
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   module Statistics
+
+    # Responsibilities:
+    #  * Provide random categorical data. Useful for testing and demo data.
+    #
     class RngCategory
 
+      # @param categories [Array<Object>] the pool of available categories.
+      # @param category_probabilities [Array, optional] probability of each category.
+      # @param rng [Proc, optional] lambda to generate random numbers which will
+      #            be mapped to categories.
       def initialize(categories, category_probabilities = nil, rng = lambda { Kernel.rand })
         @categories, @category_probabilities, @rng = categories, category_probabilities, rng
         @category_probabilities ||= @categories.map { |e| @rng.call }
@@ -9,6 +19,7 @@ class RailsDataExplorer
         @category_order = compute_category_order
       end
 
+      # Returns a random category
       def rand
         r_v = @rng.call
         rnd = @category_order.detect { |e|
@@ -16,6 +27,8 @@ class RailsDataExplorer
         }
         rnd[:category]
       end
+
+    protected
 
       def normalize_category_probabilities
         total = @category_probabilities.inject(0) { |m,e| m += e }

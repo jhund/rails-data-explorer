@@ -1,9 +1,14 @@
-# Add ValueFormat to DataSeries and to individual data points
-# Good resource on significant figures:
-# * http://www.edu.pe.ca/gray/class_pages/krcutcliffe/physics521/sigfigs/sigfigRULES.htm
-# * http://en.wikipedia.org/wiki/Significant_figures
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   module Utils
+
+    # Responsibilities:
+    #  * Format values in data series and individual data
+    #
+    # Good resource on significant figures:
+    # * http://www.edu.pe.ca/gray/class_pages/krcutcliffe/physics521/sigfigs/sigfigRULES.htm
+    # * http://en.wikipedia.org/wiki/Significant_figures
     class ValueFormatter
 
       attr_accessor :d3_format, :ruby_formatter, :significant_figures

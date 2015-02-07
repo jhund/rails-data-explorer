@@ -4,7 +4,8 @@ class RailsDataExplorer
   class Chart
 
     # Responsibilities:
-    #  * Render a stacked bar chart for categorical x and y values
+    #  * Render a stacked bar chart for bivariate analysis of two categorical
+    #    data series. Renders absolute frequencies of y-data series.
     #
     # Collaborators:
     #  * DataSet

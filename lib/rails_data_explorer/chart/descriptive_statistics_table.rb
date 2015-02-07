@@ -1,5 +1,14 @@
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   class Chart
+
+    # Responsibilities:
+    #  * Render a table with descriptive statistics for a data series of any type.
+    #
+    # Collaborators:
+    #  * DataSet
+    #
     class DescriptiveStatisticsTable < Chart
 
       def initialize(_data_set, options = {})

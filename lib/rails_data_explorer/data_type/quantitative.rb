@@ -1,8 +1,18 @@
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   class DataType
-    class Quantitative < DataType
 
-      # This is an abstract class. Use sub_classes
+    # This is an abstract class. Use sub_classes
+    #
+    # Responsibilities:
+    #  * Provide available charts and statistics for quantitative data type.
+    #  * Provide methods for quantitative data type.
+    #
+    # Collaborators:
+    #  * DataSet
+    #
+    class Quantitative < DataType
 
       def all_available_chart_types
         [

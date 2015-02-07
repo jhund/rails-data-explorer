@@ -1,5 +1,11 @@
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   module Utils
+
+    # Responsibilities:
+    #  * Map an input value to a color on a color scale.
+    #
     class ColorScale
 
       def initialize

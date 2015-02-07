@@ -1,6 +1,14 @@
-# TODO: could I use histogram_quantitative instead and just tweak the tick mark format?
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   class Chart
+
+    # Responsibilities:
+    #  * Render a histogram for univariate analysis of a temporal data series.
+    #
+    # Collaborators:
+    #  * DataSet
+    #
     class HistogramTemporal < HistogramQuantitative
 
       def compute_chart_attrs

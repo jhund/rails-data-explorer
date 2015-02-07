@@ -1,5 +1,17 @@
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   class Chart
+
+    # Responsibilities:
+    #  * Render a scatter plot for either
+    #      * bivariate analysis of two quantitative data series or
+    #      * multivariate analysis of two quantitative and one categorical
+    #        data series.
+    #
+    # Collaborators:
+    #  * DataSet
+    #
     class Scatterplot < Chart
 
       def initialize(_data_set, options = {})

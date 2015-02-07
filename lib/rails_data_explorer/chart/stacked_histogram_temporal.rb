@@ -1,5 +1,15 @@
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   class Chart
+
+    # Responsibilities:
+    #  * Render a stacked bar chart for bivariate analysis of a temporal and a
+    #    categorical data series.
+    #
+    # Collaborators:
+    #  * DataSet
+    #
     class StackedHistogramTemporal < Chart
 
       def initialize(_data_set, options = {})

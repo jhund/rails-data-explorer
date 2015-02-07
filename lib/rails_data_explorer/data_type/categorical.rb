@@ -1,5 +1,15 @@
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   class DataType
+
+    # Responsibilities:
+    #  * Provide available charts and statistics for categorical data type.
+    #  * Provide methods for categorical data type.
+    #
+    # Collaborators:
+    #  * DataSet
+    #
     class Categorical < DataType
 
       def all_available_chart_types
