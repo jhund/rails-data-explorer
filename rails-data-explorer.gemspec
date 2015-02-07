@@ -16,14 +16,15 @@ Gem::Specification.new do |gem|
   gem.files = `git ls-files`.split("\n")
   gem.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
 
-  gem.add_dependency 'color', ['~> 1.7.1']
-  gem.add_dependency 'descriptive-statistics', ['~> 2.1.2']
-  gem.add_dependency 'distribution', ['~> 0.7.1']
-  gem.add_dependency 'interpolate', ['~> 0.3.0']
+  gem.add_development_dependency 'rails', '>= 3.0.0'
+  gem.add_dependency 'color', '~> 1.7', '>= 1.7.1'
+  gem.add_dependency 'descriptive-statistics', '~> 2.1', '>= 2.1.2'
+  gem.add_dependency 'distribution', '~> 0.7', '>= 0.7.1'
+  gem.add_dependency 'interpolate', '~> 0.3', '>= 0.3.0'
 
-  gem.add_development_dependency 'actionview', '>= 3.0.0'
-  gem.add_development_dependency 'bundler', ['>= 1.0.0']
-  gem.add_development_dependency 'minitest'
-  gem.add_development_dependency 'minitest-spec-expect'
-  gem.add_development_dependency 'rake', ['>= 0']
+  gem.add_development_dependency 'bundler', '~> 1.0', '>= 1.0.0'
+  gem.add_development_dependency 'minitest', '>= 0'
+  gem.add_development_dependency 'minitest-spec-expect', '>= 0'
+  gem.add_development_dependency 'rake', '>= 0'
+  gem.add_development_dependency 'yui-compressor', '>= 0'
 end
