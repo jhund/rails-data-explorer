@@ -44,6 +44,7 @@ class RailsDataExplorer
       @values = _values
       @data_type = init_data_type(options[:data_type])
       @chart_roles = init_chart_roles(options[:chart_roles]) # after data_type!
+      @options = options
     end
 
     # Returns descriptive_statistics as a flat Array
@@ -103,17 +104,20 @@ class RailsDataExplorer
           @values
         when :limit_distinct_values
           # Returns variant of self's values with number of distinct values limited
-          # to max_num_distinct_values. Less frequent values are mapped to catch
-          # all bin.
+          # to :max_num_distinct_values. Less frequent values are mapped to
+          # :val_for_others.
           # @param max_num_distinct_values [Integer, optional]
           data_type.limit_distinct_values(
             @values,
-            modification[:max_num_distinct_values] || self.class.many_uniq_vals_threshold,
-            modification[:val_for_others]
-          )
-        when :compress_quantitative_values
-          data_type.compress_quantitative_values(
-            @values
+            (
+              modification[:max_num_distinct_values] ||
+              @options[:max_num_distinct_values] ||
+              self.class.many_uniq_vals_threshold
+            ),
+            (
+              modification[:val_for_others] ||
+              @options[:val_for_others]
+            )
           )
         else
           raise "Handle this modification: #{ modification.inspect }"
@@ -181,7 +185,7 @@ class RailsDataExplorer
     # (see #values)
     def has_large_dynamic_range?(modification = {})
       @cached_has_large_dynamic_range ||= {}
-      @cached_has_large_dynamic_range ||= (
+      @cached_has_large_dynamic_range[modification] ||= (
         dynamic_range(modification) > self.class.large_dynamic_range_threshold
       )
     end
