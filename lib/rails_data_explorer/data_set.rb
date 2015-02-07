@@ -13,7 +13,7 @@ class RailsDataExplorer
 
     attr_reader :data_series
 
-    # @param[Array<Numeric, String, Symbol, Nil, Hash, DataSeries>] values_or_data_series
+    # @param values_or_data_series [Array<Numeric, String, Symbol, Nil, Hash, DataSeries>]
     #  Array can contain the following:
     #  * Numeric, String, Symbol, Nil - for a single data series
     #  * Hash - for multiple data series with the following keys:
@@ -22,7 +22,7 @@ class RailsDataExplorer
     #    * :chart_roles [Array<Symbol>, optional] - what to use this series for. possible values: :x, :y, :color
     #    * :data_type (optional) - :quantitative, :categorical, :temporal
     #  * DataSeries
-    # @param[String] exploration_title used as fall back for data series name
+    # @param exploration_title [String] used as fall back for data series name
     def initialize(values_or_data_series, exploration_title)
       @data_series = initialize_data_series(values_or_data_series, exploration_title)
       validate_data_series

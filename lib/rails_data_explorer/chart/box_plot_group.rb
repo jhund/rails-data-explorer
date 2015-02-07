@@ -9,6 +9,14 @@
 # http://www.stata.com/support/faqs/graphics/gph/graphdocs/horizontal-box-plot-of-variable-by-values-of-categorical-variable/
 class RailsDataExplorer
   class Chart
+
+    # Responsibilities:
+    #  * Render a group of box plots for a combination of categorical and
+    #    numerical data. One box plot for each distinct categorical value.
+    #
+    # Collaborators:
+    #  * DataSet
+    #
     class BoxPlotGroup < Chart
 
       def initialize(_data_set, options = {})
@@ -23,19 +31,16 @@ class RailsDataExplorer
         y_candidates = @data_set.data_series.find_all { |ds|
           (ds.chart_roles[Chart::BoxPlotGroup] & [:y, :any]).any?
         }
-
         x_ds = x_candidates.first
         y_ds = (y_candidates - [x_ds]).first
         return false  if x_ds.nil? || y_ds.nil?
 
-        min = x_ds.min_val # get global min
-        max = x_ds.max_val # get global max
-
+        # initialize values_hash
         values_hash = y_ds.uniq_vals.inject({}) { |m,y_val|
           m[y_val] = []
           m
         }
-
+        # populate values hash
         y_ds.values.each_with_index { |y_val, idx|
           next  if (y_val.nil? || Float::NAN == y_val)
           values_hash[y_val] << x_ds.values[idx]
@@ -48,16 +53,36 @@ class RailsDataExplorer
         )
         sorted_values = y_sorted_keys.map { |y_val| values_hash[y_val] }
 
+        # Compute min and max values based on interquartile range of each
+        # boxplot. Objective is to normalize boxplots so that the widest chart
+        # uses almost the entire space available.
+        # Iterate over all individual boxplots
+        global_min = Float::INFINITY
+        global_max = -Float::INFINITY
+        sorted_values.each { |x_vals|
+          ds = DataSeries.new('_', x_vals)
+          desc_stats = ds.descriptive_statistics
+          # compute first and third quartile. Use min and max if they are nil
+          # for very small data series with only one or two entries.
+          q1 = desc_stats.detect { |e| '25%ile' == e[:label] }[:value] || x_vals.min
+          q3 = desc_stats.detect { |e| '75%ile' == e[:label] }[:value] || x_vals.max
+          iqr = (q3 - q1) * 1.5
+          local_min = [x_vals.min, q1 - iqr].max
+          global_min = [global_min, local_min].min
+          local_max = [x_vals.max, q3 + iqr].min
+          global_max = [global_max, local_max].max
+        }
+
         {
           values: sorted_values,
           category_labels: y_sorted_keys,
-          min: min,
-          max: max,
-          base_width: 120,
-          base_height: 800,
+          min: global_min,
+          max: global_max,
+          base_width: 100,
+          base_height: 960,
           axis_tick_format: x_ds.axis_tick_format,
           num_box_plots: y_ds.uniq_vals_count,
-          axis_scale: DataSeries.new('_', [min, max]).axis_scale(:d3)
+          axis_scale: DataSeries.new('_', [global_min, global_max]).axis_scale(:d3)
         }
       end
 
@@ -84,7 +109,7 @@ class RailsDataExplorer
               (function() {
                 var base_width = #{ ca[:base_width] },
                     base_height = #{ ca[:base_height] },
-                    margin = { top: 10, right: 50, bottom: 95, left: 50 },
+                    margin = { top: 10, right: 40, bottom: 10, left: 40 },
                     width = base_width - margin.left - margin.right,
                     height = base_height - margin.top - margin.bottom;
 
@@ -105,7 +130,7 @@ class RailsDataExplorer
                 var svg = d3.select("##{ dom_id }").selectAll("svg")
                             .data(data)
                           .append("g")
-                            .attr("transform", "rotate(90) translate(" + (width + margin.left) + " -" + (height + margin.bottom) + ")")
+                            .attr("transform", "rotate(90) translate(" + margin.left + " -" + (height + margin.bottom) + ")")
                             .call(chart);
 
                 // Function to compute the interquartile range.
