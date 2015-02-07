@@ -15,6 +15,10 @@ h2.rde-exploration-title {
   font-size: 24px;
 }
 
+.rde-chart {
+  overflow-x: scroll;
+}
+
 h3.rde-chart-title {
   display: none;
   font-size: 16px;
