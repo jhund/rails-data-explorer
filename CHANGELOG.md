@@ -1,3 +1,21 @@
+# 1.0.0
+
+* New chart type: StackedBarChartCategorical to go with its percentage cousing.
+* Improved display of table of contents.
+* Improved display of box plot groups: Auto scale charts to make best use of
+  screen space when there are extreme outliers.
+* Automatically limit the number of distinct values in a categorical data series
+  to reduce number of items in categorical charts. Group less frequent observations
+  under '[Other]'.
+* Made charts wider to use more screen space.
+* Scroll contingency tables horizontally if they are too wide.
+* Improved label sorter for categorical values. When working with a mix of
+  numeric and non-numeric labels, sort non-numeric ones at the end.
+* Improved performance by caching a lot of computed data.
+* Removed obsolete files.
+* Improved documentation.
+* Various bug fixes.
+
 ### 0.2.3
 
 * Don't show all explorations by default. Takes too long when having 100

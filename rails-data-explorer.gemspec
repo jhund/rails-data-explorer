@@ -3,7 +3,7 @@ $:.push File.expand_path('../lib', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.name = 'rails-data-explorer'
-  gem.version = '0.2.3'
+  gem.version = '1.0.0'
   gem.platform = Gem::Platform::RUBY
 
   gem.authors = ['Jo Hund']
@@ -16,15 +16,14 @@ Gem::Specification.new do |gem|
   gem.files = `git ls-files`.split("\n")
   gem.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
 
-  gem.add_dependency 'color'
-  gem.add_dependency 'descriptive-statistics'
-  gem.add_dependency 'distribution'
-  gem.add_dependency 'interpolate'
+  gem.add_dependency 'color', ['~> 1.7.1']
+  gem.add_dependency 'descriptive-statistics', ['~> 2.1.2']
+  gem.add_dependency 'distribution', ['~> 0.7.1']
+  gem.add_dependency 'interpolate', ['~> 0.3.0']
 
   gem.add_development_dependency 'actionview', '>= 3.0.0'
   gem.add_development_dependency 'bundler', ['>= 1.0.0']
   gem.add_development_dependency 'minitest'
   gem.add_development_dependency 'minitest-spec-expect'
   gem.add_development_dependency 'rake', ['>= 0']
-  gem.add_development_dependency 'yui-compressor'
 end
