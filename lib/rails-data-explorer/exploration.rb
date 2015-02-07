@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
-#
-# Responsibilities:
-#  * Represent and initialize a data exploration
-#  * Initialize and render self (including charts)
-#
-# Collaborators:
-#  * DataSet
-#  * Chart
-#
+
 class RailsDataExplorer
+
+  # Responsibilities:
+  #  * Represent and initialize a data exploration
+  #  * Initialize and render self (including charts)
+  #
+  # Collaborators:
+  #  * DataSet
+  #  * Chart
+  #
   class Exploration
 
     attr_accessor :output_buffer # required for content_tag

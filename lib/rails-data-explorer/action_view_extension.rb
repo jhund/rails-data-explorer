@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
-#
-# Responsibilities:
-#  * Add rails-data-explorer view helpers to ActionView
-#  * Render rails-data-explorer generated content
-#
-# Collaborators:
-#  * RailsDataExplorer
-#  * Exploration
-#
+
 class RailsDataExplorer
+
+  # Responsibilities:
+  #  * Add rails-data-explorer view helpers to ActionView
+  #  * Render rails-data-explorer generated content
+  #
+  # Collaborators:
+  #  * RailsDataExplorer
+  #  * Exploration
+  #
   module ActionViewExtension
 
     # Renders the entire RailsDataExplorer view

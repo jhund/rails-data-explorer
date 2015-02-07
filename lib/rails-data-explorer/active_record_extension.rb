@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-#
-# Responsibilities:
-#  * Add rails-data-explorer methods to ActiveRecord::Base and sub classes
-#
-# Collaborators:
-#
+
 class RailsDataExplorer
+
+  # Responsibilities:
+  #  * Add rails-data-explorer methods to ActiveRecord::Base and sub classes
+  #
+  # Collaborators:
+  #
   module ActiveRecordExtension
 
     module ClassMethods

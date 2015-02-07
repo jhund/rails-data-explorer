@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-#
-# Responsibilities:
-#  * Visualize data in the form of charts and tables
-#
-# Collaborators:
-#  * RdeTable
-#
+
 class RailsDataExplorer
+
+  # Responsibilities:
+  #  * Visualize data
+  #  * Integrate with front end visualization libraries
+  #
+  # Collaborators:
+  #  * RdeTable
+  #
   class Chart
 
     include ActionView::Helpers::NumberHelper

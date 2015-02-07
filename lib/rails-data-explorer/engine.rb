@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-#
 
 require 'rails'
 
 class RailsDataExplorer
-
 
   # Responsibilities:
   #  * Tie RailsDataExplorer into a Rails app

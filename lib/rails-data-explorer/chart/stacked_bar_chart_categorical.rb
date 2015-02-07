@@ -1,5 +1,14 @@
+# -*- coding: utf-8 -*-
+
 class RailsDataExplorer
   class Chart
+
+    # Responsibilities:
+    #  * Render a stacked bar chart for categorical x and y values
+    #
+    # Collaborators:
+    #  * DataSet
+    #
     class StackedBarChartCategorical < Chart
 
       def initialize(_data_set, options = {})

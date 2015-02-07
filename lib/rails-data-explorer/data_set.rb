@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
-#
-# Responsibilities:
-#  * Container for DataSeries
-#
-# Collaborators:
-#  * DataSeries
-#  * Exploration
-#
+
 class RailsDataExplorer
+
+  # Responsibilities:
+  #  * Container for DataSeries
+  #
+  # Collaborators:
+  #  * DataSeries
+  #  * Exploration
+  #
   class DataSet
 
     attr_reader :data_series
