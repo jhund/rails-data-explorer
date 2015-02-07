@@ -18,7 +18,7 @@ class RailsDataExplorer
           min: x_ds.min_val,
           max: x_ds.max_val,
           base_width: 120,
-          base_height: 800,
+          base_height: 960,
           axis_tick_format: x_ds.axis_tick_format,
         }
       end
