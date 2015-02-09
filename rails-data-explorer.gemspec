@@ -26,4 +26,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'minitest', '>= 0'
   gem.add_development_dependency 'minitest-spec-expect', '>= 0'
   gem.add_development_dependency 'rake', '>= 0'
+  gem.add_development_dependency 'yui-compressor', '>= 0'
 end
