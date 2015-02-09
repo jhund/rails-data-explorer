@@ -7,7 +7,7 @@
 
 # 1.0.0
 
-* New chart type: StackedBarChartCategorical to go with its percentage cousing.
+* New chart type: StackedBarChartCategorical to go with its percentage cousin.
 * Improved display of table of contents.
 * Improved display of box plot groups: Auto scale charts to make best use of
   screen space when there are extreme outliers.
