@@ -9,13 +9,16 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
 
- *= require sources/bootstrap
- *= require sources/bootstrap-theme
- *  *= require sources/nv.d3
- *= require sources/d3.boxplot
- *= require sources/d3.parcoords
- *= require sources/d3.parsets
+ *= require rails-data-explorer/bootstrap
+ *= require rails-data-explorer/bootstrap-theme
 
- *= require sources/rde-default-style
+ * Currently we're not using NVD3
+ *  *= require rails-data-explorer/nv.d3
+
+ *= require rails-data-explorer/d3.boxplot
+ *= require rails-data-explorer/d3.parcoords
+ *= require rails-data-explorer/d3.parsets
+
+ *= require rails-data-explorer/rde-default-style
 
  */

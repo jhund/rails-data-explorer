@@ -11,10 +11,12 @@
 // about supported directives.
 //
 
-//= require sources/d3.v3
+//= require rails-data-explorer/d3.v3
 
-//  //= require sources/nv.d3
-//= require sources/d3.boxplot
-//= require sources/d3.parcoords
-//= require sources/d3.parsets
-//= require sources/vega.js
+// Currently we're not using NVD3
+//  //= require rails-data-explorer/nv.d3
+
+//= require rails-data-explorer/d3.boxplot
+//= require rails-data-explorer/d3.parcoords
+//= require rails-data-explorer/d3.parsets
+//= require rails-data-explorer/vega.js
