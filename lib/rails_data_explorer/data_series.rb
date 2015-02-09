@@ -20,7 +20,7 @@ class RailsDataExplorer
     # TODO: Add concept of significant figures for rounding values when displaying them
     # http://en.wikipedia.org/wiki/Significant_figures
 
-    attr_reader :data_type, :name, :chart_roles
+    attr_reader :data_type, :name, :chart_roles, :options
     delegate :available_chart_types, to: :data_type, prefix: false
     delegate :available_chart_roles, to: :data_type, prefix: false
 
@@ -44,7 +44,7 @@ class RailsDataExplorer
       @values = _values
       @data_type = init_data_type(options[:data_type])
       @chart_roles = init_chart_roles(options[:chart_roles]) # after data_type!
-      @options = options
+      @options = options.symbolize_keys
     end
 
     # Returns descriptive_statistics as a flat Array

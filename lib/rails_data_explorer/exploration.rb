@@ -15,6 +15,7 @@ class RailsDataExplorer
     attr_accessor :charts, :data_set, :title
 
     delegate :data_series_names, to: :data_set, prefix: false
+    delegate :notes, to: :data_set, prefix: false
     delegate :number_of_values, to: :data_set, prefix: false
 
     # Computes a dom_id for data_series_names

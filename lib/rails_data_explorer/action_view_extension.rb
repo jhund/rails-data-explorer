@@ -217,6 +217,15 @@ class RailsDataExplorer
           end +
           content_tag(:div, class: 'panel-body') do
             if ex.charts.any?
+              if ex.notes.any?
+                content_tag(:ul, class: 'rde-data_series_note') do
+                  ex.notes.map { |note_attrs|
+                    content_tag(:li, [note_attrs[:ds_name], note_attrs[:body]].join(': '))
+                  }.join.html_safe
+                end
+              else
+                ''.html_safe
+              end +
               ex.charts.map { |ch| ch.render }.join.html_safe
             else
               "No charts are available for this combination of data series."

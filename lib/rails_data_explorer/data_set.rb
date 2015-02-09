@@ -140,5 +140,11 @@ class RailsDataExplorer
       data_series.map { |e| e.name }
     end
 
+    # Returns an Array of notes attributes for data_series.
+    def notes
+      data_series.find_all { |ds| ds.options[:note].present? }
+                 .map { |ds| { ds_name: ds.name, body: ds.options[:note] }}
+    end
+
   end
 end
