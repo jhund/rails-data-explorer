@@ -1,3 +1,10 @@
+### 1.0.1
+
+* Added :note option to data series specs
+* Updated bootstrap assets
+* Updated gem dependencies
+* added Travis-CI integration
+
 # 1.0.0
 
 * New chart type: StackedBarChartCategorical to go with its percentage cousing.
