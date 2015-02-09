@@ -12,9 +12,6 @@ class RailsDataExplorer
   #
   class Exploration
 
-    attr_accessor :output_buffer # required for content_tag
-    include ActionView::Helpers::TagHelper
-
     attr_accessor :charts, :data_set, :title
 
     delegate :data_series_names, to: :data_set, prefix: false
@@ -44,22 +41,6 @@ class RailsDataExplorer
       @data_set = initialize_data_set(data_set_or_array)
       @render_charts = render_charts
       @charts = initialize_charts(chart_specs)
-    end
-
-    def render
-      content_tag(:div, class: 'rde-exploration panel panel-default', id: dom_id) do
-        content_tag(:div, class: 'panel-heading') do
-          %(<span style="float: right;"><a href="#rails_data_explorer-toc">Top</a></span>).html_safe +
-          content_tag(:h2, @title, class: 'rde-exploration-title panel-title')
-        end +
-        content_tag(:div, class: 'panel-body') do
-          if @charts.any?
-            @charts.map { |e| e.render }.join.html_safe
-          else
-            "No charts are available for this combination of data series."
-          end
-        end
-      end.html_safe
     end
 
     # Returns true if charts for this exploration are to be rendered.

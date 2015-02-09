@@ -209,7 +209,21 @@ class RailsDataExplorer
     end
 
     def rde_explorations_with_charts(explorations)
-      explorations.map { |e| e.render }.join.html_safe
+      explorations.map { |ex|
+        content_tag(:div, class: 'rde-exploration panel panel-default', id: ex.dom_id) do
+          content_tag(:div, class: 'panel-heading') do
+            %(<span style="float: right;"><a href="#rails_data_explorer-toc">Top</a></span>).html_safe +
+            content_tag(:h2, ex.title, class: 'rde-exploration-title panel-title')
+          end +
+          content_tag(:div, class: 'panel-body') do
+            if ex.charts.any?
+              ex.charts.map { |ch| ch.render }.join.html_safe
+            else
+              "No charts are available for this combination of data series."
+            end
+          end
+        end.html_safe
+      }.join.html_safe
     end
 
   end
