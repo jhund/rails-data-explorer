@@ -135,6 +135,9 @@ With just a few lines of code you get comprehensive statistics and charts for yo
 * [Source code (github)](https://github.com/jhund/rails-data-explorer)
 * [Issues](https://github.com/jhund/rails-data-explorer/issues)
 * [Rubygems.org](http://rubygems.org/gems/rails-data-explorer)
+* [API documentation](http://www.rubydoc.info/gems/rails-data-explorer/)
+
+[![Build Status](https://travis-ci.org/jhund/rails-data-explorer.svg?branch=master)](https://travis-ci.org/jhund/rails-data-explorer)
 
 ### License
 
