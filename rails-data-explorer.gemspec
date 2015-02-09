@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
   gem.files = `git ls-files`.split("\n")
   gem.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
 
-  gem.add_development_dependency 'rails', '>= 3.0.0'
+  gem.add_dependency 'rails', '>= 3.1.0'
   gem.add_dependency 'color', '~> 1.7', '>= 1.7.1'
   gem.add_dependency 'descriptive-statistics', '~> 2.1', '>= 2.1.2'
   gem.add_dependency 'distribution', '~> 0.7', '>= 0.7.1'
@@ -26,5 +26,4 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'minitest', '>= 0'
   gem.add_development_dependency 'minitest-spec-expect', '>= 0'
   gem.add_development_dependency 'rake', '>= 0'
-  gem.add_development_dependency 'yui-compressor', '>= 0'
 end

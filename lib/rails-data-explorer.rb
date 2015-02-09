@@ -10,6 +10,7 @@ require 'interpolate'
 require 'rails_data_explorer/action_view_extension.rb'
 
 require 'rails_data_explorer/engine.rb'
+# dependency boundary
 
 require 'rails_data_explorer.rb'
 require 'rails_data_explorer/chart.rb'
@@ -25,6 +26,8 @@ require 'rails_data_explorer/utils/data_binner.rb'
 require 'rails_data_explorer/utils/data_quantizer.rb'
 require 'rails_data_explorer/utils/rde_table.rb'
 require 'rails_data_explorer/utils/value_formatter.rb'
+
+# dependency boundary
 
 require 'rails_data_explorer/chart/box_plot.rb'
 require 'rails_data_explorer/chart/box_plot_group.rb'
@@ -44,5 +47,7 @@ require 'rails_data_explorer/data_type/quantitative.rb'
 require 'rails_data_explorer/data_type/quantitative/decimal.rb'
 require 'rails_data_explorer/data_type/quantitative/integer.rb'
 require 'rails_data_explorer/data_type/quantitative/temporal.rb'
+
+# dependency boundary
 
 require 'rails_data_explorer/chart/stacked_bar_chart_categorical_percent.rb'

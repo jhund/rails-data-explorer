@@ -32,7 +32,7 @@ class RailsDataExplorer
     #   extend RailsDataExplorer::ActiveRecordExtension
     # end
 
-    initializer "filterrific" do |app|
+    initializer "rails-data-explorer.assets.precompile" do |app|
       app.config.assets.precompile += %w(
         multiple_bivariate_small.png
       )
