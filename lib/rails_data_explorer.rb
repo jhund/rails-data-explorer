@@ -13,11 +13,31 @@ class RailsDataExplorer
   attr_reader :explorations
   attr_reader :data_series_names
 
-  # Top level initialization. This is what you normally should use.
+  # Top level initialization. This is what you use to explore your data.
   # @param data_collection [Array<Array>] Outer array is the container, inner
   #                                       array represents each record (row of data).
   # @param data_series_specs [Array<Hash>] One Hash for each data series.
-  # @param explorations_to_render [Hash]
+  # @option data_series_specs [String] :name the name of the data series
+  # @option data_series_specs [Proc] :data_method a proc that will return the
+  #                                   data for this column. Valid types are
+  #                                   String, Numeric or Date/Time.
+  # @option data_series_specs [String] :note any comment you want to make for
+  #                                   this data series. Will be printed with
+  #                                   each chart that uses this data series.
+  # @option data_series_specs [Boolean, String] :univariate override to always
+  #                                   render univariate chart and statistics for
+  #                                   this data series. Defaults to true.
+  # @option data_series_specs [Boolean, String] :bivariate override to always
+  #                                   render bivariate chart and statistics for
+  #                                   this data series. Defaults to false.
+  # @option data_series_specs [Boolean, String] :multivariate override to always
+  #                                   render multivariate chart and statistics for
+  #                                   this data series. Defaults to false.
+  # @option data_series_specs [Integer] :max_num_distinct_values override the
+  #                                   max number of distinct values for
+  #                                   categorical data. Default: 20.
+  # @param explorations_to_render [Hash] A hash to specify which explorations
+  #     you want rendered. Example data structure:
   #        {
   #          "univariate" => {
   #            "1" => ["Hour of day"],
@@ -27,6 +47,7 @@ class RailsDataExplorer
   #            "2" => ["Year", "Timezone"],
   #          }
   #        }
+  #
   def initialize(data_collection, data_series_specs, explorations_to_render)
     @explorations = []
     charts = {

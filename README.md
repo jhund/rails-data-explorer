@@ -1,17 +1,95 @@
-# rails-data-explorer
+# Rails Data Explorer
 
-Rails-data-explorer is a Rails Engine plugin that makes it easy to explore the
-data in your app using charts and statistics.
+Rails data explorer (*RDE*) is a Rails engine plugin that makes it magically
+easy to explore your app's data using charts and statistics.
 
-All you have to do is to throw your data in table form at rails-data-explorer.
-Rails-data-explorer then analyzes your data and automatically renders suitable
-charts and descriptive statistics for each column. It offers tools for uni-, bi-
-and multi-variate analysis. It can even find correlations in your categorical data
-using Pearson's Chi Squared test.
+The purpose of *RDE* is to help you develop an intuition for your app's data
+so that you can find patterns, correlations and anomalies in the data that
+you can then further investigate and exploit.
 
-See below for a screenshot of what you get.
 
-### Installation
+
+## Examples
+
+***
+
+<table>
+  <tr>
+    <td style="text-align: center">
+      <a href="url"><img src="https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot-all-univariate.png" width="200" ></a>
+      The default charts rendered by rails-data-explorer: Univariate charts and
+      statistics for every column in your data.
+      <br/>
+      (Click image for full size screenshot)
+    </td>
+    <td style="text-align: center">
+      <a href="url"><img src="https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot-plan-bivariate.png" width="200" ></a>
+      All bivariate charts and statistics for the "Plan" column.
+      <br/>
+      (Click image for full size screenshot)
+    </td>
+  <tr/>
+<table>
+
+***
+
+
+
+## Features
+
+* **Optimized for simplicity and convenience**: All you have to do is throw
+  your data in tabular form at *RDE*. *RDE* then decides how to best visualize and
+  present your data.
+* **Batteries included**: *RDE* includes everything required to render stunning
+  charts and visualizations. It is tightly integrated with Rails and doesn't
+  require knowledge of charting libraries, statistics, or data engineering.
+* **Comprehensive data visualization and analysis**: Out of the box *RDE*
+  gives you univariate charts and statistics for each column of your data. It
+  also gives you single click access to all possible bivariate combinations
+  of your data columns. With a single config param, it will even generate
+  arbitrary multivariate charts for you.
+* **Works with small- and medium-sized data**: *RDE* works great for up to ~100K records.
+  I'm thinking about ways to make it work for larger data series using sampling.
+  If you know how to do this correctly in ActiveRecord, please let me know.
+
+Detailed features
+
+* Integrates with ActiveRecord.
+* Renders beautiful charts (using Vega/Nvd3 and d3.js).
+* Uses best charting practices (using Vega visualization grammar).
+* Automatically detects and handles categorical and quantitative
+  (integer, decimal, and temporal) data types.
+* Automatically performs and renders visualizations for univariate, bivariate
+  and multivariate analysis.
+* Provides single click access to univarate and all possible combinations of
+  bivariate analyses.
+* Automatically picks linear vs. logarithmic axes.
+* Automatically finds top N values for categorical data to make charts easier
+  to read.
+* Automatically sorts axis labels for maximum clarity.
+* Performs Pearson's Chi squared test on bivariate analysis of categorical data.
+  This is super userful to analyze and interpret A/B test data, or to find
+  correlations in your data.
+* Based on d3.js, jQuery and Bootstrap for rendering charts. (You can use the
+  assets bundled with RDE, or your own.)
+* Works well with the Filterrific gem for filtering data before it is fed to
+  *RDE*.
+* Provides statistical utility methods, e.g., to bin or quantize your data.
+
+RDE provides the following chart types:
+
+* Bar chart (simple, stacked, percent distribution)
+* Pie chart
+* Histogram
+* Box plot (single and group)
+* Scatterplot
+* Parallel coordinates
+* Parallel set
+* Contingency table with pearson's chi squared test (good to interpret A/B test data)
+
+
+
+## Installation
 
 `gem install rails-data-explorer`
 
@@ -20,16 +98,16 @@ or with bundler in your Gemfile:
 `gem 'rails-data-explorer'`
 
 
-### Usage
 
-Let's say you want to explore your app's `User` signup data. Create a route and action
-named 'signups' in `app/controllers/users_controller.rb`:
+## Usage
+
+Let's say you want to explore your app's `User` signup data. Create a route and
+action for `users#signups`:
 
 ~~~ ruby
-def signups
-  # DANGER! Make sure not to load too much data into memory!
-  user_data = User.all.to_a
+# app/controllers/users_controller.rb
 
+def signups
   c_binner = RailsDataExplorer::Utils::DataBinner.new(
     '0' => 0,
     '1' => 1,
@@ -39,8 +117,8 @@ def signups
     '101..1,000' => 1000,
     '1,001..10,000' => 10000
   )
-  @rails_data_explorer = RailsDataExplorer.new(
-    user_data,
+  @rde = RailsDataExplorer.new(
+    User.all.to_a, # DANGER! Make sure not to load too much data into memory!
     [
       {
         name: "Session duration [Minutes]",
@@ -51,7 +129,6 @@ def signups
       {
         name: "Country",
         data_method: Proc.new { |row| row.country },
-        multivariate: ['All'],
       },
       {
         name: "Sign in count",
@@ -60,12 +137,10 @@ def signups
       {
         name: "Language",
         data_method: Proc.new { |row| row.language },
-        multivariate: ['All'],
       },
       {
         name: "Plan",
         data_method: Proc.new { |row| row.plan },
-        multivariate: ['All'],
       },
       {
         name: "Sign up date",
@@ -79,7 +154,8 @@ def signups
           "#{ year } / Q#{ quarter }"
         },
       },
-    ]
+    ],
+    params[:rde]
   )
 end
 ~~~
@@ -89,20 +165,16 @@ Then create a view at `app/views/users/signups.html.erb`:
 ~~~erb
 <div class="rails-data-explorer">
   <h1>User signup data</h1>
-  <%= @rails_data_explorer.render %>
+  <%= rails_data_explorer(@rde) %>
 </div>
 ~~~
 
-With just a few lines of code you get comprehensive statistics and charts for your data:
-
-***
-
-![Rails data exploration](https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot.png)
-
-***
+With just a few lines of code you get comprehensive statistics and charts for
+your data (see screenshots above).
 
 
-### Ways to shoot yourself in the foot
+
+## Ways to shoot yourself in the foot
 
 * **Loading too many DB rows at once**: Remember that you are loading ActiveRecord
   objects, and they can use a lot of ram. It's a cartesian product of number of
@@ -112,39 +184,36 @@ With just a few lines of code you get comprehensive statistics and charts for yo
   As a rule of thumb, it should be ok to run simple methods that don't require
   DB access. Examples: `#.to_s`, `if` and `case`, and math operations should all
   be fine.
-* **Declaring too many charts**: The charts rendered are the sum of the following:
-    * univariate: one or more charts for each data series
-    * bivariate: the cartesian product of all data series in a bivariate group
-    * multivariate: one or more charts for each multivariate group
-  I have tested it with 70 charts on a single page. More are probably ok, I
-  just haven't tested it.
 * **Drowning in detail**: rails-data-explorer makes it easy to generate a large
   number of charts. Make sure you don't miss the important data in the noise.
 
 
-### Dependencies
 
-* ActionView >= 3.0
-* ActiveSupport >= 3.0
+## Dependencies
+
+* rails >= 3.1
 * Asset pipeline (for batteries included, otherwise you'll have to pull in a number of assets manually)
-* jQuery??
 
-### Resources
 
+
+## Resources
+
+* [API documentation](http://www.rubydoc.info/gems/rails-data-explorer/)
 * [Changelog](https://github.com/jhund/rails-data-explorer/blob/master/CHANGELOG.md)
 * [Source code (github)](https://github.com/jhund/rails-data-explorer)
 * [Issues](https://github.com/jhund/rails-data-explorer/issues)
 * [Rubygems.org](http://rubygems.org/gems/rails-data-explorer)
-* [API documentation](http://www.rubydoc.info/gems/rails-data-explorer/)
 
 [![Build Status](https://travis-ci.org/jhund/rails-data-explorer.svg?branch=master)](https://travis-ci.org/jhund/rails-data-explorer)
 
-### License
+
+
+## License
 
 [MIT licensed](https://github.com/jhund/rails-data-explorer/blob/master/MIT-LICENSE).
 
 
 
-### Copyright
+## Copyright
 
-Copyright (c) 2015 Jo Hund. See [(MIT) LICENSE](https://github.com/jhund/rails-data-explorer/blob/master/MIT-LICENSE) for details.
+Copyright (c) 2014 - 2015 Jo Hund. See [(MIT) LICENSE](https://github.com/jhund/rails-data-explorer/blob/master/MIT-LICENSE) for details.
