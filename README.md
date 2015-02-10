@@ -1,6 +1,6 @@
-# Rails Data Explorer
+# rails-data-explorer
 
-Rails data explorer (*RDE*) is a Rails engine plugin that makes it magically
+rails-data-explorer (*RDE*) is a Rails engine plugin that makes it magically
 easy to explore your app's data using charts and statistics.
 
 The purpose of *RDE* is to help you develop an intuition for your app's data
@@ -15,18 +15,22 @@ you can then further investigate and exploit.
 
 <table>
   <tr>
-    <td style="text-align: center">
-      <a href="url"><img src="https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot-all-univariate.png" width="200" ></a>
-      The default charts rendered by rails-data-explorer: Univariate charts and
-      statistics for every column in your data.
-      <br/>
-      (Click image for full size screenshot)
+    <td>
+      <a href="https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot-all-univariate.png"><img src="https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot-all-univariate.png" width="200" ></a>
+      <p>
+        The default charts rendered by rails-data-explorer: Univariate charts and
+        statistics for every column in your data.
+        <br/>
+        (Click image for full size screenshot)
+      </p>
     </td>
-    <td style="text-align: center">
-      <a href="url"><img src="https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot-plan-bivariate.png" width="200" ></a>
-      All bivariate charts and statistics for the "Plan" column.
-      <br/>
-      (Click image for full size screenshot)
+    <td>
+      <a href="https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot-plan-bivariate.png"><img src="https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot-plan-bivariate.png" width="200" ></a>
+      <p>
+        All bivariate charts and statistics for the "Plan" column.
+        <br/>
+        (Click image for full size screenshot)
+      </p>
     </td>
   <tr/>
 <table>
@@ -37,15 +41,15 @@ you can then further investigate and exploit.
 
 ## Features
 
-* **Optimized for simplicity and convenience**: All you have to do is throw
-  your data in tabular form at *RDE*. *RDE* then decides how to best visualize and
+* **Optimized for simplicity and convenience**: All you have to do is provide
+  your data in tabular form. *RDE* then decides how to best visualize and
   present your data.
 * **Batteries included**: *RDE* includes everything required to render stunning
   charts and visualizations. It is tightly integrated with Rails and doesn't
   require knowledge of charting libraries, statistics, or data engineering.
 * **Comprehensive data visualization and analysis**: Out of the box *RDE*
   gives you univariate charts and statistics for each column of your data. It
-  also gives you single click access to all possible bivariate combinations
+  also gives you single click access to all bivariate combinations
   of your data columns. With a single config param, it will even generate
   arbitrary multivariate charts for you.
 * **Works with small- and medium-sized data**: *RDE* works great for up to ~100K records.
@@ -57,9 +61,9 @@ Detailed features
 * Integrates with ActiveRecord.
 * Renders beautiful charts (using Vega/Nvd3 and d3.js).
 * Uses best charting practices (using Vega visualization grammar).
-* Automatically detects and handles categorical and quantitative
-  (integer, decimal, and temporal) data types.
-* Automatically performs and renders visualizations for univariate, bivariate
+* Automatically detects and handles categorical and quantitative data types.
+  (integer, decimal, and temporal)
+* Automatically renders visualizations and statistics for univariate, bivariate
   and multivariate analysis.
 * Provides single click access to univarate and all possible combinations of
   bivariate analyses.
@@ -68,15 +72,13 @@ Detailed features
   to read.
 * Automatically sorts axis labels for maximum clarity.
 * Performs Pearson's Chi squared test on bivariate analysis of categorical data.
-  This is super userful to analyze and interpret A/B test data, or to find
+  This is super useful when analyzing and interpreting A/B test data, or to find
   correlations in your data.
-* Based on d3.js, jQuery and Bootstrap for rendering charts. (You can use the
-  assets bundled with RDE, or your own.)
 * Works well with the Filterrific gem for filtering data before it is fed to
   *RDE*.
 * Provides statistical utility methods, e.g., to bin or quantize your data.
 
-RDE provides the following chart types:
+*RDE* provides the following chart types:
 
 * Bar chart (simple, stacked, percent distribution)
 * Pie chart
@@ -179,7 +181,7 @@ your data (see screenshots above).
 * **Loading too many DB rows at once**: Remember that you are loading ActiveRecord
   objects, and they can use a lot of ram. It's a cartesian product of number of
   rows times columns per record. As a rule of thumb, for a medium sized model with
-  30 columns, you can load up to 10,000 rows.
+  10 columns, you can load up to ~100K rows.
 * **Using expensive operations in the `:data_method` option for a given data series**:
   As a rule of thumb, it should be ok to run simple methods that don't require
   DB access. Examples: `#.to_s`, `if` and `case`, and math operations should all

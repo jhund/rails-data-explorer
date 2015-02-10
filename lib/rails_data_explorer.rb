@@ -136,18 +136,22 @@ class RailsDataExplorer
     }
   end
 
+  # @return [Array<Exploration>]
   def explorations_with_charts_available
     explorations.find_all { |e| e.charts.any? }
   end
 
+  # @return [Array<Exploration>]
   def explorations_with_charts_to_render
     explorations_with_charts_available.find_all { |e| e.render_charts? }
   end
 
+  # @return [Array<Exploration>]
   def explorations_with_no_charts_available
     explorations.find_all { |e| e.charts.empty? }
   end
 
+  # @return [Integer]
   def number_of_values
     explorations.first.number_of_values
   end
