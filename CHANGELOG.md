@@ -1,3 +1,7 @@
+### 1.0.2
+
+* Updated specs, documentation, and Gem dependencies.
+
 ### 1.0.1
 
 * Added :note option to data series specs
