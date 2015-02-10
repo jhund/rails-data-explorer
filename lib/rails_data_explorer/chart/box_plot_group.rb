@@ -11,15 +11,15 @@ class RailsDataExplorer
     # Collaborators:
     #  * DataSet
     #
-    # http://bl.ocks.org/jensgrubert/7789216
-    # http://www.datavizcatalogue.com/methods/box_plot.html#.U0S8Ra1dUyE
-    # http://mbostock.github.io/protovis/ex/box-and-whisker.html
-    # http://bl.ocks.org/mbostock/4061502
-    # http://johan.github.io/d3/ex/box.html
-    # http://johan.github.io/d3/ex/box.html
-    # http://bl.ocks.org/mbostock/4061502
-    # TODO: imitate this:
-    # http://www.stata.com/support/faqs/graphics/gph/graphdocs/horizontal-box-plot-of-variable-by-values-of-categorical-variable/
+    # Resources:
+    # * http://bl.ocks.org/jensgrubert/7789216
+    # * http://www.datavizcatalogue.com/methods/box_plot.html#.U0S8Ra1dUyE
+    # * http://mbostock.github.io/protovis/ex/box-and-whisker.html
+    # * http://bl.ocks.org/mbostock/4061502
+    # * http://johan.github.io/d3/ex/box.html
+    # * http://johan.github.io/d3/ex/box.html
+    # * http://bl.ocks.org/mbostock/4061502
+    # * http://www.stata.com/support/faqs/graphics/gph/graphdocs/horizontal-box-plot-of-variable-by-values-of-categorical-variable/
     class BoxPlotGroup < Chart
 
       def initialize(_data_set, options = {})

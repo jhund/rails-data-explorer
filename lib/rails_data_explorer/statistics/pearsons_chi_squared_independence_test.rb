@@ -13,8 +13,7 @@ class RailsDataExplorer
     # observation is allocated to one cell of a two-dimensional array of cells (called
     # a contingency table) according to the values of the two outcomes.
 
-    # Assumptions
-    # -----------
+    # ## Assumptions
 
     # The chi-squared test, when used with the standard approximation that a chi-
     # squared distribution is applicable, has the following assumptions:
@@ -38,8 +37,7 @@ class RailsDataExplorer
     #   (like matched pairs or panel data). In those cases you might want to turn to
     #   McNemar's test.
 
-    # Problems
-    # --------
+    # ## Problems
 
     # The approximation to the chi-squared distribution breaks down if expected
     # frequencies are too low. It will normally be acceptable so long as no more than

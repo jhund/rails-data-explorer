@@ -9,8 +9,9 @@ class RailsDataExplorer
     # Collaborators:
     #  * DataSet
     #
-    # http://johan.github.io/d3/ex/box.html
-    # http://bl.ocks.org/mbostock/4061502
+    # Resources:
+    # * http://johan.github.io/d3/ex/box.html
+    # * http://bl.ocks.org/mbostock/4061502
     class BoxPlot < Chart
 
       def initialize(_data_set, options = {})
