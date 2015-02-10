@@ -16,7 +16,7 @@ you can then further investigate and exploit.
 <table>
   <tr>
     <td>
-      <a href="https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot-all-univariate.png"><img src="https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot-all-univariate.png" width="200" ></a>
+      <a href="https://raw.githubusercontent.com/jhund/rails-data-explorer/master/doc/rails-data-explorer-screenshot-all-univariate.png"><img src="https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot-all-univariate.png" width="200" ></a>
       <p>
         The default charts rendered by rails-data-explorer: Univariate charts and
         statistics for every column in your data.
@@ -25,7 +25,7 @@ you can then further investigate and exploit.
       </p>
     </td>
     <td>
-      <a href="https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot-plan-bivariate.png"><img src="https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot-plan-bivariate.png" width="200" ></a>
+      <a href="https://raw.githubusercontent.com/jhund/rails-data-explorer/master/doc/rails-data-explorer-screenshot-plan-bivariate.png"><img src="https://github.com/jhund/rails-data-explorer/blob/master/doc/rails-data-explorer-screenshot-plan-bivariate.png" width="200" ></a>
       <p>
         All bivariate charts and statistics for the "Plan" column.
         <br/>
