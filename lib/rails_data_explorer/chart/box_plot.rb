@@ -40,7 +40,7 @@ class RailsDataExplorer
 
         %(
           <div id="#{ dom_id }" class="rde-chart rde-box-plot">
-            <svg class="box" style="height: #{ ca[:base_width] }px;"></svg>
+            <svg class="box" style="height: #{ ca[:base_width] }px; width: 100%;"></svg>
 
             <script type="text/javascript">
               (function() {

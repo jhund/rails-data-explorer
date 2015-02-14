@@ -99,7 +99,7 @@ class RailsDataExplorer
             <tr>
               <td style="vertical-align: middle;">#{ cat_label }</td>
               <td style="vertical-align: middle; width: 100%">
-                <svg class="box" style="height: #{ ca[:base_width] }px;"></svg>
+                <svg class="box" style="height: #{ ca[:base_width] }px; width: 100%;"></svg>
               </td>
             </tr>
           )
