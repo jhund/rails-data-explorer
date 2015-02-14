@@ -1,3 +1,7 @@
+### 1.0.3
+
+* Updated packaged assets and fixed path for precompiling assets
+
 ### 1.0.2
 
 * Updated specs, documentation, and Gem dependencies.
