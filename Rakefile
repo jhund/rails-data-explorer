@@ -50,12 +50,12 @@ namespace :rde do
     minify_js(
       File.join(base_path, 'packaged/rails-data-explorer.min.js'),
       [
-        File.join(base_path, 'sources/d3.v3.js'),
-        # File.join(base_path, 'sources/nv.d3.js'),
-        File.join(base_path, 'sources/d3.boxplot.js'),
-        File.join(base_path, 'sources/d3.parcoords.js'),
-        File.join(base_path, 'sources/d3.parsets.js'),
-        File.join(base_path, 'sources/vega.js'),
+        File.join(base_path, 'rails-data-explorer/d3.v3.js'),
+        # File.join(base_path, 'rails-data-explorer/nv.d3.js'),
+        File.join(base_path, 'rails-data-explorer/d3.boxplot.js'),
+        File.join(base_path, 'rails-data-explorer/d3.parcoords.js'),
+        File.join(base_path, 'rails-data-explorer/d3.parsets.js'),
+        File.join(base_path, 'rails-data-explorer/vega.js'),
       ]
     )
   end
@@ -66,13 +66,13 @@ namespace :rde do
     minify_css(
       File.join(base_path, 'packaged/rails-data-explorer.min.css'),
       [
-        File.join(base_path, 'sources/bootstrap-theme.css'),
-        File.join(base_path, 'sources/bootstrap.css'),
-        File.join(base_path, 'sources/d3.boxplot.css'),
-        File.join(base_path, 'sources/d3.parcoords.css'),
-        File.join(base_path, 'sources/d3.parsets.css'),
-        # File.join(base_path, 'sources/nv.d3.css'),
-        File.join(base_path, 'sources/rde-default-style.css'),
+        File.join(base_path, 'rails-data-explorer/bootstrap-theme.css'),
+        File.join(base_path, 'rails-data-explorer/bootstrap.css'),
+        File.join(base_path, 'rails-data-explorer/d3.boxplot.css'),
+        File.join(base_path, 'rails-data-explorer/d3.parcoords.css'),
+        File.join(base_path, 'rails-data-explorer/d3.parsets.css'),
+        # File.join(base_path, 'rails-data-explorer/nv.d3.css'),
+        File.join(base_path, 'rails-data-explorer/rde-default-style.css'),
       ]
     )
   end
