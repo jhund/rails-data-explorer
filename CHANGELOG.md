@@ -1,3 +1,7 @@
+### 1.0.4
+
+* Fixed width of SVG container for box plot charts
+
 ### 1.0.3
 
 * Updated packaged assets and fixed path for precompiling assets
