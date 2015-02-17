@@ -181,11 +181,16 @@ your data (see screenshots above).
 * **Loading too many DB rows at once**: Remember that you are loading ActiveRecord
   objects, and they can use a lot of ram. It's a cartesian product of number of
   rows times columns per record. As a rule of thumb, for a medium sized model with
-  10 columns, you can load up to ~100K rows.
+  10 columns, you can load up to ~100K rows. Strategies to mitigate memory bloat:
+    * Use `find_each` to build up a plain old Array with data just from the columns you are interested in.
+    * Use `select` to limit the number of columns to fetch from the database.
+    * Sample your database. I'm currently investigating ways to do this efficiently.
 * **Using expensive operations in the `:data_method` option for a given data series**:
-  As a rule of thumb, it should be ok to run simple methods that don't require
-  DB access. Examples: `#.to_s`, `if` and `case`, and math operations should all
-  be fine.
+  Make sure to only use super simple operations like `#.to_s`, `if`, and math operations. Avoid the following:
+    * DB queries.
+    * Recursive methods (e.g., `deep_symbolize_keys`).
+    * Access 3rd party services and APIs.
+    * Instantiate common objects in each iteration. Instead instantiate them once outside of the loop and refer to a singleton object.
 * **Drowning in detail**: rails-data-explorer makes it easy to generate a large
   number of charts. Make sure you don't miss the important data in the noise.
 
